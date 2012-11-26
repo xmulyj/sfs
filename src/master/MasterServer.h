@@ -14,8 +14,16 @@
 #include <stdint.h>
 #include <string>
 #include <map>
-using std::string;
-using std::map;
+#include <list>
+using namespace std;
+
+class TimeFid
+{
+public:
+	int insert_time;
+	string fid;
+};
+
 
 class MasterServer:public ConnectThread
 {
@@ -42,11 +50,22 @@ public:
 	bool start_server();
 
 private:
+	//chunk信息管理
 	map<string, ChunkInfo> m_chunk_manager;
 	void add_chunk(ChunkInfo &chunk_ping);
 	bool get_chunk(ChunkInfo &chunk_info);
 
+	//文件信息cache
 	map<string, FileInfo> m_fileinfo_cache;
+
+	//正在存储的记录
+	int m_save_task_timeout_sec;
+	map<string, list<TimeFid>::iterator> m_save_task_map;
+	list<TimeFid> m_time_fid_list;
+	bool find_save_task(string &fid);
+	bool add_save_task(string &fid);
+	bool remove_save_task(string &fid);
+	bool remove_save_task_timeout();
 };
 
 class MasterThreadPool:public ConnectThreadPool

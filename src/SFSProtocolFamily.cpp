@@ -7,33 +7,23 @@
 
 #include "SFSProtocolFamily.h"
 
+#define Case_Create_Protocol(Type, Protocol) case Type: \
+protocol = new Protocol; break
+
 Protocol* SFSProtocolFamily::create_protocol_by_header(ProtocolHeader *header)
 {
 	int protocol_type = ((DefaultProtocolHeader *)header)->get_protocol_type();
 	Protocol *protocol = NULL;
 	switch(protocol_type)
 	{
-	case PROTOCOL_FILE_INFO_REQ:
-		protocol = new ProtocolFileInfoReq;
-		break;
-	case PROTOCOL_FILE_INFO:
-		protocol = new ProtocolFileInfo;
-		break;
-	case PROTOCOL_FILE_REQ:
-		protocol = new ProtocolFileReq;
-		break;
-	case PROTOCOL_FILE:
-		protocol = new ProtocolFile;
-		break;
-	case PROTOCOL_FILE_SAVE_RESULT:
-		protocol = new ProtocolFileSaveResult;
-		break;
-	case PROTOCOL_CHUNK_PING:
-		protocol = new ProtocolChunkPing;
-		break;
-	case PROTOCOL_CHUNK_PING_RESP:
-		protocol = new ProtocolChunkPingResp;
-		break;
+		Case_Create_Protocol(PROTOCOL_FILE_INFO_REQ,         ProtocolFileInfoReq);
+		Case_Create_Protocol(PROTOCOL_FILE_INFO,             ProtocolFileInfo);
+		Case_Create_Protocol(PROTOCOL_FILE_INFO_SAVE_RESULT, ProtocolFileInfoSaveResult);
+		Case_Create_Protocol(PROTOCOL_FILE_REQ,              ProtocolFileReq);
+		Case_Create_Protocol(PROTOCOL_FILE,                  ProtocolFile);
+		Case_Create_Protocol(PROTOCOL_FILE_SAVE_RESULT,      ProtocolFileSaveResult);
+		Case_Create_Protocol(PROTOCOL_CHUNK_PING,            ProtocolChunkPing);
+		Case_Create_Protocol(PROTOCOL_CHUNK_PING_RESP,       ProtocolChunkPingResp);
 	}
 
 	return protocol;
@@ -48,7 +38,6 @@ void SFSProtocolFamily::destroy_protocol(Protocol *protocol)
 //////////////////////////////  0. FileInfoReq Protocol  //////////////////////////////
 bool ProtocolFileInfoReq::encode_body(ByteBuffer *byte_buffer)
 {
-	int len = 0;
 	////fid
 	ENCODE_STRING(m_fid);
 	////query chunk path
@@ -59,7 +48,6 @@ bool ProtocolFileInfoReq::encode_body(ByteBuffer *byte_buffer)
 
 bool ProtocolFileInfoReq::decode_body(const char *buf, int size)
 {
-	int len = 0;
 	////fid
 	DECODE_STRING(m_fid);
 	////query chunk path

@@ -15,18 +15,20 @@
 using std::string;
 using std::vector;
 
-
+//文件信息
 #define PROTOCOL_FILE_INFO_REQ          0    //请求文件信息
 #define PROTOCOL_FILE_INFO              1    //文件信息
 #define PROTOCOL_FILE_INFO_SAVE_RESULT  2    //文件信息保存结果
+//文件数据
 #define PROTOCOL_FILE_REQ               3    //请求文件数据
 #define PROTOCOL_FILE                   4    //文件数据
 #define PROTOCOL_FILE_SAVE_RESULT       5    //文件保存结果
+//chunk信息
 #define PROTOCOL_CHUNK_PING             6    //chunk请求master保存chunk信息
 #define PROTOCOL_CHUNK_PING_RESP        7    //master回复chunk保存信息结果
 
 
-///////////////////////////////////////  Protoocl Family  ///////////////////////////////////////
+///////////////////////////////////////  Protocol Family  ///////////////////////////////////////
 class SFSProtocolFamily:public DefaultProtocolFamily
 {
 public:
@@ -64,9 +66,9 @@ public:
 class ChunkInfo
 {
 public:
-	string id;             //chunk id
-	string addr;           //chunk addr
-	int port;              //chunk port
+	string id;
+	string addr;
+	int port;
 	uint64_t disk_space;   //磁盘空间
 	uint64_t disk_used;    //磁盘已用空间
 };
@@ -118,15 +120,15 @@ public://实现protocol的接口
 	//解码大小为size的协议体数据buf.成功返回true,失败返回false.
 	bool decode_body(const char *buf, int size);
 public:
-	//result: 0(失败)，1(文件存在,返回文件信息)，2(文件不存在,返回分配的chunk)
+	//result: 0(失败)，1(分配chunk,file_info的chunk_path有效)，2(正在存储,file_info无效), 3(成功,file_info有效)
 	void set_result(int result){m_result = result;}
 	int get_result(){return m_result;}
 
-	//用于设置/获取文件信息
+	//用于设置或者获取文件信息
 	FileInfo& get_fileinfo();
 private:
-	int m_result;	//查询结果
-	FileInfo m_fileinfo; //当result为0时无效
+	int m_result;
+	FileInfo m_fileinfo;
 };
 
 //////////////////////////////  2. ProtocolFileInfoSaveResult Protocol  //////////////////////////////
@@ -148,7 +150,7 @@ public:
 	void set_fid(string &fid){m_fid=fid;}
 	const string& get_fid(){return m_fid;}
 private:
-	int m_result;	//保存结果:0成功, 其他失败
+	int m_result;
 	string m_fid;
 };
 
@@ -225,7 +227,6 @@ public://实现protocol的接口
 public:
 	//chunk info
 	ChunkInfo& get_chunk_info();
-
 private:
 	ChunkInfo m_chunk_info;
 };
