@@ -131,22 +131,44 @@ bool MasterServer::on_recv_protocol(SocketHandle socket_handle, Protocol *protoc
 	case PROTOCOL_FILE_INFO:  //chunk 上报文件信息
 	{
 		ProtocolFileInfo *protocol_fileinfo = (ProtocolFileInfo *)protocol;
+
 		int result = protocol_fileinfo->get_result();
 		FileInfo &fileinfo = protocol_fileinfo->get_fileinfo();
 		SLOG_INFO("fd=%d receive fileinfo protocol. result=%d, fid=%s.", result, fileinfo.fid.c_str());
-		if(result == 0)  //成功,保存文件信息
-		{
-
-		}
-		else  //失败,删除正在保存的记录
-		{
-
-		}
 
 		ProtocolFileInfoSaveResult *protocol_fileinfo_save_result = (ProtocolFileInfoSaveResult *)protocol_family->create_protocol(PROTOCOL_FILE_INFO_SAVE_RESULT);
 		assert(protocol_fileinfo_save_result != NULL);
-		protocol_fileinfo_save_result->set_result(0);
 		protocol_fileinfo_save_result->set_fid(fileinfo.fid);
+
+		if(find_save_task(fileinfo.fid))
+		{
+			protocol_fileinfo_save_result->set_result(0);
+			if(result == 0)  //成功,保存文件信息
+			{
+				ChunkPath &chunk_path = fileinfo.get_path(0);
+				SLOG_INFO("save file info: fid=%s, name=%s, size=%lld, chunkid=%s, addr=%s, port=%d, index=%d, offset=%lld."
+							,fileinfo.fid.c_str()
+							,fileinfo.name.c_str()
+							,fileinfo.size
+							,chunk_path.id.c_str()
+							,chunk_path.addr.c_str()
+							,chunk_path.port
+							,chunk_path.index
+							,chunk_path.offset);
+
+				m_fileinfo_cache.insert(std::make_pair(fileinfo.fid, fileinfo));
+			}
+			else  //失败,删除正在保存的记录
+			{
+				SLOG_INFO("save file failed, remove saving task. fid=%s.", fileinfo.fid.c_str());
+				remove_save_task(fileinfo.fid);
+			}
+		}
+		else //保存任务不存在
+		{
+			SLOG_WARN("fd=%d can't find saving task. fid=%s.", socket_handle, fileinfo.fid.c_str());
+			protocol_fileinfo_save_result->set_result(1);
+		}
 
 		if(!send_protocol(socket_handle, protocol_fileinfo_save_result))
 		{
