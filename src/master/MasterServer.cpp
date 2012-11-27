@@ -41,7 +41,7 @@ bool MasterServer::on_recv_protocol(SocketHandle socket_handle, Protocol *protoc
 	DefaultProtocolHeader *header = (DefaultProtocolHeader *)protocol->get_protocol_header();
 	switch(header->get_protocol_type())
 	{
-	case PROTOCOL_FILE_INFO_REQ:    //响应FileInfo请求
+	case PROTOCOL_FILE_INFO_REQ:  //响应FileInfo请求
 	{
 		ProtocolFileInfoReq *protocol_file_info_req = (ProtocolFileInfoReq *)protocol;
 		const string& fid = protocol_file_info_req->get_fid();
@@ -50,34 +50,27 @@ bool MasterServer::on_recv_protocol(SocketHandle socket_handle, Protocol *protoc
 
 		ProtocolFileInfo *protocol_fileinfo = (ProtocolFileInfo *)protocol_family->create_protocol(PROTOCOL_FILE_INFO);
 		assert(protocol_fileinfo != NULL);
-
 		FileInfo& file_info = protocol_fileinfo->get_fileinfo();
-		if(!query_chunkpath)
+		if(get_fileinfo(fid, file_info))  //存在
 		{
-			protocol_fileinfo->set_result(0);
-			file_info.fid = fid;
-			file_info.name = "test_name";
-			file_info.size = 12345;
-			ChunkPath chunk_path;
-			chunk_path.id = "chunk0";
-			chunk_path.addr = "127.0.0.1";
-			chunk_path.port = 3013;
-			chunk_path.index = 0;
-			chunk_path.offset = 0;
-			file_info.add_path(chunk_path);
+			protocol_fileinfo->set_result(3);
 		}
-		else
+		else if(find_save_task(fid))  //正在保存
+		{
+			protocol_fileinfo->set_result(2);
+		}
+		else if(query_chunkpath)  //分配chunk
 		{
 			file_info.fid = fid;
 			file_info.name = ""; //无效
 			file_info.size = 0;  //无效
-			protocol_fileinfo->set_result(2);
 
 			ChunkPath chunk_path;
 			ChunkInfo chunk_info;
 			if(get_chunk(chunk_info))
 			{
-				protocol_fileinfo->set_result(0);
+
+				protocol_fileinfo->set_result(1);
 				chunk_path.id = chunk_info.id;
 				chunk_path.addr = chunk_info.addr;
 				chunk_path.port = chunk_info.port;
@@ -85,6 +78,14 @@ bool MasterServer::on_recv_protocol(SocketHandle socket_handle, Protocol *protoc
 				chunk_path.offset = 0; //无效
 				file_info.add_path(chunk_path);
 			}
+			else
+			{
+				protocol_fileinfo->set_result(0);
+			}
+		}
+		else  //失败
+		{
+			protocol_fileinfo->set_result(0);
 		}
 
 		if(!send_protocol(socket_handle, protocol_fileinfo))
@@ -140,7 +141,7 @@ bool MasterServer::on_recv_protocol(SocketHandle socket_handle, Protocol *protoc
 		assert(protocol_fileinfo_save_result != NULL);
 		protocol_fileinfo_save_result->set_fid(fileinfo.fid);
 
-		if(find_save_task(fileinfo.fid))
+		if(find_save_task(fileinfo.fid)) //存在
 		{
 			protocol_fileinfo_save_result->set_result(0);
 			if(result == 0)  //成功,保存文件信息
@@ -260,12 +261,22 @@ bool MasterServer::get_chunk(ChunkInfo &chunk_info)
 	return false;
 }
 
-bool MasterServer::find_save_task(string &fid)
+bool MasterServer::get_fileinfo(const string &fid, FileInfo &fileinfo)
+{
+	map<string, FileInfo>::iterator it = m_fileinfo_cache.find(fid);
+	if(it == m_fileinfo_cache.end())
+		return false;
+	fileinfo = it->second;
+	return true;
+}
+
+
+bool MasterServer::find_save_task(const string &fid)
 {
 	return m_save_task_map.find(fid) != m_save_task_map.end();
 }
 
-bool MasterServer::add_save_task(string &fid)
+bool MasterServer::add_save_task(const string &fid)
 {
 	if(find_save_task(fid))  //已经存在
 		return false;

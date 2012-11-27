@@ -57,13 +57,14 @@ private:
 
 	//文件信息cache
 	map<string, FileInfo> m_fileinfo_cache;
+	bool get_fileinfo(const string &fid, FileInfo &fileinfo);
 
 	//正在存储的记录
 	int m_save_task_timeout_sec;
 	map<string, list<TimeFid>::iterator> m_save_task_map;
 	list<TimeFid> m_time_fid_list;
-	bool find_save_task(string &fid);
-	bool add_save_task(string &fid);
+	bool find_save_task(const string &fid);
+	bool add_save_task(const string &fid);
 	bool remove_save_task(string &fid);
 	bool remove_save_task_timeout();
 };
