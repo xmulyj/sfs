@@ -238,7 +238,7 @@ public://实现protocol的接口
 	bool decode_body(const char *buf, int size);
 public:
 	//chunk info
-	ChunkInfo& get_chunk_info();
+	ChunkInfo& get_chunk_info(){return m_chunk_info;}
 private:
 	ChunkInfo m_chunk_info;
 };
