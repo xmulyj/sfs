@@ -20,7 +20,7 @@ bool MasterServer::start_server()
 
 	////Add your codes here
 	///////////////////////
-	m_save_task_timeout_sec = 3600;
+	m_saving_task_timeout_sec = 3600;
 	get_io_demuxer()->run_loop();
 	return true;
 }
@@ -43,139 +43,17 @@ bool MasterServer::on_recv_protocol(SocketHandle socket_handle, Protocol *protoc
 	{
 	case PROTOCOL_FILE_INFO_REQ:  //响应FileInfo请求
 	{
-		ProtocolFileInfoReq *protocol_file_info_req = (ProtocolFileInfoReq *)protocol;
-		const string& fid = protocol_file_info_req->get_fid();
-		bool query_chunkpath = protocol_file_info_req->get_query_chunkpath();
-		SLOG_INFO("Thread[id=%d] fd=%d receive FileInfo protocol.FID=%s, query=%d", get_thread_id(), socket_handle, fid.c_str(), query_chunkpath?1:0);
-
-		ProtocolFileInfo *protocol_fileinfo = (ProtocolFileInfo *)protocol_family->create_protocol(PROTOCOL_FILE_INFO);
-		assert(protocol_fileinfo != NULL);
-		FileInfo& file_info = protocol_fileinfo->get_fileinfo();
-		if(get_fileinfo(fid, file_info))  //存在
-		{
-			protocol_fileinfo->set_result(3);
-		}
-		else if(find_save_task(fid))  //正在保存
-		{
-			protocol_fileinfo->set_result(2);
-		}
-		else if(query_chunkpath)  //分配chunk
-		{
-			file_info.fid = fid;
-			file_info.name = ""; //无效
-			file_info.size = 0;  //无效
-
-			ChunkPath chunk_path;
-			ChunkInfo chunk_info;
-			if(get_chunk(chunk_info))
-			{
-
-				protocol_fileinfo->set_result(1);
-				chunk_path.id = chunk_info.id;
-				chunk_path.addr = chunk_info.addr;
-				chunk_path.port = chunk_info.port;
-				chunk_path.index = 0;  //无效
-				chunk_path.offset = 0; //无效
-				file_info.add_path(chunk_path);
-			}
-			else
-			{
-				protocol_fileinfo->set_result(0);
-			}
-		}
-		else  //失败
-		{
-			protocol_fileinfo->set_result(0);
-		}
-
-		if(!send_protocol(socket_handle, protocol_fileinfo))
-		{
-			SLOG_ERROR("Thread[ID=%d] fd=%d send FileInfo Protocol failed.", get_thread_id(), socket_handle);
-			protocol_family->destroy_protocol(protocol_fileinfo);
-		}
+		on_file_info_req(socket_handle, protocol);
 		break;
 	}
 	case PROTOCOL_CHUNK_PING:    //响应chunk的ping包
 	{
-		ProtocolChunkPing *protocol_chunkping = (ProtocolChunkPing *)protocol;
-		ChunkInfo& chunk_info = protocol_chunkping->get_chunk_info();
-
-		SLOG_INFO("Thread[ID=%d] fd=%d receive ChunkPing protocol.ChunkId=%s, ChunkAddr=%s, ChunkPort=%d, DiskSpace=%lld, DiskUsed=%lld"
-					,get_thread_id()
-					,socket_handle
-					,chunk_info.id.c_str()
-					,chunk_info.addr.c_str()
-					,chunk_info.port
-					,chunk_info.disk_space
-					,chunk_info.disk_used);
-
-		ProtocolChunkPingResp *protocol_chunkping_resp = (ProtocolChunkPingResp *)protocol_family->create_protocol(PROTOCOL_CHUNK_PING_RESP);
-
-		if(chunk_info.id == "" || chunk_info.addr == "")
-		{
-			SLOG_ERROR("Thread[ID=%d] fd=%d chunk id or addr is empty.", get_thread_id(), socket_handle);
-			protocol_chunkping_resp->set_result(1);
-		}
-		else
-		{
-			add_chunk(chunk_info);
-			protocol_chunkping_resp->set_result(0);
-		}
-
-		if(!send_protocol(socket_handle, protocol_chunkping_resp))
-		{
-			protocol_family->destroy_protocol(protocol_chunkping_resp);
-			SLOG_ERROR("Thread[ID=%d] fd=%d send Protocol_Chunkping_Resp failed.", get_thread_id(), socket_handle);
-		}
+		on_chunk_ping(socket_handle, protocol);
 		break;
 	}
 	case PROTOCOL_FILE_INFO:  //chunk 上报文件信息
 	{
-		ProtocolFileInfo *protocol_fileinfo = (ProtocolFileInfo *)protocol;
 
-		int result = protocol_fileinfo->get_result();
-		FileInfo &fileinfo = protocol_fileinfo->get_fileinfo();
-		SLOG_INFO("fd=%d receive fileinfo protocol. result=%d, fid=%s.", result, fileinfo.fid.c_str());
-
-		ProtocolFileInfoSaveResult *protocol_fileinfo_save_result = (ProtocolFileInfoSaveResult *)protocol_family->create_protocol(PROTOCOL_FILE_INFO_SAVE_RESULT);
-		assert(protocol_fileinfo_save_result != NULL);
-		protocol_fileinfo_save_result->set_fid(fileinfo.fid);
-
-		if(find_save_task(fileinfo.fid)) //存在
-		{
-			protocol_fileinfo_save_result->set_result(0);
-			if(result == 0)  //成功,保存文件信息
-			{
-				ChunkPath &chunk_path = fileinfo.get_path(0);
-				SLOG_INFO("save file info: fid=%s, name=%s, size=%lld, chunkid=%s, addr=%s, port=%d, index=%d, offset=%lld."
-							,fileinfo.fid.c_str()
-							,fileinfo.name.c_str()
-							,fileinfo.size
-							,chunk_path.id.c_str()
-							,chunk_path.addr.c_str()
-							,chunk_path.port
-							,chunk_path.index
-							,chunk_path.offset);
-
-				m_fileinfo_cache.insert(std::make_pair(fileinfo.fid, fileinfo));
-			}
-			else  //失败,删除正在保存的记录
-			{
-				SLOG_INFO("save file failed, remove saving task. fid=%s.", fileinfo.fid.c_str());
-				remove_save_task(fileinfo.fid);
-			}
-		}
-		else //保存任务不存在
-		{
-			SLOG_WARN("fd=%d can't find saving task. fid=%s.", socket_handle, fileinfo.fid.c_str());
-			protocol_fileinfo_save_result->set_result(1);
-		}
-
-		if(!send_protocol(socket_handle, protocol_fileinfo_save_result))
-		{
-			protocol_family->destroy_protocol(protocol_fileinfo_save_result);
-			SLOG_ERROR("Thread[ID=%d] fd=%d send fileinfo_save_result protocol failed.", get_thread_id(), socket_handle);
-		}
 		break;
 	}
 	default:
@@ -233,24 +111,24 @@ bool MasterServer::on_socket_handler_accpet(SocketHandle socket_handle)
 	return true;
 }
 
+///////////////////////////////////////////////////////////
 void MasterServer::add_chunk(ChunkInfo &chunk_info)
 {
 	map<string, ChunkInfo>::iterator it = m_chunk_manager.find(chunk_info.id);
 	if(it == m_chunk_manager.end())
 	{
-		SLOG_DEBUG("Thread[ID=%d] add a new chunk info. chunk ID=%s. total chunk:%d.", get_thread_id(), chunk_info.id.c_str(), m_chunk_manager.size());
+		SLOG_DEBUG("add a new chunk info. chunk_id=%s. total chunk:%d.", chunk_info.id.c_str(), m_chunk_manager.size());
 		m_chunk_manager.insert(std::make_pair(chunk_info.id, chunk_info));
 	}
 	else
 	{
-		SLOG_DEBUG("Thread[ID=%d] update a chunk info. chunk ID=%s. total chunk=%d.", get_thread_id(), chunk_info.id.c_str(), m_chunk_manager.size());
+		SLOG_DEBUG("update a chunk info. chunk_id=%s. total chunk=%d.", chunk_info.id.c_str(), m_chunk_manager.size());
 		it->second = chunk_info;
 	}
 }
 
 bool MasterServer::get_chunk(ChunkInfo &chunk_info)
 {
-	SLOG_DEBUG("Thread[ID=%d] total chunk=%d.", get_thread_id(), m_chunk_manager.size());
 	map<string, ChunkInfo>::iterator it = m_chunk_manager.begin();
 	if(it != m_chunk_manager.end())
 	{
@@ -270,37 +148,40 @@ bool MasterServer::get_fileinfo(const string &fid, FileInfo &fileinfo)
 	return true;
 }
 
-
-bool MasterServer::find_save_task(const string &fid)
+bool MasterServer::find_saving_task(const string &fid)
 {
-	return m_save_task_map.find(fid) != m_save_task_map.end();
+	return m_saving_task_map.find(fid) != m_saving_task_map.end();
 }
 
-bool MasterServer::add_save_task(const string &fid)
+bool MasterServer::add_saving_task(const string &fid)
 {
-	if(find_save_task(fid))  //已经存在
-		return false;
+	if(find_saving_task(fid))  //已经存在
+	{
+		SLOG_WARN("saving task[fd=%s] already exists.", fid.c_str());
+		return true;
+	}
 
 	TimeFid time_fid;
 	time_fid.insert_time = (int)time(NULL);
 	time_fid.fid = fid;
+	m_time_fid_list.push_front(time_fid);  //保存到list头
+	m_saving_task_map.insert(std::make_pair(fid, m_time_fid_list.begin()));  //保存到map
 
-	m_time_fid_list.push_front(time_fid);  //保存到list中
-	m_save_task_map.insert(std::make_pair(fid, m_time_fid_list.begin()));  //保存到map
+	SLOG_INFO("add saving task:fid=%s insert_time=%d.", fid.c_str(), time_fid.insert_time);
 	return true;
 }
 
-bool MasterServer::remove_save_task(string &fid)
+bool MasterServer::remove_saving_task(string &fid)
 {
-	map<string, list<TimeFid>::iterator>::iterator it = m_save_task_map.find(fid);
-	if(it == m_save_task_map.end())  //不存在
+	map<string, list<TimeFid>::iterator>::iterator it = m_saving_task_map.find(fid);
+	if(it == m_saving_task_map.end())  //不存在
 		return false;
 	m_time_fid_list.erase(it->second);
-	m_save_task_map.erase(it);
+	m_saving_task_map.erase(it);
 	return true;
 }
 
-bool MasterServer::remove_save_task_timeout()
+bool MasterServer::remove_saving_task_timeout()
 {
 	int now = (int)time(NULL);
 	list<TimeFid>::iterator it;
@@ -308,12 +189,159 @@ bool MasterServer::remove_save_task_timeout()
 	{
 		it = m_time_fid_list.end();
 		--it;
-		if(now-it->insert_time < m_save_task_timeout_sec)
+		if(now-it->insert_time < m_saving_task_timeout_sec)
 			break;
 		m_time_fid_list.erase(it);
 	}
 
 	return true;
+}
+
+//////////////////////////////////////////////////////////////
+//响应chunk的ping包
+void MasterServer::on_chunk_ping(SocketHandle socket_handle, Protocol *protocol)
+{
+	SFSProtocolFamily* protocol_family = (SFSProtocolFamily*)get_protocol_family();
+	ProtocolChunkPingResp *protocol_chunkping_resp = (ProtocolChunkPingResp *)protocol_family->create_protocol(PROTOCOL_CHUNK_PING_RESP);
+	assert(protocol_chunkping_resp);
+
+	ProtocolChunkPing *protocol_chunkping = (ProtocolChunkPing *)protocol;
+	ChunkInfo& chunk_info = protocol_chunkping->get_chunk_info();
+	SLOG_INFO("receive chunkping protocol.fd=%d, chunk_id=%s, chunk_addr=%s, chunk_port=%d, disk_space=%lld, disk_used=%lld."
+				,socket_handle
+				,chunk_info.id.c_str()
+				,chunk_info.addr.c_str()
+				,chunk_info.port
+				,chunk_info.disk_space
+				,chunk_info.disk_used);
+
+	if(chunk_info.id == "" || chunk_info.addr == "")
+	{
+		SLOG_ERROR("chunk id or ip is empty.");
+		protocol_chunkping_resp->set_result(1);
+	}
+	else
+	{
+		add_chunk(chunk_info);
+		protocol_chunkping_resp->set_result(0);
+	}
+
+	if(!send_protocol(socket_handle, protocol_chunkping_resp))
+	{
+		protocol_family->destroy_protocol(protocol_chunkping_resp);
+		SLOG_ERROR("send protocol_chunkping_resp failed.fd=%d, chunk_id=%s.", socket_handle, chunk_info.id.c_str());
+	}
+}
+
+//响应文件信息查询包
+void MasterServer::on_file_info_req(SocketHandle socket_handle, Protocol *protocol)
+{
+	SFSProtocolFamily* protocol_family = (SFSProtocolFamily*)get_protocol_family();
+	ProtocolFileInfo *protocol_fileinfo = (ProtocolFileInfo *)protocol_family->create_protocol(PROTOCOL_FILE_INFO);
+	assert(protocol_fileinfo != NULL);
+
+	ProtocolFileInfoReq *protocol_file_info_req = (ProtocolFileInfoReq *)protocol;
+	const string& fid = protocol_file_info_req->get_fid();
+	bool query_chunkpath = protocol_file_info_req->get_query_chunkpath();
+	SLOG_INFO("receive file_info protocol.fd=%d, fid=%s, query=%d", socket_handle, fid.c_str(), query_chunkpath?1:0);
+
+	FileInfo& file_info = protocol_fileinfo->get_fileinfo();
+	if(get_fileinfo(fid, file_info))  //已经存在
+	{
+		SLOG_DEBUG("find fileinfo succ: fid=%s.", fid.c_str());
+		protocol_fileinfo->set_result(ProtocolFileInfo::FILE_INFO_SUCC);
+	}
+	else if(find_saving_task(fid))  //正在保存
+	{
+		SLOG_DEBUG("fid=%s is saving.", fid.c_str());
+		protocol_fileinfo->set_result(ProtocolFileInfo::FILE_INFO_SAVING);
+	}
+	else if(query_chunkpath)  //分配chunk
+	{
+		file_info.fid = fid;
+		file_info.name = ""; //无效
+		file_info.size = 0;  //无效
+
+		ChunkPath chunk_path;
+		ChunkInfo chunk_info;
+		if(get_chunk(chunk_info))  //分配chunk
+		{
+			protocol_fileinfo->set_result(ProtocolFileInfo::FILE_INFO_CHUNK);
+			chunk_path.id = chunk_info.id;
+			chunk_path.addr = chunk_info.addr;
+			chunk_path.port = chunk_info.port;
+			chunk_path.index = 0;  //无效
+			chunk_path.offset = 0; //无效
+			file_info.add_path(chunk_path);
+			SLOG_DEBUG("dispatch chunk[id=%s,ip=%s,port=%d] for fid=%s.", chunk_info.id.c_str(), chunk_info.addr.c_str(), chunk_info.port, fid.c_str());
+		}
+		else
+		{
+			SLOG_WARN("get chunk failed for fid=%s.", fid.c_str());
+			protocol_fileinfo->set_result(ProtocolFileInfo::FILE_INFO_FAILED);
+		}
+	}
+	else  //失败
+	{
+		SLOG_WARN("get fileinfo failed for fid=%s.", fid.c_str());
+		protocol_fileinfo->set_result(ProtocolFileInfo::FILE_INFO_FAILED);
+	}
+
+	if(!send_protocol(socket_handle, protocol_fileinfo))
+	{
+		SLOG_ERROR("send file_info protocol failed. fd=%d, fid=%s.", socket_handle, fid.c_str());
+		protocol_family->destroy_protocol(protocol_fileinfo);
+	}
+}
+
+//响应fileinfo保存包
+void MasterServer::on_file_info(SocketHandle socket_handle, Protocol *protocol)
+{
+	SFSProtocolFamily* protocol_family = (SFSProtocolFamily*)get_protocol_family();
+	ProtocolFileInfoSaveResult *protocol_fileinfo_save_result = (ProtocolFileInfoSaveResult *)protocol_family->create_protocol(PROTOCOL_FILE_INFO_SAVE_RESULT);
+	assert(protocol_fileinfo_save_result != NULL);
+
+	ProtocolFileInfo *protocol_fileinfo = (ProtocolFileInfo *)protocol;
+	ProtocolFileInfo::FileInfoResult result = protocol_fileinfo->get_result();
+	FileInfo &fileinfo = protocol_fileinfo->get_fileinfo();
+	SLOG_INFO("receive fileinfo protocol. fd=%d, result=%d, fid=%s.", (int)result, fileinfo.fid.c_str());
+
+	protocol_fileinfo_save_result->set_fid(fileinfo.fid);
+
+	if(find_saving_task(fileinfo.fid)) //正在保存
+	{
+		protocol_fileinfo_save_result->set_result(ProtocolFileInfoSaveResult::SAVE_RESULT_SUCC);
+		if(result == ProtocolFileInfo::FILE_INFO_SUCC)  //成功,保存文件信息
+		{
+			ChunkPath &chunk_path = fileinfo.get_path(0);
+			SLOG_INFO("save file info: fid=%s, name=%s, size=%lld, chunkid=%s, addr=%s, port=%d, index=%d, offset=%lld."
+						,fileinfo.fid.c_str()
+						,fileinfo.name.c_str()
+						,fileinfo.size
+						,chunk_path.id.c_str()
+						,chunk_path.addr.c_str()
+						,chunk_path.port
+						,chunk_path.index
+						,chunk_path.offset);
+			m_fileinfo_cache.insert(std::make_pair(fileinfo.fid, fileinfo));
+		}
+		else  //失败,删除正在保存的记录
+		{
+			SLOG_INFO("chunk save file failed, remove saving task. fid=%s.", fileinfo.fid.c_str());
+			remove_saving_task(fileinfo.fid);
+		}
+	}
+	else //保存任务不存在
+	{
+		SLOG_WARN("can't find saving task. fd=%d, fid=%s.", socket_handle, fileinfo.fid.c_str());
+		protocol_fileinfo_save_result->set_result(ProtocolFileInfoSaveResult::SAVE_RESULT_FAILED);
+	}
+
+	if(!send_protocol(socket_handle, protocol_fileinfo_save_result))
+	{
+		protocol_family->destroy_protocol(protocol_fileinfo_save_result);
+		SLOG_ERROR("send fileinfo_save_result protocol failed. fd=%d, fid=%s", socket_handle, fileinfo.fid.c_str());
+	}
 }
 
 /////////////////////////////////////// MasterThreadPool ///////////////////////////////////////

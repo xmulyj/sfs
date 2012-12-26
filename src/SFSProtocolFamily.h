@@ -120,9 +120,16 @@ public://实现protocol的接口
 	//解码大小为size的协议体数据buf.成功返回true,失败返回false.
 	bool decode_body(const char *buf, int size);
 public:
-	//result: 0(失败)，1(分配chunk,file_info的chunk_path有效)，2(正在存储,file_info无效), 3(成功,file_info有效)
-	void set_result(int result){m_result = result;}
-	int get_result(){return m_result;}
+	typedef enum
+	{
+		FILE_INFO_FAILED,    //失败
+		FILE_INFO_CHUNK,     //分配chunk,file_info的chunk_path有效
+		FILE_INFO_SAVING,    //正在存储,file_info无
+		FILE_INFO_SUCC       //成功,file_info有效
+	}FileInfoResult;
+
+	void set_result(FileInfoResult result){m_result = (int)result;}
+	FileInfoResult get_result(){return (FileInfoResult)m_result;}
 
 	//用于设置或者获取文件信息
 	FileInfo& get_fileinfo();
@@ -142,9 +149,14 @@ public://实现protocol的接口
 	//解码大小为size的协议体数据buf.成功返回true,失败返回false.
 	bool decode_body(const char *buf, int size);
 public:
+	typedef enum
+	{
+		SAVE_RESULT_FAILED,  //保存失败
+		SAVE_RESULT_SUCC     //保存成功
+	}FileInfoSaveResult;
 	//result: 0(失败)，1(文件存在,返回文件信息)，2(文件不存在,返回分配的chunk)
-	void set_result(int result){m_result = result;}
-	int get_result(){return m_result;}
+	void set_result(FileInfoSaveResult result){m_result = (int)result;}
+	FileInfoSaveResult get_result(){return (FileInfoSaveResult)m_result;}
 
 	//用于设置/获取文件信息
 	void set_fid(string &fid){m_fid=fid;}

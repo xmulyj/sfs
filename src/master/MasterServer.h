@@ -60,13 +60,20 @@ private:
 	bool get_fileinfo(const string &fid, FileInfo &fileinfo);
 
 	//正在存储的记录
-	int m_save_task_timeout_sec;
-	map<string, list<TimeFid>::iterator> m_save_task_map;
+	int m_saving_task_timeout_sec;
+	map<string, list<TimeFid>::iterator> m_saving_task_map;
 	list<TimeFid> m_time_fid_list;
-	bool find_save_task(const string &fid);
-	bool add_save_task(const string &fid);
-	bool remove_save_task(string &fid);
-	bool remove_save_task_timeout();
+	bool find_saving_task(const string &fid);
+	bool add_saving_task(const string &fid);
+	bool remove_saving_task(string &fid);
+	bool remove_saving_task_timeout();
+private:
+	//响应chunk的ping包
+	void on_chunk_ping(SocketHandle socket_handle, Protocol *protocol);
+	//响应文件信息查询包
+	void on_file_info_req(SocketHandle socket_handle, Protocol *protocol);
+	//响应fileinfo保存包
+	void on_file_info(SocketHandle socket_handle, Protocol *protocol);
 };
 
 class MasterThreadPool:public ConnectThreadPool

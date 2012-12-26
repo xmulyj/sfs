@@ -60,7 +60,7 @@ bool ProtocolFileInfo::encode_body(ByteBuffer *byte_buffer)
 {
 	////result
 	ENCODE_INT(m_result);
-	if(m_result == 0) return true;
+	if(m_result == FILE_INFO_FAILED) return true;
 
 	////fid
 	ENCODE_STRING(m_fileinfo.fid);
@@ -93,7 +93,7 @@ bool ProtocolFileInfo::decode_body(const char *buf, int size)
 {
 	////result
 	DECODE_INT(m_result);
-	if(m_result == 0) return true;
+	if(m_result == FILE_INFO_FAILED) return true;
 
 	////fid
 	DECODE_STRING(m_fileinfo.fid);
