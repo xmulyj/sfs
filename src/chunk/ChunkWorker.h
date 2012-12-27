@@ -68,7 +68,7 @@ public:
 
 //////////////////// file task ////////////////////
 private:
-	pthread_mutex_t m_filetask_lock;
+	//pthread_mutex_t m_filetask_lock;
 	FileTaskMap m_filetask_map;
 	//查找文件任务
 	bool file_task_find(string &fid);

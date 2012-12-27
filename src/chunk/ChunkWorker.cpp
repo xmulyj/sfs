@@ -24,7 +24,7 @@ bool ChunkWorker::start_server()
 	////Add your codes here
 	///////////////////////
 	m_disk_path = "/data/sfs_chunk";  //数据存放路径
-	pthread_mutex_init(&m_filetask_lock, NULL);
+	//pthread_mutex_init(&m_filetask_lock, NULL);
 	load_disk_files();
 	get_io_demuxer()->run_loop();
 	return true;
@@ -117,7 +117,7 @@ bool ChunkWorker::file_task_find(string &fid)
 	bool find;
 	pthread_mutex_lock(&m_filetask_lock);
 	find = m_filetask_map.find(fid)!=m_filetask_map.end();
-	pthread_mutex_unlock(&m_filetask_lock);
+	//pthread_mutex_unlock(&m_filetask_lock);
 	return find;
 }
 
@@ -125,7 +125,7 @@ bool ChunkWorker::file_task_find(string &fid)
 bool ChunkWorker::file_task_create(SocketHandle socket_handle, FileSeg &file_seg)
 {
 	bool result = false;
-	pthread_mutex_lock(&m_filetask_lock);
+	//pthread_mutex_lock(&m_filetask_lock);
 
 	FileTaskMap::iterator it = m_filetask_map.find(file_seg.fid);
 	if(it == m_filetask_map.end())
@@ -152,14 +152,14 @@ bool ChunkWorker::file_task_create(SocketHandle socket_handle, FileSeg &file_seg
 	else
 		SLOG_WARN("file task already exists. fid=%s.", file_seg.fid.c_str());
 
-	pthread_mutex_unlock(&m_filetask_lock);
+	//pthread_mutex_unlock(&m_filetask_lock);
 	return result;
 }
 
 //删除一个文件任务
 void ChunkWorker::file_task_delete(string &fid)
 {
-	pthread_mutex_lock(&m_filetask_lock);
+	//pthread_mutex_lock(&m_filetask_lock);
 	FileTaskMap::iterator it = m_filetask_map.find(fid);
 	if(it != m_filetask_map.end())
 	{
@@ -171,13 +171,13 @@ void ChunkWorker::file_task_delete(string &fid)
 	else
 		SLOG_WARN("delete file task failed:can't find task[fid=%s].", fid.c_str());
 
-	pthread_mutex_unlock(&m_filetask_lock);
+	//pthread_mutex_unlock(&m_filetask_lock);
 }
 
 bool ChunkWorker::file_task_save(FileSeg &file_seg)
 {
 	bool result = false;
-	pthread_mutex_lock(&m_filetask_lock);
+	//pthread_mutex_lock(&m_filetask_lock);
 
 	FileTaskMap::iterator it = m_filetask_map.find(file_seg.fid);
 	if(it != m_filetask_map.end())
@@ -194,13 +194,13 @@ bool ChunkWorker::file_task_save(FileSeg &file_seg)
 	else
 		SLOG_WARN("can't find file task:fid=%s.", file_seg.fid.c_str());
 
-	pthread_mutex_unlock(&m_filetask_lock);
+	//pthread_mutex_unlock(&m_filetask_lock);
 	return result;
 }
 
 bool ChunkWorker::save_file(string &fid)
 {
-	pthread_mutex_lock(&m_filetask_lock);
+	//pthread_mutex_lock(&m_filetask_lock);
 	FileTaskMap::iterator it = m_filetask_map.find(fid);
 	if(it != m_filetask_map.end())
 	{
@@ -212,7 +212,7 @@ bool ChunkWorker::save_file(string &fid)
 	else
 		SLOG_WARN("save file task failed:can't find task[fid=%s].", fid.c_str());
 
-	pthread_mutex_unlock(&m_filetask_lock);
+	//pthread_mutex_unlock(&m_filetask_lock);
 }
 
 //////////////////////////  disk file  /////////////////////////
@@ -371,7 +371,7 @@ void ChunkWorker::on_file_info_save_result(SocketHandle socket_handle, Protocol 
 	string fid = protocol_save_result->get_fid();
 	SLOG_INFO("fid=%s, save_result=%d.", fid.c_str(), save_result);
 
-	pthread_mutex_lock(&m_filetask_lock);
+	//pthread_mutex_lock(&m_filetask_lock);
 	FileTaskMap::iterator it = m_filetask_map.find(fid);
 	if(it != m_filetask_map.end())
 	{
@@ -396,7 +396,7 @@ void ChunkWorker::on_file_info_save_result(SocketHandle socket_handle, Protocol 
 	}
 	else
 		SLOG_WARN("can't find file task. fid=%s.", fid.c_str());
-	pthread_mutex_unlock(&m_filetask_lock);
+	//pthread_mutex_unlock(&m_filetask_lock);
 	//删除任务
 	file_task_delete(fid);
 }
