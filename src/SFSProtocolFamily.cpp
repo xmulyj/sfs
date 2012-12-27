@@ -21,7 +21,7 @@ Protocol* SFSProtocolFamily::create_protocol_by_header(ProtocolHeader *header)
 		Case_Create_Protocol(PROTOCOL_FILE_INFO_SAVE_RESULT, ProtocolFileInfoSaveResult);
 		Case_Create_Protocol(PROTOCOL_FILE_REQ,              ProtocolFileReq);
 		Case_Create_Protocol(PROTOCOL_FILE,                  ProtocolFile);
-		Case_Create_Protocol(PROTOCOL_FILE_SAVE_RESULT,      ProtocolFileSaveResult);
+		Case_Create_Protocol(PROTOCOL_FILE_STATUS,           ProtocolFileStatus);
 		Case_Create_Protocol(PROTOCOL_CHUNK_PING,            ProtocolChunkPing);
 		Case_Create_Protocol(PROTOCOL_CHUNK_PING_RESP,       ProtocolChunkPingResp);
 	}
@@ -210,11 +210,11 @@ bool ProtocolFile::decode_body(const char *buf, int size)
 }
 
 //////////////////////////////  5. FileSaveResult Protocol  //////////////////////////
-bool ProtocolFileSaveResult::encode_body(ByteBuffer *byte_buffer)
+bool ProtocolFileStatus::encode_body(ByteBuffer *byte_buffer)
 {
 	int len = 0;
 	//result
-	ENCODE_INT(m_result);
+	ENCODE_INT(m_status);
 	////fid
 	ENCODE_STRING(m_file_seg.fid);
 	////seg index
@@ -223,11 +223,11 @@ bool ProtocolFileSaveResult::encode_body(ByteBuffer *byte_buffer)
 	return true;
 }
 
-bool ProtocolFileSaveResult::decode_body(const char *buf, int size)
+bool ProtocolFileStatus::decode_body(const char *buf, int size)
 {
 	int len = 0;
 	//result
-	DECODE_INT(m_result);
+	DECODE_INT(m_status);
 	////fid
 	DECODE_STRING(m_file_seg.fid);
 	////seg index

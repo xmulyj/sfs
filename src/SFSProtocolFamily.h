@@ -22,7 +22,7 @@ using std::vector;
 //文件数据
 #define PROTOCOL_FILE_REQ               3    //请求文件数据
 #define PROTOCOL_FILE                   4    //文件数据
-#define PROTOCOL_FILE_SAVE_RESULT       5    //文件保存结果
+#define PROTOCOL_FILE_STATUS            5    //文件保存状态
 //chunk信息
 #define PROTOCOL_CHUNK_PING             6    //chunk请求master保存chunk信息
 #define PROTOCOL_CHUNK_PING_RESP        7    //master回复chunk保存信息结果
@@ -161,7 +161,7 @@ public:
 
 	//用于设置/获取文件信息
 	void set_fid(string &fid){m_fid=fid;}
-	const string& get_fid(){return m_fid;}
+	string& get_fid(){return m_fid;}
 private:
 	int m_result;
 	string m_fid;
@@ -196,34 +196,46 @@ public://实现protocol的接口
 	//解码大小为size的协议体数据buf.成功返回true,失败返回false.
 	bool decode_body(const char *buf, int size);
 public:
-	//0(file_seg有效); 1(file_seg无效)
-	void set_result(int result){m_result = result;}
-	int get_result(){return m_result;}
+	typedef enum
+	{
+		FLAG_START,    //任务开始
+		FLAG_SEG,      //文件分片
+		FLAG_END       //任务结束
+	}FileFlag;
+	void set_flag(FileFlag flag){m_flag = (int)flag;}
+	FileFlag get_flag(){return (FileFlag)m_flag;}
 
 	FileSeg& get_file_seg(){return m_file_seg;}
 private:
-	int m_result;
+	int m_flag;
 	FileSeg m_file_seg;
 };
 
 //////////////////////////////  5. FileSaveResult Protocol  //////////////////////////////
-class ProtocolFileSaveResult:public Protocol
+class ProtocolFileStatus:public Protocol
 {
 public://实现protocol的接口
 	//协议的描述信息
-	const char* details(){return "SaveResult Protocol";}
+	const char* details(){return "SaveStatus Protocol";}
 	//编码协议体数据到byte_buffer,成功返回true,失败返回false.
 	bool encode_body(ByteBuffer *byte_buffer);
 	//解码大小为size的协议体数据buf.成功返回true,失败返回false.
 	bool decode_body(const char *buf, int size);
 public:
-	//result:0(成功), 1(失败)
-	void set_result(int result){m_result = result;}
-	int get_result(){return m_result;}
+	typedef enum
+	{
+		CREATE_FAILED,  //创建失败
+		CREATE_SUCC,    //创建成功
+		SEG_FAILED,     //分片接收成功
+		SEG_SUCC,       //分片接收失败
+	}FileStatus;
+	void set_status(FileStatus result){m_status = (int)result;}
+	FileStatus get_status(){return (FileStatus)m_status;}
+
 	//file_seg
 	FileSeg& get_file_seg(){return m_file_seg;}
 private:
-	int m_result;
+	int m_status;
 	FileSeg m_file_seg;
 };
 

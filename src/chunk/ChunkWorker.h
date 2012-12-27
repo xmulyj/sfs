@@ -11,6 +11,25 @@
 #include "ConnectThread.h"
 #include "ConnectThreadPool.h"
 
+#include "SFSProtocolFamily.h"
+
+#include <stdint.h>
+#include <map>
+#include <string>
+using std::map;
+using std::string;
+
+typedef struct _file_task_
+{
+	SocketHandle socket_handle;
+	string fid;
+	string name;
+	uint64_t size;
+	void *buf;
+	FileInfo file_info;
+}FileTask;
+typedef map<string, FileTask> FileTaskMap;  //fid-filetask
+
 class ChunkWorker:public ConnectThread
 {
 protected:
@@ -36,8 +55,23 @@ public:
 	bool start_server();
 
 private:
+	pthread_mutex_t m_filetask_lock;
+	FileTaskMap m_filetask_map;
+	//查找文件任务
+	bool file_task_find(string &fid);
+	//创建一个文件任务
+	bool file_task_create(SocketHandle socket_handle, FileSeg &file_seg);
+	//删除一个文件任务
+	void file_task_delete(string &fid);
+	//保存文件分片数据
+	bool file_task_save(FileSeg &file_seg);
+	//文件已经传送完毕,保存到系统中
+	bool save_file(string &fid);
+private:
 	//响应客户端发送文件数据包
 	void on_file(SocketHandle socket_handle, Protocol *protocol);
+	//响应master回复file_info保存结果
+	void on_file_info_save_result(SocketHandle socket_handle, Protocol *protocol);
 };
 
 class ChunkWorkerPool:public ConnectThreadPool
