@@ -132,7 +132,7 @@ public:
 	FileInfoResult get_result(){return (FileInfoResult)m_result;}
 
 	//用于设置或者获取文件信息
-	FileInfo& get_fileinfo();
+	FileInfo& get_fileinfo(){return m_fileinfo;}
 private:
 	int m_result;
 	FileInfo m_fileinfo;
@@ -154,6 +154,7 @@ public:
 		SAVE_RESULT_FAILED,  //保存失败
 		SAVE_RESULT_SUCC     //保存成功
 	}FileInfoSaveResult;
+
 	//result: 0(失败)，1(文件存在,返回文件信息)，2(文件不存在,返回分配的chunk)
 	void set_result(FileInfoSaveResult result){m_result = (int)result;}
 	FileInfoSaveResult get_result(){return (FileInfoSaveResult)m_result;}
@@ -238,7 +239,7 @@ public://实现protocol的接口
 	bool decode_body(const char *buf, int size);
 public:
 	//chunk info
-	ChunkInfo& get_chunk_info();
+	ChunkInfo& get_chunk_info(){return m_chunk_info;}
 private:
 	ChunkInfo m_chunk_info;
 };

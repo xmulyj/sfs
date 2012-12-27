@@ -75,11 +75,6 @@ HANDLE_RESULT ChunkServer::on_timeout(int fd)
 	ProtocolChunkPing *protocol_chunk_ping = (ProtocolChunkPing *)protocol_family->create_protocol(PROTOCOL_CHUNK_PING);
 	assert(protocol_chunk_ping != NULL);
 
-	string chunk_id = "chunk0";
-	string chunk_addr = "127.0.0.1";
-	uint64_t disk_space = 123456789;
-	uint64_t disk_used = 2342234;
-
 	ChunkInfo& chunk_info = protocol_chunk_ping->get_chunk_info();
 	chunk_info.id = "chunk0";
 	chunk_info.addr = "127.0.0.1";
@@ -106,11 +101,11 @@ bool ChunkServer::on_recv_protocol(SocketHandle socket_handle, Protocol *protoco
 	case PROTOCOL_CHUNK_PING_RESP:
 	{
 		ProtocolChunkPingResp *protocol_chunkping_resp = (ProtocolChunkPingResp *)protocol;
-		SLOG_INFO("receive ChunPingResp Protocol from master. result=%d.", protocol_chunkping_resp->get_result());
+		SLOG_INFO("receive chunk_ping_resp protocol from master. fd=%d, result=%d.", socket_handle, protocol_chunkping_resp->get_result());
 		break;
 	}
 	default:
-		SLOG_ERROR("receive undefine protocol. ignore it.");
+		SLOG_ERROR("receive undefined protocol. ignore it. fd=%d.", socket_handle);
 		return false;
 	}
 

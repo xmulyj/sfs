@@ -1,10 +1,11 @@
-INCS=-I/usr/local/include/libnetframework -I../
+INCS=-I/usr/local/include/libnetframework -I../ 
 LIBS=-lslog -lnetframework -lpthread -lssl
 FLAGS=-g
+DEPS=../SFSProtocolFamily.h ../SFSProtocolFamily.cpp
 
 all:sfs_master
 
-sfs_master:*.h *.cpp ../SFSProtocolFamily.h ../SFSProtocolFamily.cpp
+sfs_master:*.h *.cpp ${DEPS}
 	g++ ${INCS} $^ ${LIBS} ${FLAGS} -o $@
 clean:
 	rm sfs_master

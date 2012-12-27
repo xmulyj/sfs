@@ -7,7 +7,6 @@
 
 #include "MasterServer.h"
 #include "IODemuxerEpoll.h"
-#include "SFSProtocolFamily.h"
 #include "slog.h"
 #include <stdio.h>
 
@@ -117,12 +116,24 @@ void MasterServer::add_chunk(ChunkInfo &chunk_info)
 	map<string, ChunkInfo>::iterator it = m_chunk_manager.find(chunk_info.id);
 	if(it == m_chunk_manager.end())
 	{
-		SLOG_DEBUG("add a new chunk info. chunk_id=%s. total chunk:%d.", chunk_info.id.c_str(), m_chunk_manager.size());
+		SLOG_DEBUG("add a new chunk info[chunk_id=%s, ip=%s, port=%d, disk_space=%lld, disk_used=%lld]. total chunk:%d."
+					,chunk_info.id.c_str()
+					,chunk_info.addr.c_str()
+					,chunk_info.port
+					,chunk_info.disk_space
+					,chunk_info.disk_used
+					,m_chunk_manager.size());
 		m_chunk_manager.insert(std::make_pair(chunk_info.id, chunk_info));
 	}
 	else
 	{
-		SLOG_DEBUG("update a chunk info. chunk_id=%s. total chunk=%d.", chunk_info.id.c_str(), m_chunk_manager.size());
+		SLOG_DEBUG("update chunk info[chunk_id=%s, ip=%s, port=%d, disk_space=%lld, disk_used=%lld]. total chunk:%d."
+					,chunk_info.id.c_str()
+					,chunk_info.addr.c_str()
+					,chunk_info.port
+					,chunk_info.disk_space
+					,chunk_info.disk_used
+					,m_chunk_manager.size());
 		it->second = chunk_info;
 	}
 }

@@ -198,8 +198,6 @@ bool File::send_file_to_chunk(string &local_file, string &fid, string &chunk_add
 		seg_size = filesize-seg_offset;
 		if(seg_size > READ_SIZE)
 			seg_size = READ_SIZE;
-		else
-			seg_finished = true;
 
 		//设置协议字段
 		protocol_file->set_result(0);
@@ -207,7 +205,6 @@ bool File::send_file_to_chunk(string &local_file, string &fid, string &chunk_add
 		file_seg.fid = fid;
 		file_seg.filesize = filesize;
 		file_seg.size = seg_size;
-		file_seg.end = seg_finished;
 		seg_offset += seg_size;
 
 		if(!send_file_protocol_to_chunk(&trans_socket, protocol_file, &byte_buffer, fd))

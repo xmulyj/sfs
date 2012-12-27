@@ -11,6 +11,8 @@
 #include "ConnectThread.h"
 #include "ConnectThreadPool.h"
 
+#include "SFSProtocolFamily.h"
+
 #include <stdint.h>
 #include <string>
 #include <map>
