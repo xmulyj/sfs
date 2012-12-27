@@ -259,7 +259,14 @@ void MasterServer::on_file_info_req(SocketHandle socket_handle, Protocol *protoc
 	FileInfo& file_info = protocol_fileinfo->get_fileinfo();
 	if(get_fileinfo(fid, file_info))  //已经存在
 	{
-		SLOG_DEBUG("find fileinfo succ: fid=%s.", fid.c_str());
+		SLOG_DEBUG("find fileinfo succ: fid=%s, size=%ldd.", fid.c_str(), file_info.size);
+		int i;
+		for(i=0; i<file_info.get_path_count(); ++i)
+		{
+			ChunkPath &chunk_path = file_info.get_path(i);
+			SLOG_DEBUG("chunk[%d]:id=%s, ip=%s, port=%d, index=%d, offset=%lld."
+					,i, chunk_path.id.c_str(), chunk_path.addr.c_str(), chunk_path.port, chunk_path.index, chunk_path.offset);
+		}
 		protocol_fileinfo->set_result(ProtocolFileInfo::FILE_INFO_SUCC);
 	}
 	else if(find_saving_task(fid))  //正在保存
@@ -305,7 +312,7 @@ void MasterServer::on_file_info_req(SocketHandle socket_handle, Protocol *protoc
 	}
 }
 
-//响应fileinfo保存包
+//响应chunk发送fileinfo保存包
 void MasterServer::on_file_info(SocketHandle socket_handle, Protocol *protocol)
 {
 	SFSProtocolFamily* protocol_family = (SFSProtocolFamily*)get_protocol_family();

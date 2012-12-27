@@ -168,7 +168,7 @@ bool ProtocolFileReq::decode_body(const char *buf, int size)
 bool ProtocolFile::encode_body(ByteBuffer *byte_buffer)
 {
 	////result
-	ENCODE_INT(m_result);
+	ENCODE_INT(m_flag);
 	////fid
 	ENCODE_STRING(m_file_seg.fid);
 	////name
@@ -188,8 +188,7 @@ bool ProtocolFile::encode_body(ByteBuffer *byte_buffer)
 bool ProtocolFile::decode_body(const char *buf, int size)
 {
 	////result
-	DECODE_INT(m_result);
-	if(m_result == 1) return true;
+	DECODE_INT(m_flag);
 	////fid
 	DECODE_STRING(m_file_seg.fid);
 	////name

@@ -74,7 +74,7 @@ private:
 	void on_chunk_ping(SocketHandle socket_handle, Protocol *protocol);
 	//响应文件信息查询包
 	void on_file_info_req(SocketHandle socket_handle, Protocol *protocol);
-	//响应fileinfo保存包
+	//响应chunk发送fileinfo保存包
 	void on_file_info(SocketHandle socket_handle, Protocol *protocol);
 };
 

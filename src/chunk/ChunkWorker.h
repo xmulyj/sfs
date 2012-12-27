@@ -19,6 +19,9 @@
 using std::map;
 using std::string;
 
+#define DIR_NUM 256
+#define MAX_FLESIZE 1024*1024*1024  //1G
+
 typedef struct _file_task_
 {
 	SocketHandle socket_handle;
@@ -29,6 +32,15 @@ typedef struct _file_task_
 	FileInfo file_info;
 }FileTask;
 typedef map<string, FileTask> FileTaskMap;  //fid-filetask
+
+typedef struct _disk_file
+{
+	string pre_fix;
+	FILE *fp;
+	int index;
+	uint64_t cur_pos;
+	pthread_mutex_t lock;
+}DiskFile;
 
 class ChunkWorker:public ConnectThread
 {
@@ -54,6 +66,7 @@ public:
 	////由应用层实现 -- net interface实例启动入口
 	bool start_server();
 
+//////////////////// file task ////////////////////
 private:
 	pthread_mutex_t m_filetask_lock;
 	FileTaskMap m_filetask_map;
@@ -67,6 +80,14 @@ private:
 	bool file_task_save(FileSeg &file_seg);
 	//文件已经传送完毕,保存到系统中
 	bool save_file(string &fid);
+
+//////////////////// disk file ////////////////////
+private:
+	string m_disk_path;
+	DiskFile m_disk_files[DIR_NUM];
+	//初始化,加载磁盘文件
+	void load_disk_files();
+//////////////////// 响应函数 /////////////////////
 private:
 	//响应客户端发送文件数据包
 	void on_file(SocketHandle socket_handle, Protocol *protocol);
