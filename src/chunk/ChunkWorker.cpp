@@ -41,7 +41,7 @@ bool ChunkWorker::on_recv_protocol(SocketHandle socket_handle, Protocol *protoco
 	{
 	case PROTOCOL_FILE:    //client 请求存储文件
 	{
-
+		on_file(socket_handle, protocol);
 		break;
 	}
 	case PROTOCOL_FILE_INFO_SAVE_RESULT:    //master回复保存文件信息结果
