@@ -34,6 +34,10 @@ protected:
 public:
 	////由应用层实现 -- net interface实例启动入口
 	bool start_server();
+
+private:
+	//响应客户端发送文件数据包
+	void on_file(SocketHandle socket_handle, Protocol *protocol);
 };
 
 class ChunkWorkerPool:public ConnectThreadPool

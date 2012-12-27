@@ -41,24 +41,7 @@ bool ChunkWorker::on_recv_protocol(SocketHandle socket_handle, Protocol *protoco
 	{
 	case PROTOCOL_FILE:    //client 请求存储文件
 	{
-		ProtocolFile *protocol_file = (ProtocolFile *)protocol;
-		FileSeg &file_seg = protocol_file->get_file_seg();
 
-		SLOG_INFO("receive File Protocol[file info: fid=%s, name=%s, filesize=%lld] [seg info: offset=%lld, index=%d, size=%d]."
-					,file_seg.fid.c_str(), file_seg.name.c_str(), file_seg.filesize, file_seg.offset, file_seg.index, file_seg.size);
-
-		ProtocolFileSaveResult* protocol_file_save_result = (ProtocolFileSaveResult*)protocol_family->create_protocol(PROTOCOL_FILE_SAVE_RESULT);
-		assert(protocol_file_save_result != NULL);
-		protocol_file_save_result->set_result(0);
-		FileSeg &file_seg_resp = protocol_file_save_result->get_file_seg();
-		file_seg_resp.fid = file_seg.fid;
-		file_seg_resp.index = file_seg.index;
-
-		if(!send_protocol(socket_handle, protocol_file_save_result))
-		{
-			SLOG_ERROR("send StoreResp Protocol failed.");
-			protocol_family->destroy_protocol(protocol_file_save_result);
-		}
 		break;
 	}
 	case PROTOCOL_FILE_INFO_SAVE_RESULT:    //master回复保存文件信息结果
@@ -119,6 +102,34 @@ bool ChunkWorker::on_socket_handler_accpet(SocketHandle socket_handle)
 
 	return true;
 }
+
+
+///////////////////////////////////////////////////////////
+//响应客户端发送文件数据包
+void ChunkWorker::on_file(SocketHandle socket_handle, Protocol *protocol)
+{
+	SFSProtocolFamily* protocol_family = (SFSProtocolFamily*)get_protocol_family();
+	ProtocolFileSaveResult* protocol_file_save_result = (ProtocolFileSaveResult*)protocol_family->create_protocol(PROTOCOL_FILE_SAVE_RESULT);
+	assert(protocol_file_save_result != NULL);
+
+	ProtocolFile *protocol_file = (ProtocolFile *)protocol;
+	FileSeg &file_seg = protocol_file->get_file_seg();
+
+	SLOG_INFO("receive File Protocol[file info: fid=%s, name=%s, filesize=%lld] [seg info: offset=%lld, index=%d, size=%d]."
+				,file_seg.fid.c_str(), file_seg.name.c_str(), file_seg.filesize, file_seg.offset, file_seg.index, file_seg.size);
+
+	protocol_file_save_result->set_result(0);
+	FileSeg &file_seg_resp = protocol_file_save_result->get_file_seg();
+	file_seg_resp.fid = file_seg.fid;
+	file_seg_resp.index = file_seg.index;
+
+	if(!send_protocol(socket_handle, protocol_file_save_result))
+	{
+		SLOG_ERROR("send StoreResp Protocol failed.");
+		protocol_family->destroy_protocol(protocol_file_save_result);
+	}
+}
+
 
 ///////////////////////////////  ChunkWorkerPool  //////////////////////////////////
 Thread<SocketHandle>* ChunkWorkerPool::create_thread()
