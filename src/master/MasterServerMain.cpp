@@ -9,15 +9,22 @@
 #include "ListenHandler.h"
 #include "Socket.h"
 #include "IODemuxerEpoll.h"
+#include "ConfigReader.h"
+
+ConfigReader *g_config_reader = NULL;
+const char config_path[] = "config/server.config";
 
 int main()
 {
 	SLOG_INIT("./config/slog.config");
 
-	ListenSocket linsten_socket(3012);
+	g_config_reader = new ConfigReader(config_path);
+
+	int master_port = g_config_reader->GetValueInt("MasterPort", 3012);
+	ListenSocket linsten_socket(master_port);
 	if(!linsten_socket.open())
 	{
-		SLOG_ERROR("listen on port:3010 error.");
+		SLOG_ERROR("listen on port:%d error.", master_port);
 		return -1;
 	}
 

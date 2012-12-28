@@ -7,8 +7,12 @@
 
 #include "MasterServer.h"
 #include "IODemuxerEpoll.h"
+#include "ConfigReader.h"
+
 #include "slog.h"
 #include <stdio.h>
+
+extern ConfigReader *g_config_reader;
 
 /////////////////////////////////////// MasterServer ///////////////////////////////////////
 bool MasterServer::start_server()
@@ -19,7 +23,7 @@ bool MasterServer::start_server()
 
 	////Add your codes here
 	///////////////////////
-	m_saving_task_timeout_sec = 3600;
+	m_saving_task_timeout_sec = g_config_reader->GetValueInt("SavingTaskTimeout", 120);
 	get_io_demuxer()->run_loop();
 	return true;
 }

@@ -62,7 +62,7 @@ private:
 	bool get_fileinfo(const string &fid, FileInfo &fileinfo);
 
 	//正在存储的记录
-	int m_saving_task_timeout_sec;
+	int m_saving_task_timeout_sec;   //超时时间
 	map<string, list<TimeFid>::iterator> m_saving_task_map;
 	list<TimeFid> m_time_fid_list;
 	bool find_saving_task(const string &fid);
