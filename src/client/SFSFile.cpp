@@ -23,49 +23,48 @@ File::File(string &master_addr, int master_port, int n_replica)
 	,m_n_replica(n_replica)
 {}
 
-int File::get_file_info(FileInfo &fileinfo, string &fid, bool query_chunkpath/*=false*/)
+int File::get_file_info(string &fid, FileInfo &file_info)
 {
-	//协议数据
-	ProtocolFileInfoReq* protocol_fileinfo_req = (ProtocolFileInfoReq*)m_protocol_family.create_protocol(PROTOCOL_FILE_INFO_REQ);
-	assert(protocol_fileinfo_req != NULL);
-	protocol_fileinfo_req->set_fid(fid);
-	protocol_fileinfo_req->set_query_chunkpath(query_chunkpath);
-	//回复
-	ProtocolFileInfo *protocol_fileinfo = (ProtocolFileInfo *)query_master(protocol_fileinfo_req);
-	m_protocol_family.destroy_protocol(protocol_fileinfo_req);
-	if(protocol_fileinfo == NULL)
-		return 0;
-
-	int result = protocol_fileinfo->get_result();
-	if(result != 0)
-		fileinfo = protocol_fileinfo->get_fileinfo();
-
-	m_protocol_family.destroy_protocol(protocol_fileinfo);
-
-	return result;
+	ProtocolFileInfo::FileInfoResult fileinfo_result;
+	if(_get_file_info(fid, false, fileinfo_result, file_info) == false)
+		return -1;  //请求失败
+	return fileinfo_result==ProtocolFileInfo::FILE_INFO_SUCC ? 0:1;
 }
 
 bool File::save_file(FileInfo &fileinfo, string &local_file)
 {
 	string fid="AAACCCDDD";
 
-	int result = get_file_info(fileinfo, fid, true);
-	switch(result)
+	ProtocolFileInfo::FileInfoResult fileinfo_result;
+	bool result = _get_file_info(fid, true, fileinfo_result, fileinfo);
+	if(!result)
 	{
-	case 0:
+		SLOG_DEBUG("query master error.");
+		return false;
+	}
+
+	switch(fileinfo_result)
+	{
+	case ProtocolFileInfo::FILE_INFO_FAILED:  //失败
 		{
-			SLOG_ERROR("get file info failed. fid=%s.", fid.c_str());
+			SLOG_DEBUG("get file info failed. fid=%s.", fid.c_str());
 			return false;
 		}
-	case 1:
+	case ProtocolFileInfo::FILE_INFO_SUCC:  //已经保存过
 		{
-			SLOG_INFO("file already exist. fid:%s, name:%s, size:%lld.", fileinfo.fid.c_str(), fileinfo.name.c_str(), fileinfo.size);
-			vector<ChunkPath>::iterator it;
-			for(it=fileinfo.path_list.begin(); it!=fileinfo.path_list.end(); ++it)
-				SLOG_INFO("chunk path: %s_%d_%lld addr:%s, port=%d\n",it->id.c_str(), it->index, it->offset, it->addr.c_str(), it->port);
+			SLOG_DEBUG("file already exist. fid:%s, name:%s, size:%d.", fileinfo.fid.c_str(), fileinfo.name.c_str(), fileinfo.size);
+			/*
+			int i = 0;
+			for(; i<fileinfo.get_path_count(); ++i)
+			{
+				ChunkPath &chunkpath = fileinfo.get_path(i);
+				SLOG_DEBUG("chunk_path: %s_%d_%d chunk_addr:%s,port=%d."
+							,chunkpath.id.c_str(), chunkpath.index, chunkpath.offset, chunkpath.addr.c_str(), chunkpath.port);
+			}
+			*/
 			break;
 		}
-	case 2:
+	case ProtocolFileInfo::FILE_INFO_CHUNK:  //分配chunk成功
 		{
 			vector<ChunkPath>::iterator it;
 			for(it=fileinfo.path_list.begin(); it!=fileinfo.path_list.end(); ++it)
@@ -75,6 +74,10 @@ bool File::save_file(FileInfo &fileinfo, string &local_file)
 					break;
 			}
 			break;
+		}
+	case ProtocolFileInfo::FILE_INFO_SAVING:  //正在保存
+		{
+			SLOG_DEBUG("fid=%s is saving.", fid.c_str());
 		}
 	default:
 		{
@@ -92,27 +95,45 @@ bool File::get_file(string &fid, string &local_file)
 }
 
 ///////////////////////////////////////////////////////
-Protocol* File::query_master(Protocol *protocol)
+bool File::_query_master(ProtocolFileInfoReq *protocol, ProtocolFileInfo::FileInfoResult &result, FileInfo &file_info)
 {
+	bool temp = true;
 	TransSocket trans_socket(m_master_addr.c_str(), m_master_port);
 	if(!trans_socket.open(1000))
 	{
-		SLOG_ERROR("connect sfs failed.");
-		return NULL;
+		SLOG_ERROR("connect master failed.");
+		return false;
 	}
-
 	//发送协议
 	if(!TransProtocol::send_protocol(&trans_socket, protocol))
-		return NULL;
+		return false;
 	//接收协议
 	ProtocolFileInfo *protocol_fileinfo = (ProtocolFileInfo *)m_protocol_family.create_protocol(PROTOCOL_FILE_INFO);
 	assert(protocol_fileinfo != NULL);
-	if(!TransProtocol::recv_protocol(&trans_socket, protocol_fileinfo))
+	temp=TransProtocol::recv_protocol(&trans_socket, protocol_fileinfo);
+	if(temp)  //请求成功
 	{
-		m_protocol_family.destroy_protocol(protocol_fileinfo);
-		protocol_fileinfo = NULL;
+		result = protocol_fileinfo->get_result();
+		file_info = protocol_fileinfo->get_fileinfo();
 	}
-	return protocol_fileinfo;
+	m_protocol_family.destroy_protocol(protocol_fileinfo);
+
+	return temp;
+}
+
+bool File::_get_file_info(string &fid, bool query_chunk, ProtocolFileInfo::FileInfoResult &fileinfo_result, FileInfo &fileinfo)
+{
+	//协议数据
+	ProtocolFileInfoReq* protocol_fileinfo_req = (ProtocolFileInfoReq*)m_protocol_family.create_protocol(PROTOCOL_FILE_INFO_REQ);
+	assert(protocol_fileinfo_req != NULL);
+
+	protocol_fileinfo_req->set_fid(fid);
+	protocol_fileinfo_req->set_query_chunkpath(query_chunk);
+
+	bool result = _query_master(protocol_fileinfo_req, fileinfo_result, fileinfo);
+	m_protocol_family.destroy_protocol(protocol_fileinfo_req);
+
+	return result;
 }
 
 bool File::send_file_protocol_to_chunk(TransSocket* trans_socket, ProtocolFile *protocol_file, ByteBuffer *byte_buffer, int fd)
