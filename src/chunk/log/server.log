@@ -1,3 +1,5 @@
-2012-12-27 18:16:18 [SLOG INIT]current config of SLOG:log_level=1,log_file=./log/server.log,max_log_size=20(M),max_log_count=30,flush_size=1048576,flush_interval=2,config_update_interval=30.
-2012-12-27 18:16:18 [b77e4b70, INFO][ConnectThread.cpp:run_thread(14)] ... ConnectThread[ID=0] is running...
-2012-12-27 18:16:20 [b6fe3b70, INFO][ConnectThread.cpp:run_thread(14)] ... ConnectThread[ID=1] is running...
+2012-12-28 11:49:26 [SLOG INIT]current config of SLOG:log_level=1,log_file=./log/server.log,max_log_size=20(M),max_log_count=30,flush_size=1048576,flush_interval=2,config_update_interval=30.
+2012-12-28 11:49:31 [b7fe76d0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/00.
+2012-12-28 11:49:33 [b7fe76d0, INFO] ... sub dir[/tmp/sfs_chunk/00] not exists. create it.
+2012-12-28 11:49:59 [SLOG INIT]current config of SLOG:log_level=1,log_file=./log/server.log,max_log_size=20(M),max_log_count=30,flush_size=1048576,flush_interval=2,config_update_interval=30.
+2012-12-28 11:50:07 [b7fe76d0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/00/00, size=0d.

@@ -67,7 +67,7 @@ bool ProtocolFileInfo::encode_body(ByteBuffer *byte_buffer)
 	////file name
 	ENCODE_STRING(m_fileinfo.name);
 	////file size
-	ENCODE_INT64(m_fileinfo.size);
+	ENCODE_INT(m_fileinfo.size);
 	////chunk info
 	int count = m_fileinfo.path_list.size();
 	ENCODE_INT(count);
@@ -100,7 +100,7 @@ bool ProtocolFileInfo::decode_body(const char *buf, int size)
 	////file name
 	DECODE_STRING(m_fileinfo.name);
 	////file size
-	DECODE_INT64(m_fileinfo.size);
+	DECODE_INT(m_fileinfo.size);
 	////chunk info
 	int count = 0;
 	DECODE_INT(count);
@@ -174,9 +174,9 @@ bool ProtocolFile::encode_body(ByteBuffer *byte_buffer)
 	////name
 	ENCODE_STRING(m_file_seg.name);
 	////file size
-	ENCODE_INT64(m_file_seg.filesize);
+	ENCODE_INT(m_file_seg.filesize);
 	////seg offset
-	ENCODE_INT64(m_file_seg.offset);
+	ENCODE_INT(m_file_seg.offset);
 	////seg index
 	ENCODE_INT(m_file_seg.index);
 	////seg size
@@ -194,9 +194,9 @@ bool ProtocolFile::decode_body(const char *buf, int size)
 	////name
 	DECODE_STRING(m_file_seg.name);
 	////file size
-	DECODE_INT64(m_file_seg.filesize);
+	DECODE_INT(m_file_seg.filesize);
 	////seg offset
-	DECODE_INT64(m_file_seg.offset);
+	DECODE_INT(m_file_seg.offset);
 	////seg index
 	DECODE_INT(m_file_seg.index);
 	////seg size

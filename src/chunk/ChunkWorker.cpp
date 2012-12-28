@@ -8,11 +8,10 @@
 #include "ChunkWorker.h"
 #include "IODemuxerEpoll.h"
 #include "slog.h"
+#include "DiskMgr.h"
+#include "ConfigReader.h"
 
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <dirent.h>
-#include <errno.h>
+extern ConfigReader* g_config_reader;
 
 ///////////////////////////////  ChunkWorker  //////////////////////////////////
 bool ChunkWorker::start_server()
@@ -23,9 +22,13 @@ bool ChunkWorker::start_server()
 
 	////Add your codes here
 	///////////////////////
-	m_disk_path = "/data/sfs_chunk";  //数据存放路径
+
 	//pthread_mutex_init(&m_filetask_lock, NULL);
-	load_disk_files();
+	m_master_ip = g_config_reader->GetValueString("MasterIP");
+	assert(m_master_ip != "");
+	m_master_port = g_config_reader->GetValueInt("MasterPort", 3012);
+
+	m_master_socket_handle = SOCKET_INVALID;
 	get_io_demuxer()->run_loop();
 	return true;
 }
@@ -90,6 +93,9 @@ bool ChunkWorker::on_socket_handle_error(SocketHandle socket_handle)
 	//Add your code to handle the socket error
 	//////////////////////////////////////////
 
+	//m_master_socket_handle = get_active_trans_socket("127.0.0.1", 3012);  //创建主动连接到master
+	m_master_socket_handle = SOCKET_INVALID;
+
 	return true;
 }
 
@@ -112,10 +118,18 @@ bool ChunkWorker::on_socket_handler_accpet(SocketHandle socket_handle)
 }
 
 ///////////////////////////////////////////////////////////
+SocketHandle ChunkWorker::get_master_connect()
+{
+	if(m_master_socket_handle == SOCKET_INVALID)
+		m_master_socket_handle = get_active_trans_socket(m_master_ip.c_str(), m_master_port);  //创建主动连接到master
+	assert(m_master_socket_handle != SOCKET_INVALID);
+	return m_master_socket_handle;
+}
+
 bool ChunkWorker::file_task_find(string &fid)
 {
 	bool find;
-	pthread_mutex_lock(&m_filetask_lock);
+	//pthread_mutex_lock(&m_filetask_lock);
 	find = m_filetask_map.find(fid)!=m_filetask_map.end();
 	//pthread_mutex_unlock(&m_filetask_lock);
 	return find;
@@ -135,17 +149,17 @@ bool ChunkWorker::file_task_create(SocketHandle socket_handle, FileSeg &file_seg
 		file_task.fid = file_seg.fid;
 		file_task.name = file_seg.name;
 		file_task.size = file_seg.filesize;
-		file_task.buf = malloc(file_seg.filesize);
+		file_task.buf = (char*)malloc(file_seg.filesize);
 		if(file_task.buf == NULL)
 		{
-			SLOG_ERROR("create file task failed:no memory.fid=%s, file_name=%s, file_size=%lld, seg_size=%d."
+			SLOG_ERROR("create file task failed:no memory.fid=%s, file_name=%s, file_size=%d, seg_size=%d."
 						, file_seg.fid.c_str(), file_seg.name.c_str(), file_seg.filesize, file_seg.size);
 		}
 		else
 		{
 			result = true;
 			m_filetask_map.insert(std::make_pair(file_task.fid, file_task));  //保存任务
-			SLOG_DEBUG("create file task succ.fid=%s, file_name=%s, file_size=%lld, seg_size=%d."
+			SLOG_DEBUG("create file task succ.fid=%s, file_name=%s, file_size=%d, seg_size=%d."
 						, file_seg.fid.c_str(), file_seg.name.c_str(), file_seg.filesize, file_seg.size);
 		}
 	}
@@ -164,7 +178,7 @@ void ChunkWorker::file_task_delete(string &fid)
 	if(it != m_filetask_map.end())
 	{
 		FileTask &file_task = it->second;
-		SLOG_DEBUG("delete file task succ:fid=%s, name=%s, size=%lld", file_task.fid.c_str(), file_task.name.c_str(), file_task.size);
+		SLOG_DEBUG("delete file task succ:fid=%s, name=%s, size=%d", file_task.fid.c_str(), file_task.name.c_str(), file_task.size);
 		free(file_task.buf);
 		m_filetask_map.erase(it);
 	}
@@ -183,7 +197,7 @@ bool ChunkWorker::file_task_save(FileSeg &file_seg)
 	if(it != m_filetask_map.end())
 	{
 		FileTask &file_task = it->second;
-		SLOG_DEBUG("file_task:fid=%s, size=%ldd. file_seg:total_size=%ldd, offset=%ldd, size=%d."
+		SLOG_DEBUG("file_task:fid=%s, size=%d. file_seg:total_size=%d, offset=%d, size=%d."
 					,file_task.fid.c_str(), file_task.size, file_seg.filesize, file_seg.offset, file_seg.size);
 		if(file_seg.offset+file_seg.size <= file_task.size)
 		{
@@ -201,93 +215,50 @@ bool ChunkWorker::file_task_save(FileSeg &file_seg)
 bool ChunkWorker::save_file(string &fid)
 {
 	//pthread_mutex_lock(&m_filetask_lock);
+	bool result = false;
 	FileTaskMap::iterator it = m_filetask_map.find(fid);
 	if(it != m_filetask_map.end())
 	{
-		FileTask &file_task = it->second;
-		//保存到文件中
-		//生成file_info
 		//向master上报file_info
+		SFSProtocolFamily *protocol_family = (SFSProtocolFamily*)get_protocol_family();
+		ProtocolFileInfo *protocol_file_info = (ProtocolFileInfo *)protocol_family->create_protocol(PROTOCOL_FILE_INFO);
+		assert(protocol_file_info != NULL);
+
+		FileTask &file_task = it->second;
+		FileInfo &file_info = file_task.file_info;
+		file_info.fid = fid;
+		file_info.name = file_task.name;
+		file_info.size = file_task.size;
+
+		ChunkPath chunk_path;
+		//保存到磁盘
+		result = DiskMgr::get_instance()->save_file_to_disk(fid, file_task.buf, file_task.size, chunk_path);
+		if(result != false)
+		{
+			file_info.add_path(chunk_path);
+			protocol_file_info->set_result(ProtocolFileInfo::FILE_INFO_SUCC);
+		}
+		else
+		{
+			SLOG_ERROR("save fid=%s to file failed.", fid.c_str());
+			protocol_file_info->set_result(ProtocolFileInfo::FILE_INFO_FAILED);
+		}
+
+		FileInfo &file_info_temp = protocol_file_info->get_fileinfo();
+		file_info_temp = file_info;
+		if(!send_protocol(get_master_connect(), protocol_file_info))
+		{
+			result = false;
+			protocol_family->destroy_protocol(protocol_file_info);
+			SLOG_ERROR("send file info to master failed. fid=%s.", fid.c_str());
+		}
 	}
 	else
 		SLOG_WARN("save file task failed:can't find task[fid=%s].", fid.c_str());
 
 	//pthread_mutex_unlock(&m_filetask_lock);
-}
 
-//////////////////////////  disk file  /////////////////////////
-void ChunkWorker::load_disk_files()
-{
-	int i;
-	char pre_fix[3];
-	struct stat path_stat;
-
-	//目录不存在
-	if(stat(m_disk_path.c_str(), &path_stat)==-1 && errno==ENOENT)
-	{
-		int result = mkdir(m_disk_path.c_str(), S_IRWXU);
-		assert(result == 0);
-	}
-
-	//加载00,01,...,FF  256个子目录
-	for(i=0; i<DIR_NUM; ++i)
-	{
-		int index = 0;
-		sprintf(pre_fix, "%02X", i);
-
-		m_disk_files[i].pre_fix = pre_fix;
-		m_disk_files[i].fp = NULL;
-		m_disk_files[i].index = -1;
-		m_disk_files[i].cur_pos = 0;
-		pthread_mutex_init(&m_disk_files[i].lock, NULL);
-
-		string sub_dir = m_disk_path+"/"+pre_fix;
-		SLOG_DEBUG("checking chunk_dir:%s.", sub_dir.c_str());
-		if(stat(sub_dir.c_str(), &path_stat)==-1 && errno==ENOENT) //子目录不存在
-		{
-			SLOG_INFO("sub dir[%s] not exists. create it.", sub_dir.c_str());
-			if(mkdir(sub_dir.c_str(), S_IRWXU) == -1)
-			{
-				SLOG_ERROR("make dir failed.sub_dir=%s, error:%s", sub_dir.c_str(), strerror(errno));
-				continue;
-			}
-		}
-		else if(!S_ISDIR(path_stat.st_mode)) //不是目录
-		{
-			SLOG_ERROR("not dir.sub_dir=%s, error:%s", sub_dir.c_str(), strerror(errno));
-			continue;
-		}
-		else
-		{
-			struct dirent* ent = NULL;
-			DIR *dir;
-			if((dir=opendir(sub_dir.c_str())) == NULL)
-			{
-				SLOG_ERROR("open dir error. sub_dir=%s, error:%s", sub_dir.c_str(), strerror(errno));
-				continue;
-			}
-			while((ent=readdir(dir))!=NULL)  //计算文件数
-			{
-				if(strcmp( ".",ent->d_name) == 0 || strcmp( "..",ent->d_name) == 0)
-					continue;
-				++index;
-			}
-			closedir(dir);
-			if(index > 0)  //最后一个文件
-				--index;
-
-			char name[256];
-			sprintf(name, "%s/%02X", sub_dir.c_str(), index);
-			if((m_disk_files[i].fp = fopen(name, "w")) == NULL)
-			{
-				SLOG_ERROR("open file error. file=%s, error:%s", name, strerror(errno));
-				continue;
-			}
-			fseek(m_disk_files[i].fp, 0, SEEK_END);
-			m_disk_files[i].cur_pos = ftell(m_disk_files[i].fp);
-			SLOG_DEBUG("load file succ. name=%s, size=%ldd.", name, m_disk_files[i].cur_pos);
-		}
-	}
+	return result;
 }
 
 ///////////////////////////////////////////////////////////
@@ -300,7 +271,7 @@ void ChunkWorker::on_file(SocketHandle socket_handle, Protocol *protocol)
 	ProtocolFile *protocol_file = (ProtocolFile *)protocol;
 	ProtocolFile::FileFlag file_flag = protocol_file->get_flag();
 	FileSeg &file_seg = protocol_file->get_file_seg();
-	SLOG_INFO("receive File Protocol[file info: flag=%d, fid=%s, name=%s, filesize=%lld] [seg info: offset=%lld, index=%d, size=%d]."
+	SLOG_INFO("receive File Protocol[file info: flag=%d, fid=%s, name=%s, filesize=%d] [seg info: offset=%lld, index=%d, size=%d]."
 				,file_flag, file_seg.fid.c_str(), file_seg.name.c_str(), file_seg.filesize, file_seg.offset, file_seg.index, file_seg.size);
 
 	switch(file_flag)
@@ -323,7 +294,7 @@ void ChunkWorker::on_file(SocketHandle socket_handle, Protocol *protocol)
 			}
 			else  //成功
 			{
-				SLOG_INFO("create file task succ. fid=%s, name=%s, size=%ldd." ,file_seg.fid.c_str(), file_seg.name.c_str(), file_seg.filesize);
+				SLOG_INFO("create file task succ. fid=%s, name=%s, size=%d." ,file_seg.fid.c_str(), file_seg.name.c_str(), file_seg.filesize);
 				protocol_file_status->set_status(ProtocolFileStatus::CREATE_SUCC);
 			}
 			break;
@@ -348,7 +319,10 @@ void ChunkWorker::on_file(SocketHandle socket_handle, Protocol *protocol)
 			SLOG_INFO("file task finished. fid=%s.", file_seg.fid.c_str());
 			//保存文件
 			if(!save_file(file_seg.fid))
+			{
 				SLOG_ERROR("save file failed. fid=%s.", file_seg.fid.c_str());
+				file_task_delete(file_seg.fid);
+			}
 			return;
 		}
 	}//switch
@@ -384,7 +358,7 @@ void ChunkWorker::on_file_info_save_result(SocketHandle socket_handle, Protocol 
 			FileInfo &file_info = protocol_file_info->get_fileinfo();
 			file_info = file_task.file_info;
 			ChunkPath &chunk_path = file_info.get_path(0);
-			SLOG_DEBUG("chunk[%d]:id=%s, ip=%s, port=%d, index=%d, offset=%lld."
+			SLOG_DEBUG("chunk[%d]:id=%s, ip=%s, port=%d, index=%d, offset=%d."
 						,0, chunk_path.id.c_str(), chunk_path.addr.c_str(), chunk_path.port, chunk_path.index, chunk_path.offset);
 		}
 

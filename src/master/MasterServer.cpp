@@ -259,7 +259,7 @@ void MasterServer::on_file_info_req(SocketHandle socket_handle, Protocol *protoc
 	FileInfo& file_info = protocol_fileinfo->get_fileinfo();
 	if(get_fileinfo(fid, file_info))  //已经存在
 	{
-		SLOG_DEBUG("find fileinfo succ: fid=%s, size=%ldd.", fid.c_str(), file_info.size);
+		SLOG_DEBUG("find fileinfo succ: fid=%s, size=%d.", fid.c_str(), file_info.size);
 		int i;
 		for(i=0; i<file_info.get_path_count(); ++i)
 		{
@@ -332,7 +332,7 @@ void MasterServer::on_file_info(SocketHandle socket_handle, Protocol *protocol)
 		if(result == ProtocolFileInfo::FILE_INFO_SUCC)  //成功,保存文件信息
 		{
 			ChunkPath &chunk_path = fileinfo.get_path(0);
-			SLOG_INFO("save file info: fid=%s, name=%s, size=%lld, chunkid=%s, addr=%s, port=%d, index=%d, offset=%lld."
+			SLOG_INFO("save file info: fid=%s, name=%s, size=%d, chunkid=%s, addr=%s, port=%d, index=%d, offset=%lld."
 						,fileinfo.fid.c_str()
 						,fileinfo.name.c_str()
 						,fileinfo.size

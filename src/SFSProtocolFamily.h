@@ -54,7 +54,7 @@ class FileInfo
 public:
 	string fid;
 	string name;
-	uint64_t size;
+	uint32_t size;
 
 	vector<ChunkPath> path_list;
 	int get_path_count(){return path_list.size();}
@@ -79,8 +79,8 @@ class FileSeg
 public:
 	string fid;          //文件的fid
 	string name;         //文件名
-	uint64_t filesize;   //文件的大小
-	uint64_t offset;     //分片偏移位置
+	uint32_t filesize;   //文件的大小
+	uint32_t offset;     //分片偏移位置
 	int index;           //分片序号
 	int size;            //分片大小
 	const char *data;    //分片数据

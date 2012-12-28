@@ -5,6 +5,8 @@
 #include "ListenHandler.h"
 #include "Socket.h"
 
+#include "DiskMgr.h"
+
 #include <stdio.h>
 #include <string.h>
 
@@ -32,7 +34,10 @@ bool ChunkServer::start_server()
 		return false;
 	}
 
-	//chunk worker pool
+	//初始化磁盘管理器
+	DiskMgr::get_instance()->init();
+
+	//创建chunk线程池
 	ChunkWorkerPool server_pool(3);
 	server_pool.start();
 	ListenHandler listen_handler(&server_pool);
@@ -45,7 +50,7 @@ bool ChunkServer::start_server()
 		return false;
 	}
 
-	//创建到master的链接
+	//创建到master的链接(用于发送ping包)
 	m_master_socket_handle = get_active_trans_socket("127.0.0.1", 3012);  //创建主动连接
 	if(m_master_socket_handle == SOCKET_INVALID)
 	{
@@ -54,6 +59,8 @@ bool ChunkServer::start_server()
 	}
 
 	get_io_demuxer()->run_loop();
+
+	DiskMgr::get_instance()->uninit();
 	return true;
 }
 
