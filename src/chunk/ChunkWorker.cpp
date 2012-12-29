@@ -332,9 +332,10 @@ void ChunkWorker::on_file(SocketHandle socket_handle, Protocol *protocol)
 			{
 				SLOG_ERROR("save file seg failed. fid=%s.", file_seg.fid.c_str());
 				save_result.status = FileSaveResult::SEG_FAILED;
-				file_task_delete(file_seg.fid);
 				//向master上报保存失败
 				send_fail_fileinfo_to_master(file_seg.fid);
+				//删除正在保存的任务
+				file_task_delete(file_seg.fid);
 			}
 			break;
 		}
@@ -343,14 +344,13 @@ void ChunkWorker::on_file(SocketHandle socket_handle, Protocol *protocol)
 			SLOG_INFO("client send file finished. fid=%s.", file_seg.fid.c_str());
 			if(save_file(file_seg.fid))
 				return ;
-
 			SLOG_ERROR("save file failed. fid=%s.", file_seg.fid.c_str());
+			//删除正在保存的任务
 			file_task_delete(file_seg.fid);
 
 			//回复客户端失file info失败
 			protocol_resp = protocol_family->create_protocol(PROTOCOL_FILE_INFO);
 			assert(protocol_resp != NULL);
-
 			ProtocolFileInfo *protocol_file_info = (ProtocolFileInfo*)protocol_resp;
 			FileInfo &file_info = protocol_file_info->get_fileinfo();
 			file_info.result = FileInfo::RESULT_FAILED;
