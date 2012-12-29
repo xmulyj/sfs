@@ -13,7 +13,7 @@
 #include <string>
 using std::string;
 
-#include "SFSProtocolFamily.h"
+#include "CommonType.h"
 
 #define DIR_NUM 256
 #define MAX_FLESIZE 1024*1024*1024  //1G

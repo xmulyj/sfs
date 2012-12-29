@@ -7,11 +7,11 @@
 
 #include "MasterServer.h"
 #include "IODemuxerEpoll.h"
-#include "ConfigReader.h"
 
 #include "slog.h"
 #include <stdio.h>
 
+#include "ConfigReader.h"
 extern ConfigReader *g_config_reader;
 
 /////////////////////////////////////// MasterServer ///////////////////////////////////////
@@ -60,7 +60,7 @@ bool MasterServer::on_recv_protocol(SocketHandle socket_handle, Protocol *protoc
 		break;
 	}
 	default:
-		SLOG_WARN("Thread[ID=%d] fd=%d receive undefine protocol. ignore it.", get_thread_id(), socket_handle);
+		SLOG_WARN("Thread[ID=%d] fd=%d receive undefined protocol. ignore it.", get_thread_id(), socket_handle);
 		return false;
 	}
 
@@ -122,7 +122,7 @@ void MasterServer::add_chunk(ChunkInfo &chunk_info)
 	{
 		SLOG_DEBUG("add a new chunk info[chunk_id=%s, ip=%s, port=%d, disk_space=%lld, disk_used=%lld]. total chunk:%d."
 					,chunk_info.id.c_str()
-					,chunk_info.addr.c_str()
+					,chunk_info.ip.c_str()
 					,chunk_info.port
 					,chunk_info.disk_space
 					,chunk_info.disk_used
@@ -133,7 +133,7 @@ void MasterServer::add_chunk(ChunkInfo &chunk_info)
 	{
 		SLOG_DEBUG("update chunk info[chunk_id=%s, ip=%s, port=%d, disk_space=%lld, disk_used=%lld]. total chunk:%d."
 					,chunk_info.id.c_str()
-					,chunk_info.addr.c_str()
+					,chunk_info.ip.c_str()
 					,chunk_info.port
 					,chunk_info.disk_space
 					,chunk_info.disk_used
@@ -222,23 +222,23 @@ void MasterServer::on_chunk_ping(SocketHandle socket_handle, Protocol *protocol)
 
 	ProtocolChunkPing *protocol_chunkping = (ProtocolChunkPing *)protocol;
 	ChunkInfo& chunk_info = protocol_chunkping->get_chunk_info();
-	SLOG_INFO("receive chunkping protocol.fd=%d, chunk_id=%s, chunk_addr=%s, chunk_port=%d, disk_space=%lld, disk_used=%lld."
+	SLOG_INFO("receive chunk_ping protocol.fd=%d, chunk_id=%s, chunk_addr=%s, chunk_port=%d, disk_space=%lld, disk_used=%lld."
 				,socket_handle
 				,chunk_info.id.c_str()
-				,chunk_info.addr.c_str()
+				,chunk_info.ip.c_str()
 				,chunk_info.port
 				,chunk_info.disk_space
 				,chunk_info.disk_used);
 
-	if(chunk_info.id == "" || chunk_info.addr == "")
+	if(chunk_info.id == "" || chunk_info.ip == "")
 	{
 		SLOG_ERROR("chunk id or ip is empty.");
-		protocol_chunkping_resp->set_result(1);
+		protocol_chunkping_resp->get_result() = false;
 	}
 	else
 	{
 		add_chunk(chunk_info);
-		protocol_chunkping_resp->set_result(0);
+		protocol_chunkping_resp->get_result() = true;
 	}
 
 	if(!send_protocol(socket_handle, protocol_chunkping_resp))
@@ -263,20 +263,20 @@ void MasterServer::on_file_info_req(SocketHandle socket_handle, Protocol *protoc
 	FileInfo& file_info = protocol_fileinfo->get_fileinfo();
 	if(get_fileinfo(fid, file_info))  //已经存在
 	{
-		SLOG_DEBUG("find fileinfo succ: fid=%s, size=%d.", fid.c_str(), file_info.size);
+		SLOG_DEBUG("find file_info succ: fid=%s, size=%d.", fid.c_str(), file_info.size);
 		int i;
-		for(i=0; i<file_info.get_path_count(); ++i)
+		for(i=0; i<file_info.get_chunkpath_count(); ++i)
 		{
-			ChunkPath &chunk_path = file_info.get_path(i);
+			ChunkPath &chunk_path = file_info.get_chunkpath(i);
 			SLOG_DEBUG("chunk[%d]:id=%s, ip=%s, port=%d, index=%d, offset=%lld."
-					,i, chunk_path.id.c_str(), chunk_path.addr.c_str(), chunk_path.port, chunk_path.index, chunk_path.offset);
+					,i, chunk_path.id.c_str(), chunk_path.ip.c_str(), chunk_path.port, chunk_path.index, chunk_path.offset);
 		}
-		protocol_fileinfo->set_result(ProtocolFileInfo::FILE_INFO_SUCC);
+		file_info.result = FileInfo::RESULT_SUCC;
 	}
 	else if(find_saving_task(fid))  //正在保存
 	{
 		SLOG_DEBUG("fid=%s is saving.", fid.c_str());
-		protocol_fileinfo->set_result(ProtocolFileInfo::FILE_INFO_SAVING);
+		file_info.result = FileInfo::RESULT_SAVING;
 	}
 	else if(query_chunkpath)  //分配chunk
 	{
@@ -288,25 +288,25 @@ void MasterServer::on_file_info_req(SocketHandle socket_handle, Protocol *protoc
 		ChunkInfo chunk_info;
 		if(get_chunk(chunk_info))  //分配chunk
 		{
-			protocol_fileinfo->set_result(ProtocolFileInfo::FILE_INFO_CHUNK);
+			file_info.result = FileInfo::RESULT_CHUNK;
 			chunk_path.id = chunk_info.id;
-			chunk_path.addr = chunk_info.addr;
+			chunk_path.ip = chunk_info.ip;
 			chunk_path.port = chunk_info.port;
 			chunk_path.index = 0;  //无效
 			chunk_path.offset = 0; //无效
-			file_info.add_path(chunk_path);
-			SLOG_DEBUG("dispatch chunk[id=%s,ip=%s,port=%d] for fid=%s.", chunk_info.id.c_str(), chunk_info.addr.c_str(), chunk_info.port, fid.c_str());
+			file_info.add_chunkpath(chunk_path);
+			SLOG_DEBUG("dispatch chunk[id=%s,ip=%s,port=%d] for fid=%s.", chunk_info.id.c_str(), chunk_info.ip.c_str(), chunk_info.port, fid.c_str());
 		}
 		else
 		{
 			SLOG_WARN("get chunk failed for fid=%s.", fid.c_str());
-			protocol_fileinfo->set_result(ProtocolFileInfo::FILE_INFO_FAILED);
+			file_info.result = FileInfo::RESULT_FAILED;
 		}
 	}
 	else  //失败
 	{
-		SLOG_WARN("get fileinfo failed for fid=%s.", fid.c_str());
-		protocol_fileinfo->set_result(ProtocolFileInfo::FILE_INFO_FAILED);
+		SLOG_WARN("get file_info failed for fid=%s.", fid.c_str());
+		file_info.result = FileInfo::RESULT_FAILED;
 	}
 
 	if(!send_protocol(socket_handle, protocol_fileinfo))
@@ -316,7 +316,7 @@ void MasterServer::on_file_info_req(SocketHandle socket_handle, Protocol *protoc
 	}
 }
 
-//响应chunk发送fileinfo保存包
+//响应chunk发送file info保存包
 void MasterServer::on_file_info(SocketHandle socket_handle, Protocol *protocol)
 {
 	SFSProtocolFamily* protocol_family = (SFSProtocolFamily*)get_protocol_family();
@@ -324,39 +324,38 @@ void MasterServer::on_file_info(SocketHandle socket_handle, Protocol *protocol)
 	assert(protocol_fileinfo_save_result != NULL);
 
 	ProtocolFileInfo *protocol_fileinfo = (ProtocolFileInfo *)protocol;
-	ProtocolFileInfo::FileInfoResult result = protocol_fileinfo->get_result();
 	FileInfo &fileinfo = protocol_fileinfo->get_fileinfo();
-	SLOG_INFO("receive fileinfo protocol. fd=%d, result=%d, fid=%s.", (int)result, fileinfo.fid.c_str());
+	SLOG_INFO("receive file_info protocol. fd=%d, result=%d, fid=%s.", socket_handle, (int)fileinfo.result, fileinfo.fid.c_str());
 
-	protocol_fileinfo_save_result->set_fid(fileinfo.fid);
+	FileInfoSaveResult &save_result = protocol_fileinfo_save_result->get_save_result();
+	save_result.fid = fileinfo.fid;
 
-	if(find_saving_task(fileinfo.fid)) //正在保存
+	if(find_saving_task(fileinfo.fid)) //找到正在保存任务
 	{
-		protocol_fileinfo_save_result->set_result(ProtocolFileInfoSaveResult::SAVE_RESULT_SUCC);
-		if(result == ProtocolFileInfo::FILE_INFO_SUCC)  //成功,保存文件信息
+		save_result.result = FileInfoSaveResult::RESULT_SUCC;
+		if(fileinfo.result == FileInfo::RESULT_SUCC)  //成功,保存文件信息
 		{
-			ChunkPath &chunk_path = fileinfo.get_path(0);
+			ChunkPath &chunk_path = fileinfo.get_chunkpath(0);
 			SLOG_INFO("save file info: fid=%s, name=%s, size=%d, chunkid=%s, addr=%s, port=%d, index=%d, offset=%lld."
 						,fileinfo.fid.c_str()
 						,fileinfo.name.c_str()
 						,fileinfo.size
 						,chunk_path.id.c_str()
-						,chunk_path.addr.c_str()
+						,chunk_path.ip.c_str()
 						,chunk_path.port
 						,chunk_path.index
 						,chunk_path.offset);
 			m_fileinfo_cache.insert(std::make_pair(fileinfo.fid, fileinfo));
 		}
 		else  //失败,删除正在保存的记录
-		{
 			SLOG_INFO("chunk save file failed, remove saving task. fid=%s.", fileinfo.fid.c_str());
-			remove_saving_task(fileinfo.fid);
-		}
+
+		remove_saving_task(fileinfo.fid);
 	}
-	else //保存任务不存在
+	else //找不到正在保存的任务
 	{
 		SLOG_WARN("can't find saving task. fd=%d, fid=%s.", socket_handle, fileinfo.fid.c_str());
-		protocol_fileinfo_save_result->set_result(ProtocolFileInfoSaveResult::SAVE_RESULT_FAILED);
+		save_result.result = FileInfoSaveResult::RESULT_FAILED;
 	}
 
 	if(!send_protocol(socket_handle, protocol_fileinfo_save_result))

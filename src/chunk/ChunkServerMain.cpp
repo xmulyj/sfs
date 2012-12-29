@@ -6,8 +6,8 @@
  */
 
 #include "ChunkServer.h"
-#include "ConfigReader.h"
 
+#include "ConfigReader.h"
 ConfigReader* g_config_reader = NULL;
 const char config_path[] = "config/server.config";
 

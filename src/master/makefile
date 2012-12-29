@@ -1,7 +1,7 @@
 INCS=-I/usr/local/include/libnetframework -I../ 
 LIBS=-lslog -lnetframework -lpthread -lssl
 FLAGS=-g
-DEPS=../SFSProtocolFamily.h ../SFSProtocolFamily.cpp
+DEPS=../CommonType.h ../SFSProtocolFamily.h ../SFSProtocolFamily.cpp
 
 all:sfs_master
 

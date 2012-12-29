@@ -7,10 +7,11 @@
 
 #include "ChunkWorker.h"
 #include "IODemuxerEpoll.h"
+#include "SFSProtocolFamily.h"
 #include "slog.h"
 #include "DiskMgr.h"
-#include "ConfigReader.h"
 
+#include "ConfigReader.h"
 extern ConfigReader* g_config_reader;
 
 ///////////////////////////////  ChunkWorker  //////////////////////////////////
@@ -235,17 +236,16 @@ bool ChunkWorker::save_file(string &fid)
 		result = DiskMgr::get_instance()->save_file_to_disk(fid, file_task.buf, file_task.size, chunk_path);
 		if(result != false)
 		{
-			file_info.add_path(chunk_path);
-			protocol_file_info->set_result(ProtocolFileInfo::FILE_INFO_SUCC);
+			file_info.add_chunkpath(chunk_path);
+			file_info.result = FileInfo::RESULT_SUCC;
 		}
 		else
 		{
 			SLOG_ERROR("save fid=%s to file failed.", fid.c_str());
-			protocol_file_info->set_result(ProtocolFileInfo::FILE_INFO_FAILED);
+			file_info.result = FileInfo::RESULT_FAILED;
 		}
+		protocol_file_info->get_fileinfo() = file_info;
 
-		FileInfo &file_info_temp = protocol_file_info->get_fileinfo();
-		file_info_temp = file_info;
 		if(!send_protocol(get_master_connect(), protocol_file_info))
 		{
 			result = false;
@@ -266,71 +266,84 @@ bool ChunkWorker::save_file(string &fid)
 void ChunkWorker::on_file(SocketHandle socket_handle, Protocol *protocol)
 {
 	SFSProtocolFamily* protocol_family = (SFSProtocolFamily*)get_protocol_family();
-	ProtocolFileStatus* protocol_file_status = NULL;
+	Protocol* protocol_resp = NULL;
 
 	ProtocolFile *protocol_file = (ProtocolFile *)protocol;
-	ProtocolFile::FileFlag file_flag = protocol_file->get_flag();
 	FileSeg &file_seg = protocol_file->get_file_seg();
 	SLOG_INFO("receive File Protocol[file info: flag=%d, fid=%s, name=%s, filesize=%d] [seg info: offset=%lld, index=%d, size=%d]."
-				,file_flag, file_seg.fid.c_str(), file_seg.name.c_str(), file_seg.filesize, file_seg.offset, file_seg.index, file_seg.size);
+				,file_seg.flag, file_seg.fid.c_str(), file_seg.name.c_str(), file_seg.filesize, file_seg.offset, file_seg.index, file_seg.size);
 
-	switch(file_flag)
+	switch(file_seg.flag)
 	{
-		case ProtocolFile::FLAG_START:
+		case FileSeg::FLAG_START:  //请求开始传输文件
 		{
-			protocol_file_status = (ProtocolFileStatus*)protocol_family->create_protocol(PROTOCOL_FILE_STATUS);
-			assert(protocol_file_status != NULL);
-			FileSeg &file_seg_resp = protocol_file_status->get_file_seg();
-			file_seg_resp.fid = file_seg.fid;
+			protocol_resp = protocol_family->create_protocol(PROTOCOL_FILE_SAVE_RESULT);
+			assert(protocol_resp != NULL);
+
+			ProtocolFileSaveResult *protocol_save_result = (ProtocolFileSaveResult*)protocol_resp;
+			FileSaveResult &save_result = protocol_save_result->get_save_result();
+			save_result.fid = file_seg.fid;
 			if(file_task_find(file_seg.fid))  //已经存在
 			{
 				SLOG_WARN("file task already started. fid=%s.", file_seg.fid.c_str());
-				protocol_file_status->set_status(ProtocolFileStatus::CREATE_FAILED);
+				save_result.status = FileSaveResult::CREATE_FAILED;
 			}
 			else if(!file_task_create(socket_handle, file_seg))  //创建任务失败
 			{
 				SLOG_ERROR("create file task failed. fid=%s.", file_seg.fid.c_str());
-				protocol_file_status->set_status(ProtocolFileStatus::CREATE_FAILED);
+				save_result.status = FileSaveResult::CREATE_FAILED;
+				//Todo 上报master保存失败
 			}
 			else  //成功
 			{
-				SLOG_INFO("create file task succ. fid=%s, name=%s, size=%d." ,file_seg.fid.c_str(), file_seg.name.c_str(), file_seg.filesize);
-				protocol_file_status->set_status(ProtocolFileStatus::CREATE_SUCC);
+				SLOG_INFO("create file task succ. fid=%s, name=%s, size=%d.", file_seg.fid.c_str(), file_seg.name.c_str(), file_seg.filesize);
+				save_result.status = FileSaveResult::CREATE_SUCC;
 			}
 			break;
 		}
-		case ProtocolFile::FLAG_SEG:  //文件分片
+		case FileSeg::FLAG_SEG:  //文件分片
 		{
-			protocol_file_status = (ProtocolFileStatus*)protocol_family->create_protocol(PROTOCOL_FILE_STATUS);
-			assert(protocol_file_status != NULL);
-			FileSeg &file_seg_resp = protocol_file_status->get_file_seg();
-			file_seg_resp.fid = file_seg.fid;
-			protocol_file_status->set_status(ProtocolFileStatus::SEG_SUCC);
+			protocol_resp = protocol_family->create_protocol(PROTOCOL_FILE_SAVE_RESULT);
+			assert(protocol_resp != NULL);
+
+			ProtocolFileSaveResult *protocol_save_result = (ProtocolFileSaveResult*)protocol_resp;
+			FileSaveResult &save_result = protocol_save_result->get_save_result();
+			save_result.fid = file_seg.fid;
+			save_result.status = FileSaveResult::SEG_SUCC;
 			if(!file_task_save(file_seg))  //失败
 			{
 				SLOG_ERROR("save file seg failed. fid=%s.", file_seg.fid.c_str());
-				protocol_file_status->set_status(ProtocolFileStatus::SEG_FAILED);
+				save_result.status = FileSaveResult::SEG_FAILED;
 				file_task_delete(file_seg.fid);
+				//ToDo 上报master保存失败
 			}
 			break;
 		}
-		case ProtocolFile::FLAG_END:  //已经结束
+		case FileSeg::FLAG_END:  //已经结束
 		{
-			SLOG_INFO("file task finished. fid=%s.", file_seg.fid.c_str());
-			//保存文件
-			if(!save_file(file_seg.fid))
-			{
-				SLOG_ERROR("save file failed. fid=%s.", file_seg.fid.c_str());
-				file_task_delete(file_seg.fid);
-			}
-			return;
+			SLOG_INFO("client send file finished. fid=%s.", file_seg.fid.c_str());
+			if(save_file(file_seg.fid))
+				return ;
+
+			SLOG_ERROR("save file failed. fid=%s.", file_seg.fid.c_str());
+			file_task_delete(file_seg.fid);
+
+			//回复客户端失file info失败
+			protocol_resp = protocol_family->create_protocol(PROTOCOL_FILE_INFO);
+			assert(protocol_resp != NULL);
+
+			ProtocolFileInfo *protocol_file_info = (ProtocolFileInfo*)protocol_resp;
+			FileInfo &file_info = protocol_file_info->get_fileinfo();
+			file_info.result = FileInfo::RESULT_FAILED;
+			file_info.fid = file_seg.fid;
+			break;
 		}
 	}//switch
 
-	if(!send_protocol(socket_handle, protocol_file_status))
+	if(!send_protocol(socket_handle, protocol_resp))
 	{
 		SLOG_ERROR("send file status protocol failed. fd=%d, fid=%s.", socket_handle, file_seg.fid.c_str());
-		protocol_family->destroy_protocol(protocol_file_status);
+		protocol_family->destroy_protocol(protocol_resp);
 		file_task_delete(file_seg.fid);
 	}
 }
@@ -341,25 +354,29 @@ void ChunkWorker::on_file_info_save_result(SocketHandle socket_handle, Protocol 
 	SFSProtocolFamily* protocol_family = (SFSProtocolFamily*)get_protocol_family();
 
 	ProtocolFileInfoSaveResult *protocol_save_result = (ProtocolFileInfoSaveResult*)protocol;
-	ProtocolFileInfoSaveResult::FileInfoSaveResult save_result = protocol_save_result->get_result();
-	string fid = protocol_save_result->get_fid();
-	SLOG_INFO("fid=%s, save_result=%d.", fid.c_str(), save_result);
+	FileInfoSaveResult &save_result = protocol_save_result->get_save_result();
+	SLOG_INFO("fid=%s, save_result=%d.", save_result.fid.c_str(), save_result.result);
 
 	//pthread_mutex_lock(&m_filetask_lock);
-	FileTaskMap::iterator it = m_filetask_map.find(fid);
+	FileTaskMap::iterator it = m_filetask_map.find(save_result.fid);
 	if(it != m_filetask_map.end())
 	{
 		FileTask &file_task = it->second;
 		ProtocolFileInfo *protocol_file_info = (ProtocolFileInfo*)protocol_family->create_protocol(PROTOCOL_FILE_INFO);
-		protocol_file_info->set_result(ProtocolFileInfo::FILE_INFO_FAILED);
-		if(save_result == ProtocolFileInfoSaveResult::SAVE_RESULT_SUCC)  //master保存成功
+		FileInfo &file_info = protocol_file_info->get_fileinfo();
+		file_info = file_task.file_info;
+
+		if(save_result.result == FileInfoSaveResult::RESULT_SUCC)  //master保存成功
 		{
-			protocol_file_info->set_result(ProtocolFileInfo::FILE_INFO_SUCC);
-			FileInfo &file_info = protocol_file_info->get_fileinfo();
-			file_info = file_task.file_info;
-			ChunkPath &chunk_path = file_info.get_path(0);
+			file_info.result = FileInfo::RESULT_SUCC;
+			ChunkPath &chunk_path = file_info.get_chunkpath(0);
 			SLOG_DEBUG("chunk[%d]:id=%s, ip=%s, port=%d, index=%d, offset=%d."
-						,0, chunk_path.id.c_str(), chunk_path.addr.c_str(), chunk_path.port, chunk_path.index, chunk_path.offset);
+						,0, chunk_path.id.c_str(), chunk_path.ip.c_str(), chunk_path.port, chunk_path.index, chunk_path.offset);
+		}
+		else
+		{
+			file_info.result = FileInfo::RESULT_FAILED;
+			SLOG_WARN("master save file info failed. fid=%s.", save_result.fid.c_str());
 		}
 
 		if(!send_protocol(file_task.socket_handle, protocol_file_info))
@@ -369,12 +386,12 @@ void ChunkWorker::on_file_info_save_result(SocketHandle socket_handle, Protocol 
 		}
 	}
 	else
-		SLOG_WARN("can't find file task. fid=%s.", fid.c_str());
+		SLOG_WARN("can't find file task. fid=%s.", save_result.fid.c_str());
 	//pthread_mutex_unlock(&m_filetask_lock);
-	//删除任务
-	file_task_delete(fid);
-}
 
+	//删除任务
+	file_task_delete(save_result.fid);
+}
 
 
 ///////////////////////////////  ChunkWorkerPool  //////////////////////////////////

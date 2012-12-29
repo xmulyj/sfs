@@ -21,7 +21,7 @@ Protocol* SFSProtocolFamily::create_protocol_by_header(ProtocolHeader *header)
 		Case_Create_Protocol(PROTOCOL_FILE_INFO_SAVE_RESULT, ProtocolFileInfoSaveResult);
 		Case_Create_Protocol(PROTOCOL_FILE_REQ,              ProtocolFileReq);
 		Case_Create_Protocol(PROTOCOL_FILE,                  ProtocolFile);
-		Case_Create_Protocol(PROTOCOL_FILE_STATUS,           ProtocolFileStatus);
+		Case_Create_Protocol(PROTOCOL_FILE_SAVE_RESULT,      ProtocolFileSaveResult);
 		Case_Create_Protocol(PROTOCOL_CHUNK_PING,            ProtocolChunkPing);
 		Case_Create_Protocol(PROTOCOL_CHUNK_PING_RESP,       ProtocolChunkPingResp);
 	}
@@ -41,7 +41,8 @@ bool ProtocolFileInfoReq::encode_body(ByteBuffer *byte_buffer)
 	////fid
 	ENCODE_STRING(m_fid);
 	////query chunk path
-	ENCODE_CHAR(m_query_chunkpath);
+	char temp = (char)m_query_chunkpath;
+	ENCODE_CHAR(temp);
 
 	return true;
 }
@@ -51,17 +52,19 @@ bool ProtocolFileInfoReq::decode_body(const char *buf, int size)
 	////fid
 	DECODE_STRING(m_fid);
 	////query chunk path
-	DECODE_CHAR(m_query_chunkpath);
+	char temp;
+	DECODE_CHAR(temp);
+	m_query_chunkpath = (bool)temp;
 	return true;
 }
 
 //////////////////////////////  1. FileInfo Protocol  //////////////////////////
 bool ProtocolFileInfo::encode_body(ByteBuffer *byte_buffer)
 {
+	int temp;
 	////result
-	ENCODE_INT(m_result);
-	if(m_result == FILE_INFO_FAILED) return true;
-
+	temp = (int)m_fileinfo.result;
+	ENCODE_INT(temp);
 	////fid
 	ENCODE_STRING(m_fileinfo.fid);
 	////file name
@@ -69,21 +72,21 @@ bool ProtocolFileInfo::encode_body(ByteBuffer *byte_buffer)
 	////file size
 	ENCODE_INT(m_fileinfo.size);
 	////chunk info
-	int count = m_fileinfo.path_list.size();
-	ENCODE_INT(count);
-	vector<ChunkPath>::iterator it;
-	for(it=m_fileinfo.path_list.begin(); it!=m_fileinfo.path_list.end(); ++it)
+	temp = m_fileinfo.get_chunkpath_count();
+	ENCODE_INT(temp);
+	while(temp > 0)
 	{
+		ChunkPath chunkpath = m_fileinfo.get_chunkpath(--temp);
 		//chunk id
-		ENCODE_STRING(it->id);
-		//chunk addr
-		ENCODE_STRING(it->addr);
+		ENCODE_STRING(chunkpath.id);
+		//chunk ip
+		ENCODE_STRING(chunkpath.ip);
 		//chunk port
-		ENCODE_INT(it->port);
+		ENCODE_INT(chunkpath.port);
 		//index
-		ENCODE_INT(it->index);
+		ENCODE_INT(chunkpath.index);
 		//chunk offset
-		ENCODE_INT64(it->offset);
+		ENCODE_INT64(chunkpath.offset);
 	}
 
 	return true;
@@ -91,10 +94,10 @@ bool ProtocolFileInfo::encode_body(ByteBuffer *byte_buffer)
 
 bool ProtocolFileInfo::decode_body(const char *buf, int size)
 {
+	int temp;
 	////result
-	DECODE_INT(m_result);
-	if(m_result == FILE_INFO_FAILED) return true;
-
+	DECODE_INT(temp);
+	m_fileinfo.result = (FileInfo::Result)temp;
 	////fid
 	DECODE_STRING(m_fileinfo.fid);
 	////file name
@@ -102,23 +105,21 @@ bool ProtocolFileInfo::decode_body(const char *buf, int size)
 	////file size
 	DECODE_INT(m_fileinfo.size);
 	////chunk info
-	int count = 0;
-	DECODE_INT(count);
-	while(count > 0)
+	DECODE_INT(temp);
+	while(temp-- > 0)
 	{
-		--count;
 		ChunkPath chunkpath;
 		//chunk id
 		DECODE_STRING(chunkpath.id);
-		//chunk addr
-		DECODE_STRING(chunkpath.addr);
+		//chunk ip
+		DECODE_STRING(chunkpath.ip);
 		//chunk port
 		DECODE_INT(chunkpath.port);
 		//index
 		DECODE_INT(chunkpath.index);
 		//chunk offset
 		DECODE_INT64(chunkpath.offset);
-		m_fileinfo.add_path(chunkpath);
+		m_fileinfo.add_chunkpath(chunkpath);
 	}
 
 	return true;
@@ -127,20 +128,24 @@ bool ProtocolFileInfo::decode_body(const char *buf, int size)
 //////////////////////////////  2. FileInfoSaveResult Protocol  //////////////////////////
 bool ProtocolFileInfoSaveResult::encode_body(ByteBuffer *byte_buffer)
 {
+	int temp;
 	////result
-	ENCODE_INT(m_result);
+	temp = (int)m_save_result.result;
+	ENCODE_INT(temp);
 	////fid
-	ENCODE_STRING(m_fid);
+	ENCODE_STRING(m_save_result.fid);
 
 	return true;
 }
 
 bool ProtocolFileInfoSaveResult::decode_body(const char *buf, int size)
 {
+	int temp;
 	////result
-	DECODE_INT(m_result);
+	DECODE_INT(temp);
+	m_save_result.result = (FileInfoSaveResult::Result)temp;
 	////fid
-	DECODE_STRING(m_fid);
+	DECODE_STRING(m_save_result.fid);
 
 	return true;
 }
@@ -167,8 +172,10 @@ bool ProtocolFileReq::decode_body(const char *buf, int size)
 //////////////////////////////  4. File Protocol  //////////////////////////
 bool ProtocolFile::encode_body(ByteBuffer *byte_buffer)
 {
-	////result
-	ENCODE_INT(m_flag);
+	int temp;
+	////flag
+	temp = (int)m_file_seg.flag;
+	ENCODE_INT(temp);
 	////fid
 	ENCODE_STRING(m_file_seg.fid);
 	////name
@@ -187,8 +194,10 @@ bool ProtocolFile::encode_body(ByteBuffer *byte_buffer)
 
 bool ProtocolFile::decode_body(const char *buf, int size)
 {
-	////result
-	DECODE_INT(m_flag);
+	int temp;
+	////flag
+	DECODE_INT(temp);
+	m_file_seg.flag = (FileSeg::FileFlag)temp;
 	////fid
 	DECODE_STRING(m_file_seg.fid);
 	////name
@@ -202,35 +211,37 @@ bool ProtocolFile::decode_body(const char *buf, int size)
 	////seg size
 	DECODE_INT(m_file_seg.size);
 	////data
-	if(size<m_file_seg.size || m_file_seg.size<=0) return false;
+	if(size<m_file_seg.size) return false;
 	m_file_seg.data = buf;
 
 	return true;
 }
 
 //////////////////////////////  5. FileSaveResult Protocol  //////////////////////////
-bool ProtocolFileStatus::encode_body(ByteBuffer *byte_buffer)
+bool ProtocolFileSaveResult::encode_body(ByteBuffer *byte_buffer)
 {
-	int len = 0;
-	//result
-	ENCODE_INT(m_status);
+	int temp;
+	//status
+	temp = (int)m_save_result.status;
+	ENCODE_INT(temp);
 	////fid
-	ENCODE_STRING(m_file_seg.fid);
+	ENCODE_STRING(m_save_result.fid);
 	////seg index
-	ENCODE_INT(m_file_seg.index);
+	ENCODE_INT(m_save_result.index);
 
 	return true;
 }
 
-bool ProtocolFileStatus::decode_body(const char *buf, int size)
+bool ProtocolFileSaveResult::decode_body(const char *buf, int size)
 {
-	int len = 0;
+	int temp;
 	//result
-	DECODE_INT(m_status);
+	DECODE_INT(temp);
+	m_save_result.status = (FileSaveResult::Status)temp;
 	////fid
-	DECODE_STRING(m_file_seg.fid);
+	DECODE_STRING(m_save_result.fid);
 	////seg index
-	DECODE_INT(m_file_seg.index);
+	DECODE_INT(m_save_result.index);
 
 	return true;
 }
@@ -240,8 +251,8 @@ bool ProtocolChunkPing::encode_body(ByteBuffer *byte_buffer)
 {
 	////chunk id
 	ENCODE_STRING(m_chunk_info.id);
-	////chunk addr
-	ENCODE_STRING(m_chunk_info.addr);
+	////chunk ip
+	ENCODE_STRING(m_chunk_info.ip);
 	////chunk port
 	ENCODE_INT(m_chunk_info.port);
 	//// disk space
@@ -256,8 +267,8 @@ bool ProtocolChunkPing::decode_body(const char *buf, int size)
 {
 	////chunk id
 	DECODE_STRING(m_chunk_info.id);
-	////chunk addr
-	DECODE_STRING(m_chunk_info.addr);
+	////chunk ip
+	DECODE_STRING(m_chunk_info.ip);
 	////chunk port
 	DECODE_INT(m_chunk_info.port);
 	////disk space
@@ -271,9 +282,10 @@ bool ProtocolChunkPing::decode_body(const char *buf, int size)
 //////////////////////////////  7. ChunkPingResp Protocol  //////////////////////////
 bool ProtocolChunkPingResp::encode_body(ByteBuffer *byte_buffer)
 {
-	int len = 0;
+	int temp;
 	////result
-	ENCODE_INT(m_result);
+	temp = (int)m_result;
+	ENCODE_INT(temp);
 	////chunk id
 	ENCODE_STRING(m_chunk_id);
 
@@ -282,9 +294,10 @@ bool ProtocolChunkPingResp::encode_body(ByteBuffer *byte_buffer)
 
 bool ProtocolChunkPingResp::decode_body(const char *buf, int size)
 {
-	int len = 0;
+	int temp;
 	////result
-	DECODE_INT(m_result);
+	DECODE_INT(temp);
+	m_result = (bool)temp;
 	////chunk id
 	DECODE_STRING(m_chunk_id);
 

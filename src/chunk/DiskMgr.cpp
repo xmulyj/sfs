@@ -7,7 +7,7 @@
 
 #include "DiskMgr.h"
 #include "slog.h"
-#include "ConfigReader.h"
+
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -17,6 +17,7 @@
 #include <assert.h>
 #include <stdio.h>
 
+#include "ConfigReader.h"
 extern ConfigReader* g_config_reader;
 
 #define LOCK(lock) pthread_mutex_lock(&lock)
@@ -151,8 +152,8 @@ bool DiskMgr::save_file_to_disk(string &fid, char *buf, uint32_t size, ChunkPath
 
 	chunkpath.id = g_config_reader->GetValueString("ChunkID");
 	assert(chunkpath.id != "");
-	chunkpath.addr = g_config_reader->GetValueString("ChunkIP");
-	assert(chunkpath.addr != "");
+	chunkpath.ip = g_config_reader->GetValueString("ChunkIP");
+	assert(chunkpath.ip != "");
 	chunkpath.port = g_config_reader->GetValueInt("ChunkPort", 3013);
 	chunkpath.index = disk_file.index;
 	chunkpath.offset = disk_file.cur_pos;

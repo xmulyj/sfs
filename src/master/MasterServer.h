@@ -12,6 +12,7 @@
 #include "ConnectThreadPool.h"
 
 #include "SFSProtocolFamily.h"
+#include "CommonType.h"
 
 #include <stdint.h>
 #include <string>

@@ -10,6 +10,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "ConfigReader.h"
+extern ConfigReader* g_config_reader;
+
 ChunkServer::ChunkServer()
 {
 	m_master_socket_handle = SOCKET_INVALID;
@@ -84,8 +87,9 @@ HANDLE_RESULT ChunkServer::on_timeout(int fd)
 
 	ChunkInfo& chunk_info = protocol_chunk_ping->get_chunk_info();
 	chunk_info.id = "chunk0";
-	chunk_info.addr = "127.0.0.1";
-	chunk_info.port = 3013;
+	chunk_info.ip = g_config_reader->GetValueString("ChunkIP");
+	assert(chunk_info.ip != "");
+	chunk_info.port = g_config_reader->GetValueInt("ChunkPort", 3013);
 	chunk_info.disk_space = 123456789;
 	chunk_info.disk_used = 2342234;
 
