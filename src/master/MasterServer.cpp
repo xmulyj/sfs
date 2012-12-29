@@ -339,7 +339,7 @@ void MasterServer::on_file_info(SocketHandle socket_handle, Protocol *protocol)
 	if(find_saving_task(fileinfo.fid)) //找到正在保存任务
 	{
 		ChunkPath &chunk_path = fileinfo.get_chunkpath(0);
-		SLOG_INFO("save file info: fid=%s, name=%s, size=%d, chunkid=%s, addr=%s, port=%d, index=%d, offset=%lld."
+		SLOG_INFO("save file info succ: fid=%s, name=%s, size=%d, chunkid=%s, addr=%s, port=%d, index=%d, offset=%lld."
 					,fileinfo.fid.c_str()
 					,fileinfo.name.c_str()
 					,fileinfo.size
