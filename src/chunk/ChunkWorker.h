@@ -77,7 +77,8 @@ private:
 	//文件已经传送完毕,保存到系统中
 	bool save_file(string &fid);
 
-
+private:
+	void send_fail_fileinfo_to_master(string &fid);
 //////////////////// 响应函数 /////////////////////
 private:
 	//响应客户端发送文件数据包

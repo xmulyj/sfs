@@ -127,6 +127,23 @@ SocketHandle ChunkWorker::get_master_connect()
 	return m_master_socket_handle;
 }
 
+void ChunkWorker::send_fail_fileinfo_to_master(string &fid)
+{
+	SFSProtocolFamily *protocol_family = (SFSProtocolFamily*)get_protocol_family();
+	ProtocolFileInfo *protocol_file_info = (ProtocolFileInfo *)protocol_family->create_protocol(PROTOCOL_FILE_INFO);
+	assert(protocol_file_info != NULL);
+
+	FileInfo &file_info = protocol_file_info->get_fileinfo();
+	file_info.result = FileInfo::RESULT_FAILED;
+	file_info.fid = fid;
+
+	if(!send_protocol(get_master_connect(), protocol_file_info))
+	{
+		protocol_family->destroy_protocol(protocol_file_info);
+		SLOG_ERROR("send faile_file_info to master failed. fid=%s.", fid.c_str());
+	}
+}
+
 bool ChunkWorker::file_task_find(string &fid)
 {
 	bool find;
@@ -292,7 +309,8 @@ void ChunkWorker::on_file(SocketHandle socket_handle, Protocol *protocol)
 			{
 				SLOG_ERROR("create file task failed. fid=%s.", file_seg.fid.c_str());
 				save_result.status = FileSaveResult::CREATE_FAILED;
-				//Todo 上报master保存失败
+				//向master上报保存失败
+				send_fail_fileinfo_to_master(file_seg.fid);
 			}
 			else  //成功
 			{
@@ -315,7 +333,8 @@ void ChunkWorker::on_file(SocketHandle socket_handle, Protocol *protocol)
 				SLOG_ERROR("save file seg failed. fid=%s.", file_seg.fid.c_str());
 				save_result.status = FileSaveResult::SEG_FAILED;
 				file_task_delete(file_seg.fid);
-				//ToDo 上报master保存失败
+				//向master上报保存失败
+				send_fail_fileinfo_to_master(file_seg.fid);
 			}
 			break;
 		}
