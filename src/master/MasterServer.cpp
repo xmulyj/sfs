@@ -319,38 +319,40 @@ void MasterServer::on_file_info_req(SocketHandle socket_handle, Protocol *protoc
 //响应chunk发送file info保存包
 void MasterServer::on_file_info(SocketHandle socket_handle, Protocol *protocol)
 {
-	SFSProtocolFamily* protocol_family = (SFSProtocolFamily*)get_protocol_family();
-	ProtocolFileInfoSaveResult *protocol_fileinfo_save_result = (ProtocolFileInfoSaveResult *)protocol_family->create_protocol(PROTOCOL_FILE_INFO_SAVE_RESULT);
-	assert(protocol_fileinfo_save_result != NULL);
-
 	ProtocolFileInfo *protocol_fileinfo = (ProtocolFileInfo *)protocol;
 	FileInfo &fileinfo = protocol_fileinfo->get_fileinfo();
 	SLOG_INFO("receive file_info protocol. fd=%d, result=%d, fid=%s.", socket_handle, (int)fileinfo.result, fileinfo.fid.c_str());
 
+	if(fileinfo.result != FileInfo::RESULT_SUCC)  //chunk保存失败,不需要回复
+	{
+		SLOG_INFO("chunk save file failed, remove saving task. fid=%s.", fileinfo.fid.c_str());
+		remove_saving_task(fileinfo.fid);
+		return ;
+	}
+
+	SFSProtocolFamily* protocol_family = (SFSProtocolFamily*)get_protocol_family();
+	ProtocolFileInfoSaveResult *protocol_fileinfo_save_result = (ProtocolFileInfoSaveResult *)protocol_family->create_protocol(PROTOCOL_FILE_INFO_SAVE_RESULT);
+	assert(protocol_fileinfo_save_result != NULL);
 	FileInfoSaveResult &save_result = protocol_fileinfo_save_result->get_save_result();
 	save_result.fid = fileinfo.fid;
 
 	if(find_saving_task(fileinfo.fid)) //找到正在保存任务
 	{
-		save_result.result = FileInfoSaveResult::RESULT_SUCC;
-		if(fileinfo.result == FileInfo::RESULT_SUCC)  //成功,保存文件信息
-		{
-			ChunkPath &chunk_path = fileinfo.get_chunkpath(0);
-			SLOG_INFO("save file info: fid=%s, name=%s, size=%d, chunkid=%s, addr=%s, port=%d, index=%d, offset=%lld."
-						,fileinfo.fid.c_str()
-						,fileinfo.name.c_str()
-						,fileinfo.size
-						,chunk_path.id.c_str()
-						,chunk_path.ip.c_str()
-						,chunk_path.port
-						,chunk_path.index
-						,chunk_path.offset);
-			m_fileinfo_cache.insert(std::make_pair(fileinfo.fid, fileinfo));
-		}
-		else  //失败,删除正在保存的记录
-			SLOG_INFO("chunk save file failed, remove saving task. fid=%s.", fileinfo.fid.c_str());
+		ChunkPath &chunk_path = fileinfo.get_chunkpath(0);
+		SLOG_INFO("save file info: fid=%s, name=%s, size=%d, chunkid=%s, addr=%s, port=%d, index=%d, offset=%lld."
+					,fileinfo.fid.c_str()
+					,fileinfo.name.c_str()
+					,fileinfo.size
+					,chunk_path.id.c_str()
+					,chunk_path.ip.c_str()
+					,chunk_path.port
+					,chunk_path.index
+					,chunk_path.offset);
 
+		m_fileinfo_cache.insert(std::make_pair(fileinfo.fid, fileinfo));
 		remove_saving_task(fileinfo.fid);
+
+		save_result.result = FileInfoSaveResult::RESULT_SUCC;
 	}
 	else //找不到正在保存的任务
 	{
