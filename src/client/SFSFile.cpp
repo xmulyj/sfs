@@ -23,66 +23,61 @@ File::File(string &master_addr, int master_port, int n_replica)
 	,m_n_replica(n_replica)
 {}
 
-int File::get_file_info(string &fid, FileInfo &file_info)
+bool File::get_file_info(string &fid, FileInfo &file_info)
 {
-	ProtocolFileInfo::FileInfoResult fileinfo_result;
-	if(_get_file_info(fid, false, fileinfo_result, file_info) == false)
-		return -1;  //请求失败
-	return fileinfo_result==ProtocolFileInfo::FILE_INFO_SUCC ? 0:1;
+	return _get_file_info(fid, false, file_info);
 }
 
-bool File::save_file(FileInfo &fileinfo, string &local_file)
+bool File::save_file(FileInfo &file_info, string &local_file)
 {
 	string fid="AAACCCDDD";
 
-	ProtocolFileInfo::FileInfoResult fileinfo_result;
-	bool result = _get_file_info(fid, true, fileinfo_result, fileinfo);
-	if(!result)
+	while(true)
 	{
-		SLOG_DEBUG("query master error.");
-		return false;
-	}
+		if(!_get_file_info(fid, true, file_info))
+		{
+			SLOG_DEBUG("query master error.");
+			return false;
+		}
 
-	switch(fileinfo_result)
-	{
-	case ProtocolFileInfo::FILE_INFO_FAILED:  //失败
+		switch(file_info.result)
 		{
-			SLOG_DEBUG("get file info failed. fid=%s.", fid.c_str());
-			return false;
-		}
-	case ProtocolFileInfo::FILE_INFO_SUCC:  //已经保存过
-		{
-			SLOG_DEBUG("file already exist. fid:%s, name:%s, size:%d.", fileinfo.fid.c_str(), fileinfo.name.c_str(), fileinfo.size);
-			/*
-			int i = 0;
-			for(; i<fileinfo.get_path_count(); ++i)
+		case FileInfo::RESULT_FAILED:  //失败
 			{
-				ChunkPath &chunkpath = fileinfo.get_path(i);
-				SLOG_DEBUG("chunk_path: %s_%d_%d chunk_addr:%s,port=%d."
-							,chunkpath.id.c_str(), chunkpath.index, chunkpath.offset, chunkpath.addr.c_str(), chunkpath.port);
+				SLOG_DEBUG("get file info failed. fid=%s.", fid.c_str());
+				return true;
 			}
-			*/
-			break;
-		}
-	case ProtocolFileInfo::FILE_INFO_CHUNK:  //分配chunk成功
-		{
-			vector<ChunkPath>::iterator it;
-			for(it=fileinfo.path_list.begin(); it!=fileinfo.path_list.end(); ++it)
+		case FileInfo::RESULT_SUCC:  //已经保存过
 			{
-				SLOG_INFO("request chunk to store file. fid=%s. chunk add:%s, chunk port:%d", fid.c_str(), it->addr.c_str(), it->port);
-				if(send_file_to_chunk(local_file, fid, it->addr, it->port))
-					break;
+				SLOG_DEBUG("file already exist. fid:%s, name:%s, size:%d.", file_info.fid.c_str(), file_info.name.c_str(), file_info.size);
+				return true;
 			}
-			break;
-		}
-	case ProtocolFileInfo::FILE_INFO_SAVING:  //正在保存
-		{
-			SLOG_DEBUG("fid=%s is saving.", fid.c_str());
-		}
-	default:
-		{
-			SLOG_WARN("unknow result value. result=%d.", result);
-			return false;
+		case FileInfo::RESULT_CHUNK:  //分配chunk成功
+			{
+				int i;
+				for(i=0; i<file_info.get_chunkpath_count(); ++i)
+				{
+					ChunkPath &chunk_path = file_info.get_chunkpath(i);
+					SLOG_INFO("request chunk to store file. fid=%s. chunk_ip:%s, chunk_port:%d", fid.c_str(), chunk_path.ip.c_str(), chunk_path.port);
+					if(!send_file_to_chunk(local_file, fid, chunk_path.ip, chunk_path.port))
+					{
+						file_info.result = FileInfo::RESULT_FAILED;
+						break;
+					}
+				}
+				return true;
+			}
+		case FileInfo::RESULT_SAVING:  //正在保存
+			{
+				SLOG_DEBUG("fid=%s is saving.", fid.c_str());
+				//TODO sleep(1);  //等1s后重新请求master获取文件信息
+				break;
+			}
+		default:
+			{
+				SLOG_WARN("unknown result value:result=%d.", file_info.result);
+				return false;
+			}
 		}
 	}
 
@@ -95,9 +90,8 @@ bool File::get_file(string &fid, string &local_file)
 }
 
 ///////////////////////////////////////////////////////
-bool File::_query_master(ProtocolFileInfoReq *protocol, ProtocolFileInfo::FileInfoResult &result, FileInfo &file_info)
+bool File::_query_master(ProtocolFileInfoReq *protocol, FileInfo &file_info)
 {
-	bool temp = true;
 	TransSocket trans_socket(m_master_addr.c_str(), m_master_port);
 	if(!trans_socket.open(1000))
 	{
@@ -110,27 +104,24 @@ bool File::_query_master(ProtocolFileInfoReq *protocol, ProtocolFileInfo::FileIn
 	//接收协议
 	ProtocolFileInfo *protocol_fileinfo = (ProtocolFileInfo *)m_protocol_family.create_protocol(PROTOCOL_FILE_INFO);
 	assert(protocol_fileinfo != NULL);
-	temp=TransProtocol::recv_protocol(&trans_socket, protocol_fileinfo);
+	bool temp = TransProtocol::recv_protocol(&trans_socket, protocol_fileinfo);
 	if(temp)  //请求成功
-	{
-		result = protocol_fileinfo->get_result();
 		file_info = protocol_fileinfo->get_fileinfo();
-	}
 	m_protocol_family.destroy_protocol(protocol_fileinfo);
 
 	return temp;
 }
 
-bool File::_get_file_info(string &fid, bool query_chunk, ProtocolFileInfo::FileInfoResult &fileinfo_result, FileInfo &fileinfo)
+bool File::_get_file_info(string &fid, bool query_chunk, FileInfo &fileinfo)
 {
 	//协议数据
 	ProtocolFileInfoReq* protocol_fileinfo_req = (ProtocolFileInfoReq*)m_protocol_family.create_protocol(PROTOCOL_FILE_INFO_REQ);
 	assert(protocol_fileinfo_req != NULL);
 
-	protocol_fileinfo_req->set_fid(fid);
-	protocol_fileinfo_req->set_query_chunkpath(query_chunk);
+	protocol_fileinfo_req->get_fid() = fid;
+	protocol_fileinfo_req->get_query_chunkpath() = query_chunk;
 
-	bool result = _query_master(protocol_fileinfo_req, fileinfo_result, fileinfo);
+	bool result = _query_master(protocol_fileinfo_req, fileinfo);
 	m_protocol_family.destroy_protocol(protocol_fileinfo_req);
 
 	return result;
@@ -206,11 +197,11 @@ bool File::send_file_to_chunk(string &local_file, string &fid, string &chunk_add
 	uint64_t filesize = file_stat.st_size;
 	uint64_t seg_offset = 0;
 	int seg_size = 0;
-	bool seg_finished = false;
 	bool result = true;
 
-	string chunk_path;
 	ByteBuffer byte_buffer(2048);
+	//TODO 发送开始协议
+
 	ProtocolFile *protocol_file = (ProtocolFile *)m_protocol_family.create_protocol(PROTOCOL_FILE);
 	assert(protocol_file != NULL);
 	while(seg_offset < filesize)
@@ -221,8 +212,8 @@ bool File::send_file_to_chunk(string &local_file, string &fid, string &chunk_add
 			seg_size = READ_SIZE;
 
 		//设置协议字段
-		protocol_file->set_result(0);
 		FileSeg &file_seg = protocol_file->get_file_seg();
+		file_seg.flag = FileSeg::FLAG_SEG;
 		file_seg.fid = fid;
 		file_seg.filesize = filesize;
 		file_seg.size = seg_size;
@@ -235,28 +226,32 @@ bool File::send_file_to_chunk(string &local_file, string &fid, string &chunk_add
 		}
 
 		//接收数据
-		ProtocolStoreResult *protocol_store_resp = (ProtocolStoreResult *)m_protocol_family.create_protocol(PROTOCOL_STORE_RESULT);
-		if(!TransProtocol::recv_protocol(&trans_socket, protocol_store_resp))
+		ProtocolFileSaveResult *protocol_save_result = (ProtocolFileSaveResult*)m_protocol_family.create_protocol(PROTOCOL_FILE_SAVE_RESULT);
+		assert(protocol_save_result != NULL);
+		if(!TransProtocol::recv_protocol(&trans_socket, protocol_save_result))
 		{
 			result = false;
-			m_protocol_family.destroy_protocol(protocol_store_resp);
+			m_protocol_family.destroy_protocol(protocol_save_result);
 			break;
 		}
 
-		int resp_result = protocol_store_resp->get_result();
-		chunk_path = protocol_store_resp->get_chunk_path();
-		m_protocol_family.destroy_protocol(protocol_store_resp);
-		if(resp_result != 0) //存储失败
+		FileSaveResult &save_result = protocol_save_result->get_save_result();
+		if(save_result.status != FileSaveResult::SEG_FAILED) //存储失败
 		{
 			result = false;
+			m_protocol_family.destroy_protocol(protocol_save_result);
 			break;
 		}
+		m_protocol_family.destroy_protocol(protocol_save_result);
 	}
 
 	if(result == true)
-		SLOG_INFO("Store succ. ChunkPath=%s.", chunk_path.c_str());
+	{
+		SLOG_INFO("send file succ. fid=%s.", fid.c_str());
+		//TODO 发送结束协议
+	}
 
-	m_protocol_family.destroy_protocol(protocol_store);
+
 	close(fd);
 	return result;
 }
