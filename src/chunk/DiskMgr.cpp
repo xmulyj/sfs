@@ -40,6 +40,19 @@ DiskMgr::DiskMgr()
 
 void DiskMgr::init()
 {
+	pthread_mutex_init(&m_disk_lock, NULL);
+	load_disk(); //加载磁盘
+	update();    //更新磁盘信息
+}
+
+void DiskMgr::uninit()
+{
+	pthread_mutex_destroy(&m_disk_lock);
+	unload_disk();
+}
+
+void DiskMgr::load_disk()
+{
 	int i;
 	char pre_fix[3];
 	struct stat path_stat;
@@ -108,8 +121,7 @@ void DiskMgr::init()
 		SLOG_DEBUG("load file succ. name=%s, size=%d.", name, m_disk_files[i].cur_pos);
 	}
 }
-
-void DiskMgr::uninit()
+void DiskMgr::unload_disk()
 {
 	int i;
 	for(i=0; i<DIR_NUM; ++i)
@@ -163,4 +175,23 @@ bool DiskMgr::save_file_to_disk(string &fid, char *buf, uint32_t size, ChunkPath
 
 	UNLOCK(disk_file.lock);
 	return true;
+}
+
+void DiskMgr::update()
+{
+	LOCK(m_disk_lock);
+
+	m_disk_space = 123456789;
+	m_disk_used = 2342234;
+
+	UNLOCK(m_disk_lock);
+}
+void DiskMgr::get_disk_space(uint64_t &total, uint64_t &used)
+{
+	LOCK(m_disk_lock);
+
+	total = m_disk_space;
+	used = m_disk_used;
+
+	UNLOCK(m_disk_lock);
 }

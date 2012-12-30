@@ -87,11 +87,10 @@ HANDLE_RESULT ChunkServer::on_timeout(int fd)
 
 	ChunkInfo& chunk_info = protocol_chunk_ping->get_chunk_info();
 	chunk_info.id = "chunk0";
-	chunk_info.ip = g_config_reader->GetValueString("ChunkIP");
+	chunk_info.ip = g_config_reader->GetValueString("ChunkIP");  //chunk ip
 	assert(chunk_info.ip != "");
-	chunk_info.port = g_config_reader->GetValueInt("ChunkPort", 3013);
-	chunk_info.disk_space = 123456789;
-	chunk_info.disk_used = 2342234;
+	chunk_info.port = g_config_reader->GetValueInt("ChunkPort", 3013);  //chunk端口
+	DiskMgr::get_instance()->get_disk_space(chunk_info.disk_space, chunk_info.disk_used);  //磁盘空间信息
 
 	if(!send_protocol(m_master_socket_handle, protocol_chunk_ping))
 	{
