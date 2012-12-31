@@ -96,9 +96,12 @@ HANDLE_RESULT ChunkServer::on_timeout(int fd)
 
 	if(!send_protocol(m_master_socket_handle, protocol_chunk_ping))
 	{
-		SLOG_ERROR("send ChunkPing to master failed.");
+		SLOG_ERROR("send chunk_ping to master failed.");
 		protocol_family->destroy_protocol(protocol_chunk_ping);
 	}
+	else
+		SLOG_DEBUG("send chunk_ping to master succ. chunk_id=%s, chunk_ip=%s, chunk_port=%d, disk_space=%lld, disk_used=%lld."
+					,chunk_info.id.c_str(), chunk_info.ip.c_str(), chunk_info.port, chunk_info.disk_space, chunk_info.disk_used);
 
 	return HANDLE_OK;
 }
