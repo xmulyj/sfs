@@ -69,7 +69,7 @@ bool File::save_file(FileInfo &file_info, string &local_file)
 			}
 		case FileInfo::RESULT_SAVING:  //正在保存
 			{
-				SLOG_DEBUG("fid=%s is saving.", fid.c_str());
+				SLOG_DEBUG("fid=%s is saving, waiting for file_info.", fid.c_str());
 				//TODO sleep(1);  //等1s后重新请求master获取文件信息
 				break;
 			}
