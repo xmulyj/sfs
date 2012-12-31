@@ -80,6 +80,8 @@ void ChunkServer::delete_protocol_family(ProtocolFamily* protocol_family)
 //定时发送ping包
 HANDLE_RESULT ChunkServer::on_timeout(int fd)
 {
+	DiskMgr::get_instance()->update();  //更新磁盘信息
+
 	//发送ping包到master
 	SFSProtocolFamily* protocol_family = (SFSProtocolFamily*)get_protocol_family();
 	ProtocolChunkPing *protocol_chunk_ping = (ProtocolChunkPing *)protocol_family->create_protocol(PROTOCOL_CHUNK_PING);

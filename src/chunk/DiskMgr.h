@@ -58,8 +58,8 @@ private:
 	DiskFile m_disk_files[DIR_NUM];
 
 	pthread_mutex_t m_disk_lock; //磁盘锁
-	uint64_t m_disk_space;     //磁盘空间
-	uint64_t m_disk_used;      //已用磁盘空间
+	uint64_t m_disk_space;       //磁盘空间KB
+	uint64_t m_disk_used;        //已用磁盘空间KB
 };
 
 #endif //_DISK_MANAGER_H_

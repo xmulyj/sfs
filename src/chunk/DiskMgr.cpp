@@ -16,6 +16,7 @@
 #include <string.h>
 #include <assert.h>
 #include <stdio.h>
+#include <sys/statfs.h>
 
 #include "ConfigReader.h"
 extern ConfigReader* g_config_reader;
@@ -181,11 +182,21 @@ void DiskMgr::update()
 {
 	LOCK(m_disk_lock);
 
-	m_disk_space = 123456789;
-	m_disk_used = 2342234;
+	SLOG_DEBUG("start update disk manager.");
+	m_disk_space = 0L;
+	m_disk_used  = 0L;
+	struct statfs disk_statfs;
+	if(statfs(m_disk_path.c_str(), &disk_statfs) >= 0)
+	{
+		m_disk_space = ((uint64_t)disk_statfs.f_bsize*(uint64_t)disk_statfs.f_blocks)>>10;               //KB
+		m_disk_used  = m_disk_space - ((uint64_t)disk_statfs.f_bsize*(uint64_t)disk_statfs.f_bfree)>>0;  //KB
+	}
+	else
+		SLOG_ERROR("statfs error. errno=%d(%s). set total_space=0, used_space=0.", errno, strerror(errno));
 
 	UNLOCK(m_disk_lock);
 }
+
 void DiskMgr::get_disk_space(uint64_t &total, uint64_t &used)
 {
 	LOCK(m_disk_lock);
