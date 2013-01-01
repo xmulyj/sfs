@@ -342,8 +342,10 @@ void ChunkWorker::on_file(SocketHandle socket_handle, Protocol *protocol)
 		case FileSeg::FLAG_END:  //已经结束
 		{
 			SLOG_INFO("client send file finished. fid=%s.", file_seg.fid.c_str());
-			if(save_file(file_seg.fid))
+			if(save_file(file_seg.fid)) //保存成功,等待master回复保存结果
 				return ;
+
+			//保存失败
 			SLOG_ERROR("save file failed. fid=%s.", file_seg.fid.c_str());
 			//删除正在保存的任务
 			file_task_delete(file_seg.fid);

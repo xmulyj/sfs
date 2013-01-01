@@ -50,8 +50,8 @@ private:
 	//返回值:true(请求成功), false(请求失败)
 	bool _get_file_info(string &fid, bool query_chunk, FileInfo &file_info);
 
-	bool send_file_to_chunk(string &local_file, string &fid, string &chunk_addr, int chunk_port);
-	bool send_file_protocol_to_chunk(TransSocket* trans_socket, ProtocolFile *protocol_store, ByteBuffer *byte_buffer, int fd);
+	bool _send_file_to_chunk(string &local_file, string &fid, string &chunk_addr, int chunk_port, FileInfo &file_info);
+	bool _send_file_protocol_to_chunk(TransSocket* trans_socket, ProtocolFile *protocol_store, ByteBuffer *byte_buffer, int fd);
 };
 
 }

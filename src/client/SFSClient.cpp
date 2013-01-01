@@ -31,7 +31,27 @@ int main(int agrc, char* argv[])
 	*/
 
 	string filename="/data/test.txt";
-	sfs_file.save_file(filename);
+	FileInfo file_info;
+	file_info.result = FileInfo::RESULT_INVALID;
+
+	if(sfs_file.save_file(file_info, filename) && file_info.result==FileInfo::RESULT_SUCC)
+	{
+		SLOG_INFO("save file succ. filename=%s. fid=%s, size=%d.", file_info.fid.c_str(), file_info.size);
+		int i;
+		for(i=0; i<file_info.get_chunkpath_count(); ++i)
+		{
+			ChunkPath &chunk_path = file_info.get_chunkpath(i);
+			SLOG_INFO("chunk_path[%d]: id=%s, ip=%s, port=%d, %d_%lld."
+						, i
+						, chunk_path.id.c_str()
+						, chunk_path.ip.c_str()
+						, chunk_path.port
+						, chunk_path.index
+						, chunk_path.offset);
+		}
+	}
+	else
+		SLOG_ERROR("save file failed.filename=%s, result=%d", filename.c_str(), file_info.result);
 
 	SLOG_UNINIT();
 	return 0;
