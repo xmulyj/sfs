@@ -153,14 +153,17 @@ bool File::_send_file_protocol_to_chunk(TransSocket* trans_socket, ProtocolFile 
 		return false;
 	}
 	//3 添加数据
-	FileSeg& file_seg = protocol_file->get_file_seg();
-	char *data_buffer = byte_buffer->get_append_buffer(file_seg.size);
-	if(read(fd, data_buffer, file_seg.size) != file_seg.size)
+	if(fd > 0)
 	{
-		SLOG_ERROR("read file error. errno=%d(%s).", errno, strerror(errno));
-		return false;
+		FileSeg& file_seg = protocol_file->get_file_seg();
+		char *data_buffer = byte_buffer->get_append_buffer(file_seg.size);
+		if(read(fd, data_buffer, file_seg.size) != file_seg.size)
+		{
+			SLOG_ERROR("read file error. errno=%d(%s).", errno, strerror(errno));
+			return false;
+		}
+		byte_buffer->set_append_size(file_seg.size);
 	}
-	byte_buffer->set_append_size(file_seg.size);
 	//4. 编码协议头
 	int body_length = byte_buffer->size()-header_length;
 	char *header_buffer = byte_buffer->get_data(0, header_length);
@@ -221,7 +224,8 @@ bool File::_send_file_to_chunk(string &local_file, string &fid, string &chunk_ad
 	start_file_seg.flag = FileSeg::FLAG_START;
 	start_file_seg.fid = fid;
 	start_file_seg.filesize = filesize;
-	if(!_send_file_protocol_to_chunk(&trans_socket, protocol_file, &byte_buffer, fd))
+	start_file_seg.size = 0;
+	if(!_send_file_protocol_to_chunk(&trans_socket, protocol_file, &byte_buffer, -1))
 	{
 		SLOG_ERROR("send start_file_seg failed. fid=%s.", fid.c_str());
 		m_protocol_family.destroy_protocol(protocol_file);
@@ -261,6 +265,8 @@ bool File::_send_file_to_chunk(string &local_file, string &fid, string &chunk_ad
 		file_seg.fid = fid;
 		file_seg.filesize = filesize;
 		file_seg.size = seg_size;
+		file_seg.offset = seg_offset;
+
 		seg_offset += seg_size;
 
 		if(!_send_file_protocol_to_chunk(&trans_socket, protocol_file, &byte_buffer, fd))
@@ -286,7 +292,7 @@ bool File::_send_file_to_chunk(string &local_file, string &fid, string &chunk_ad
 		}
 
 		FileSaveResult &save_result = protocol_save_result->get_save_result();
-		if(save_result.status != FileSaveResult::SEG_FAILED) //存储失败
+		if(save_result.status == FileSaveResult::SEG_FAILED) //存储失败
 		{
 			result = false;
 			m_protocol_family.destroy_protocol(protocol_save_result);
@@ -304,11 +310,14 @@ bool File::_send_file_to_chunk(string &local_file, string &fid, string &chunk_ad
 		return false;
 
 	//3 发送结束协议(该协议没有回复)
+	protocol_file = (ProtocolFile *)m_protocol_family.create_protocol(PROTOCOL_FILE);
+	assert(protocol_file != NULL);
 	FileSeg &end_file_seg = protocol_file->get_file_seg();
 	end_file_seg.flag = FileSeg::FLAG_END;
 	end_file_seg.fid = fid;
 	end_file_seg.filesize = filesize;
-	if(!_send_file_protocol_to_chunk(&trans_socket, protocol_file, &byte_buffer, fd))
+	end_file_seg.size = 0;
+	if(!_send_file_protocol_to_chunk(&trans_socket, protocol_file, &byte_buffer, -1))
 	{
 		SLOG_ERROR("send end_file_seg failed. fid=%s.", fid.c_str());
 		m_protocol_family.destroy_protocol(protocol_file);
@@ -326,6 +335,7 @@ bool File::_send_file_to_chunk(string &local_file, string &fid, string &chunk_ad
 		return false;
 	}
 	file_info = protocol_file_info->get_fileinfo();
+	m_protocol_family.destroy_protocol(protocol_file_info);
 
 	return true;
 }

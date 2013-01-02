@@ -141,9 +141,9 @@ bool DiskMgr::save_file_to_disk(string &fid, char *buf, uint32_t size, ChunkPath
 	{
 		index *= 16;
 		if(temp[i]>='A'&&temp[i]<='F')
-			index += temp[i]-'A';
+			index += temp[i]-'A'+10;
 		else if(temp[i]>='a'&&temp[i]<='f')
-			index += temp[i]-'a';
+			index += temp[i]-'a'+10;
 		else
 			return false;
 	}
@@ -172,6 +172,7 @@ bool DiskMgr::save_file_to_disk(string &fid, char *buf, uint32_t size, ChunkPath
 	chunkpath.offset = disk_file.cur_pos;
 
 	fwrite(buf, 1, size, disk_file.fp);
+	fflush(disk_file.fp);
 	disk_file.cur_pos += size;
 
 	UNLOCK(disk_file.lock);
@@ -189,7 +190,7 @@ void DiskMgr::update()
 	if(statfs(m_disk_path.c_str(), &disk_statfs) >= 0)
 	{
 		m_disk_space = ((uint64_t)disk_statfs.f_bsize*(uint64_t)disk_statfs.f_blocks)>>10;               //KB
-		m_disk_used  = m_disk_space - ((uint64_t)disk_statfs.f_bsize*(uint64_t)disk_statfs.f_bfree)>>0;  //KB
+		m_disk_used  = m_disk_space - (((uint64_t)disk_statfs.f_bsize*(uint64_t)disk_statfs.f_bfree)>>10);  //KB
 	}
 	else
 		SLOG_ERROR("statfs error. errno=%d(%s). set total_space=0, used_space=0.", errno, strerror(errno));

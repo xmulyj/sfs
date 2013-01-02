@@ -1,0 +1,85 @@
+2013-01-03 00:35:56 [SLOG INIT]current config of SLOG:log_level=1,log_file=./log/server.log,max_log_size=20(M),max_log_count=30,flush_size=1048576,flush_interval=2,config_update_interval=30.
+2013-01-03 00:35:56 [b6f5fb70, INFO][ConnectThread.cpp:run_thread(14)] ... ConnectThread[ID=0] is running...
+2013-01-03 00:35:59 [b77628e0, DEBUG][ListenHandler.cpp:on_readable(20)] ... on readable
+2013-01-03 00:35:59 [b77628e0, DEBUG] ... connect thread pool accept fd=10
+2013-01-03 00:35:59 [b77628e0, DEBUG] ... ThreadPool dispatch new task to Thread[ID=0,Addr=972e5e8]
+2013-01-03 00:35:59 [b77628e0, DEBUG] ... Thread[ID=0, Addr=972e5e8] add task
+2013-01-03 00:35:59 [b6f5fb70, DEBUG] ... Thread[ID=0, Addr=972e5e8] pipe fd=6 readable
+2013-01-03 00:35:59 [b6f5fb70, DEBUG][ConnectThread.cpp:on_notify_add_task(24)] ... Thread[ID=0,Addr=972e5b8] do task
+2013-01-03 00:35:59 [b6f5fb70, DEBUG][ConnectThread.cpp:on_notify_add_task(28)] ... thread accept trans fd=10
+2013-01-03 00:35:59 [b6f5fb70, DEBUG][NetInterface.cpp:accept(96)] ... accept trans fd=10
+2013-01-03 00:35:59 [b6f5fb70, INFO][SocketManager.cpp:add_passive_trans_socket(91)] ... receive net connect from ip:127.0.0.1, fd=10
+2013-01-03 00:35:59 [b6f5fb70, DEBUG][SocketManager.cpp:new_trans_socket(35)] ... create TransSocket[9786dd4] from trans_socket_memcache
+2013-01-03 00:35:59 [b6f5fb70, DEBUG] ... Thread[ID=0] handle new socket. fd=10
+2013-01-03 00:36:02 [b6f5fb70, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:6, body_length:43
+2013-01-03 00:36:02 [b6f5fb70, INFO] ... receive chunk_ping protocol.fd=10, chunk_id=chunk0, chunk_addr=127.0.0.1, chunk_port=3013, disk_space=29979608, disk_used=3853380.
+2013-01-03 00:36:02 [b6f5fb70, DEBUG] ... add a new chunk info[chunk_id=chunk0, ip=127.0.0.1, port=3013, disk_space=29979608, disk_used=3853380]. total chunk:1.
+2013-01-03 00:36:02 [b6f5fb70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=10
+2013-01-03 00:36:02 [b6f5fb70, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:7, body_length:8
+2013-01-03 00:36:02 [b6f5fb70, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 24 bytes data waiting to send on socket fd=10
+2013-01-03 00:36:02 [b6f5fb70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 24 bytes data of socket fd=10
+2013-01-03 00:36:02 [b6f5fb70, INFO] ... Thread[ID=0] send protocol[details=ChunkPingResp Protocol] succ. fd=10, protocol=9787900
+2013-01-03 00:36:03 [b77628e0, DEBUG][ListenHandler.cpp:on_readable(20)] ... on readable
+2013-01-03 00:36:03 [b77628e0, DEBUG] ... connect thread pool accept fd=11
+2013-01-03 00:36:03 [b77628e0, DEBUG] ... ThreadPool dispatch new task to Thread[ID=0,Addr=972e5e8]
+2013-01-03 00:36:03 [b77628e0, DEBUG] ... Thread[ID=0, Addr=972e5e8] add task
+2013-01-03 00:36:03 [b6f5fb70, DEBUG] ... Thread[ID=0, Addr=972e5e8] pipe fd=6 readable
+2013-01-03 00:36:03 [b6f5fb70, DEBUG][ConnectThread.cpp:on_notify_add_task(24)] ... Thread[ID=0,Addr=972e5b8] do task
+2013-01-03 00:36:03 [b6f5fb70, DEBUG][ConnectThread.cpp:on_notify_add_task(28)] ... thread accept trans fd=11
+2013-01-03 00:36:03 [b6f5fb70, DEBUG][NetInterface.cpp:accept(96)] ... accept trans fd=11
+2013-01-03 00:36:03 [b6f5fb70, INFO][SocketManager.cpp:add_passive_trans_socket(91)] ... receive net connect from ip:127.0.0.1, fd=11
+2013-01-03 00:36:03 [b6f5fb70, DEBUG][SocketManager.cpp:new_trans_socket(35)] ... create TransSocket[978816c] from trans_socket_memcache
+2013-01-03 00:36:03 [b6f5fb70, DEBUG] ... Thread[ID=0] handle new socket. fd=11
+2013-01-03 00:36:03 [b6f5fb70, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:0, body_length:14
+2013-01-03 00:36:03 [b6f5fb70, INFO] ... receive file_info_req protocol.fd=11, fid=AAACCCDDD, query=1
+2013-01-03 00:36:03 [b6f5fb70, INFO] ... add saving task:fid=AAACCCDDD insert_time=1357144563.
+2013-01-03 00:36:03 [b6f5fb70, DEBUG] ... dispatch chunk[id=chunk0,ip=127.0.0.1,port=3013] for fid=AAACCCDDD.
+2013-01-03 00:36:03 [b6f5fb70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=11
+2013-01-03 00:36:03 [b6f5fb70, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:1, body_length:68
+2013-01-03 00:36:03 [b6f5fb70, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 84 bytes data waiting to send on socket fd=11
+2013-01-03 00:36:03 [b6f5fb70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 84 bytes data of socket fd=11
+2013-01-03 00:36:03 [b6f5fb70, INFO] ... Thread[ID=0] send protocol[details=FileInfo Protocol] succ. fd=11, protocol=9787ed8
+2013-01-03 00:36:03 [b6f5fb70, ERROR][Socket.cpp:recv_data(260)] ... peer close socket gracefully. fd=11
+2013-01-03 00:36:03 [b6f5fb70, ERROR][NetInterface.cpp:on_readable(148)] ... receive protocol header error. fd=11
+2013-01-03 00:36:03 [b6f5fb70, DEBUG][SocketManager.cpp:remove_trans_socket(141)] ... remove trans socket from socket manager. close fd=11
+2013-01-03 00:36:03 [b6f5fb70, DEBUG][Socket.cpp:~TransSocket(137)] ... ~TransSocket().remain 0 bytes data unsend
+2013-01-03 00:36:03 [b6f5fb70, DEBUG][Socket.cpp:~TransSocket(145)] ... ~TransSocket().remain 0 bytes data unrecv
+2013-01-03 00:36:03 [b6f5fb70, INFO] ... Thread[ID=0] handle socket error. fd=11
+2013-01-03 00:36:03 [b77628e0, DEBUG][ListenHandler.cpp:on_readable(20)] ... on readable
+2013-01-03 00:36:03 [b77628e0, DEBUG] ... connect thread pool accept fd=11
+2013-01-03 00:36:03 [b77628e0, DEBUG] ... ThreadPool dispatch new task to Thread[ID=0,Addr=972e5e8]
+2013-01-03 00:36:03 [b77628e0, DEBUG] ... Thread[ID=0, Addr=972e5e8] add task
+2013-01-03 00:36:03 [b6f5fb70, DEBUG] ... Thread[ID=0, Addr=972e5e8] pipe fd=6 readable
+2013-01-03 00:36:03 [b6f5fb70, DEBUG][ConnectThread.cpp:on_notify_add_task(24)] ... Thread[ID=0,Addr=972e5b8] do task
+2013-01-03 00:36:03 [b6f5fb70, DEBUG][ConnectThread.cpp:on_notify_add_task(28)] ... thread accept trans fd=11
+2013-01-03 00:36:03 [b6f5fb70, DEBUG][NetInterface.cpp:accept(96)] ... accept trans fd=11
+2013-01-03 00:36:03 [b6f5fb70, INFO][SocketManager.cpp:add_passive_trans_socket(91)] ... receive net connect from ip:127.0.0.1, fd=11
+2013-01-03 00:36:03 [b6f5fb70, DEBUG][SocketManager.cpp:new_trans_socket(35)] ... create TransSocket[978816c] from trans_socket_memcache
+2013-01-03 00:36:03 [b6f5fb70, DEBUG] ... Thread[ID=0] handle new socket. fd=11
+2013-01-03 00:36:03 [b6f5fb70, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:1, body_length:67
+2013-01-03 00:36:03 [b6f5fb70, INFO] ... receive file_info protocol. fd=11, result=4, fid=AAACCCDDD.
+2013-01-03 00:36:03 [b6f5fb70, INFO] ... save file info succ: fid=AAACCCDDD, name=, size=48, chunkid=00000, addr=127.0.0.1, port=3013, index=0, offset=0.
+2013-01-03 00:36:03 [b6f5fb70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=11
+2013-01-03 00:36:03 [b6f5fb70, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:2, body_length:17
+2013-01-03 00:36:03 [b6f5fb70, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 33 bytes data waiting to send on socket fd=11
+2013-01-03 00:36:03 [b6f5fb70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 33 bytes data of socket fd=11
+2013-01-03 00:36:03 [b6f5fb70, INFO] ... Thread[ID=0] send protocol[details=FileInfoSaveResult Protocol] succ. fd=11, protocol=977f770
+2013-01-03 00:36:14 [b6f5fb70, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:6, body_length:43
+2013-01-03 00:36:14 [b6f5fb70, INFO] ... receive chunk_ping protocol.fd=10, chunk_id=chunk0, chunk_addr=127.0.0.1, chunk_port=3013, disk_space=29979608, disk_used=3853404.
+2013-01-03 00:36:14 [b6f5fb70, DEBUG] ... update chunk info[chunk_id=chunk0, ip=127.0.0.1, port=3013, disk_space=29979608, disk_used=3853404]. total chunk:1.
+2013-01-03 00:36:14 [b6f5fb70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=10
+2013-01-03 00:36:14 [b6f5fb70, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:7, body_length:8
+2013-01-03 00:36:14 [b6f5fb70, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 24 bytes data waiting to send on socket fd=10
+2013-01-03 00:36:14 [b6f5fb70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 24 bytes data of socket fd=10
+2013-01-03 00:36:14 [b6f5fb70, INFO] ... Thread[ID=0] send protocol[details=ChunkPingResp Protocol] succ. fd=10, protocol=977f770
+2013-01-03 00:36:15 [b6f5fb70, ERROR][Socket.cpp:recv_data(260)] ... peer close socket gracefully. fd=11
+2013-01-03 00:36:15 [b6f5fb70, ERROR][NetInterface.cpp:on_readable(148)] ... receive protocol header error. fd=11
+2013-01-03 00:36:15 [b6f5fb70, DEBUG][SocketManager.cpp:remove_trans_socket(141)] ... remove trans socket from socket manager. close fd=11
+2013-01-03 00:36:15 [b6f5fb70, DEBUG][Socket.cpp:~TransSocket(137)] ... ~TransSocket().remain 0 bytes data unsend
+2013-01-03 00:36:15 [b6f5fb70, DEBUG][Socket.cpp:~TransSocket(145)] ... ~TransSocket().remain 0 bytes data unrecv
+2013-01-03 00:36:15 [b6f5fb70, INFO] ... Thread[ID=0] handle socket error. fd=11
+2013-01-03 00:36:28 [SLOG INIT]current config of SLOG:log_level=1,log_file=./log/server.log,max_log_size=20(M),max_log_count=30,flush_size=1048576,flush_interval=2,config_update_interval=30.
+2013-01-03 00:36:31 [b6f5fb70, DEBUG][SocketManager.cpp:remove_trans_socket(141)] ... remove trans socket from socket manager. close fd=10
+2013-01-03 00:36:31 [b6f5fb70, DEBUG][Socket.cpp:~TransSocket(137)] ... ~TransSocket().remain 0 bytes data unsend
+2013-01-03 00:36:31 [b6f5fb70, DEBUG][Socket.cpp:~TransSocket(145)] ... ~TransSocket().remain 0 bytes data unrecv
+2013-01-03 00:36:31 [b6f5fb70, INFO] ... Thread[ID=0] handle socket error. fd=10

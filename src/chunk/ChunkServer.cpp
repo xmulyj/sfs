@@ -47,7 +47,8 @@ bool ChunkServer::start_server()
 	io_demuxer->register_event(linsten_socket.get_handle(), EVENT_READ|EVENT_PERSIST, -1, &listen_handler);
 
 	//注册定时器
-	if(io_demuxer->register_event(-1, EVENT_PERSIST, 3000, this) == -1)
+	//if(io_demuxer->register_event(-1, EVENT_PERSIST, 3000, this) == -1)
+	if(io_demuxer->register_event(-1, EVENT_INVALID, 3000, this) == -1)
 	{
 		SLOG_ERROR("register timer handler failed.");
 		return false;
@@ -87,7 +88,7 @@ HANDLE_RESULT ChunkServer::on_timeout(int fd)
 	ProtocolChunkPing *protocol_chunk_ping = (ProtocolChunkPing *)protocol_family->create_protocol(PROTOCOL_CHUNK_PING);
 	assert(protocol_chunk_ping != NULL);
 
-	ChunkInfo& chunk_info = protocol_chunk_ping->get_chunk_info();
+	ChunkInfo &chunk_info = protocol_chunk_ping->get_chunk_info();
 	chunk_info.id = "chunk0";
 	chunk_info.ip = g_config_reader->GetValueString("ChunkIP");  //chunk ip
 	assert(chunk_info.ip != "");

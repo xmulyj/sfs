@@ -287,7 +287,7 @@ void ChunkWorker::on_file(SocketHandle socket_handle, Protocol *protocol)
 
 	ProtocolFile *protocol_file = (ProtocolFile *)protocol;
 	FileSeg &file_seg = protocol_file->get_file_seg();
-	SLOG_INFO("receive File Protocol[file info: flag=%d, fid=%s, name=%s, filesize=%d] [seg info: offset=%lld, index=%d, size=%d]."
+	SLOG_INFO("receive File Protocol[file: flag=%d, fid=%s, name=%s, filesize=%d] [seg info: offset=%d, index=%d, size=%d]."
 				,file_seg.flag, file_seg.fid.c_str(), file_seg.name.c_str(), file_seg.filesize, file_seg.offset, file_seg.index, file_seg.size);
 
 	switch(file_seg.flag)

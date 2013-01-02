@@ -56,7 +56,7 @@ bool MasterServer::on_recv_protocol(SocketHandle socket_handle, Protocol *protoc
 	}
 	case PROTOCOL_FILE_INFO:  //chunk 上报文件信息
 	{
-
+		on_file_info(socket_handle, protocol);
 		break;
 	}
 	default:
@@ -120,6 +120,7 @@ void MasterServer::add_chunk(ChunkInfo &chunk_info)
 	map<string, ChunkInfo>::iterator it = m_chunk_manager.find(chunk_info.id);
 	if(it == m_chunk_manager.end())
 	{
+		m_chunk_manager.insert(std::make_pair(chunk_info.id, chunk_info));
 		SLOG_DEBUG("add a new chunk info[chunk_id=%s, ip=%s, port=%d, disk_space=%lld, disk_used=%lld]. total chunk:%d."
 					,chunk_info.id.c_str()
 					,chunk_info.ip.c_str()
@@ -127,10 +128,10 @@ void MasterServer::add_chunk(ChunkInfo &chunk_info)
 					,chunk_info.disk_space
 					,chunk_info.disk_used
 					,m_chunk_manager.size());
-		m_chunk_manager.insert(std::make_pair(chunk_info.id, chunk_info));
 	}
 	else
 	{
+		it->second = chunk_info;
 		SLOG_DEBUG("update chunk info[chunk_id=%s, ip=%s, port=%d, disk_space=%lld, disk_used=%lld]. total chunk:%d."
 					,chunk_info.id.c_str()
 					,chunk_info.ip.c_str()
@@ -138,7 +139,6 @@ void MasterServer::add_chunk(ChunkInfo &chunk_info)
 					,chunk_info.disk_space
 					,chunk_info.disk_used
 					,m_chunk_manager.size());
-		it->second = chunk_info;
 	}
 }
 
@@ -221,7 +221,7 @@ void MasterServer::on_chunk_ping(SocketHandle socket_handle, Protocol *protocol)
 	assert(protocol_chunkping_resp);
 
 	ProtocolChunkPing *protocol_chunkping = (ProtocolChunkPing *)protocol;
-	ChunkInfo& chunk_info = protocol_chunkping->get_chunk_info();
+	ChunkInfo &chunk_info = protocol_chunkping->get_chunk_info();
 	SLOG_INFO("receive chunk_ping protocol.fd=%d, chunk_id=%s, chunk_addr=%s, chunk_port=%d, disk_space=%lld, disk_used=%lld."
 				,socket_handle
 				,chunk_info.id.c_str()
@@ -258,7 +258,7 @@ void MasterServer::on_file_info_req(SocketHandle socket_handle, Protocol *protoc
 	ProtocolFileInfoReq *protocol_file_info_req = (ProtocolFileInfoReq *)protocol;
 	const string& fid = protocol_file_info_req->get_fid();
 	bool query_chunkpath = protocol_file_info_req->get_query_chunkpath();
-	SLOG_INFO("receive file_info protocol.fd=%d, fid=%s, query=%d", socket_handle, fid.c_str(), query_chunkpath?1:0);
+	SLOG_INFO("receive file_info_req protocol.fd=%d, fid=%s, query=%d", socket_handle, fid.c_str(), query_chunkpath?1:0);
 
 	FileInfo& file_info = protocol_fileinfo->get_fileinfo();
 	if(get_fileinfo(fid, file_info))  //已经存在
@@ -295,6 +295,8 @@ void MasterServer::on_file_info_req(SocketHandle socket_handle, Protocol *protoc
 			chunk_path.index = 0;  //无效
 			chunk_path.offset = 0; //无效
 			file_info.add_chunkpath(chunk_path);
+
+			add_saving_task(fid);
 			SLOG_DEBUG("dispatch chunk[id=%s,ip=%s,port=%d] for fid=%s.", chunk_info.id.c_str(), chunk_info.ip.c_str(), chunk_info.port, fid.c_str());
 		}
 		else
