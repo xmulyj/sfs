@@ -51,7 +51,7 @@ bool SHA1::hash(string &file, string &sha)
 	}
 
 	close(fd);
-	return result==1?0:-1;
+	return result==1?true:false;
 }
 
 #endif //_LIB_SHA1_H_

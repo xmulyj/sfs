@@ -8,6 +8,7 @@
 #include "SFSFile.h"
 #include "slog.h"
 #include "TransProtocol.h"
+#include "sha1.h"
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -30,8 +31,15 @@ bool File::get_file_info(string &fid, FileInfo &file_info)
 
 bool File::save_file(FileInfo &file_info, string &local_file)
 {
-	string fid="AAACCCDDD";
+	string fid;
 	int retry_time = 0;
+
+	if(!SHA1::hash(local_file, fid))
+	{
+		SLOG_ERROR("get fid failed. file=%s.", local_file.c_str());
+		return false;
+	}
+	SLOG_DEBUG("get fid: file=%s fid=%s.", local_file.c_str(), fid.c_str());
 
 	while(true)
 	{
@@ -80,7 +88,7 @@ bool File::save_file(FileInfo &file_info, string &local_file)
 					return true;
 				}
 				SLOG_DEBUG("fid=%s is saving, waiting for file_info. retry_time=%d.", fid.c_str(), retry_time);
-				sleep(1);  //等1s后重新请求master获取文件信息
+				sleep(2);  //等1s后重新请求master获取文件信息
 				break;
 			}
 		default:

@@ -119,7 +119,7 @@ void DiskMgr::load_disk()
 		m_disk_files[i].cur_pos = (uint32_t)ftell(m_disk_files[i].fp);
 		m_disk_files[i].index = index;
 
-		SLOG_DEBUG("load file succ. name=%s, size=%d.", name, m_disk_files[i].cur_pos);
+		//SLOG_DEBUG("load file succ. name=%s, size=%d.", name, m_disk_files[i].cur_pos);
 	}
 }
 void DiskMgr::unload_disk()
@@ -140,10 +140,12 @@ bool DiskMgr::save_file_to_disk(string &fid, char *buf, uint32_t size, ChunkPath
 	for(; i<2; ++i)  //get index
 	{
 		index *= 16;
-		if(temp[i]>='A'&&temp[i]<='F')
+		if(temp[i]>='A' && temp[i]<='F')
 			index += temp[i]-'A'+10;
-		else if(temp[i]>='a'&&temp[i]<='f')
+		else if(temp[i]>='a' && temp[i]<='f')
 			index += temp[i]-'a'+10;
+		else if(temp[i]>='0' && temp[i]<='9')
+			index += temp[i]-'0';
 		else
 			return false;
 	}

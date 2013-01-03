@@ -1,579 +1,445 @@
-2013-01-03 11:41:01 [SLOG INIT]current config of SLOG:log_level=1,log_file=./log/server.log,max_log_size=20(M),max_log_count=30,flush_size=1048576,flush_interval=2,config_update_interval=30.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/00.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/00/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/01.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/01/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/02.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/02/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/03.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/03/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/04.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/04/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/05.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/05/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/06.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/06/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/07.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/07/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/08.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/08/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/09.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/09/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/0A.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/0A/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/0B.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/0B/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/0C.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/0C/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/0D.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/0D/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/0E.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/0E/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/0F.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/0F/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/10.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/10/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/11.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/11/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/12.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/12/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/13.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/13/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/14.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/14/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/15.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/15/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/16.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/16/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/17.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/17/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/18.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/18/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/19.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/19/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/1A.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/1A/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/1B.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/1B/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/1C.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/1C/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/1D.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/1D/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/1E.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/1E/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/1F.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/1F/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/20.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/20/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/21.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/21/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/22.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/22/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/23.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/23/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/24.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/24/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/25.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/25/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/26.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/26/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/27.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/27/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/28.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/28/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/29.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/29/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/2A.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/2A/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/2B.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/2B/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/2C.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/2C/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/2D.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/2D/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/2E.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/2E/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/2F.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/2F/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/30.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/30/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/31.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/31/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/32.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/32/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/33.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/33/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/34.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/34/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/35.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/35/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/36.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/36/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/37.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/37/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/38.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/38/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/39.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/39/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/3A.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/3A/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/3B.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/3B/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/3C.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/3C/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/3D.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/3D/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/3E.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/3E/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/3F.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/3F/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/40.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/40/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/41.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/41/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/42.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/42/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/43.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/43/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/44.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/44/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/45.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/45/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/46.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/46/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/47.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/47/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/48.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/48/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/49.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/49/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/4A.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/4A/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/4B.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/4B/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/4C.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/4C/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/4D.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/4D/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/4E.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/4E/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/4F.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/4F/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/50.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/50/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/51.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/51/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/52.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/52/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/53.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/53/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/54.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/54/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/55.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/55/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/56.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/56/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/57.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/57/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/58.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/58/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/59.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/59/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/5A.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/5A/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/5B.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/5B/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/5C.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/5C/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/5D.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/5D/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/5E.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/5E/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/5F.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/5F/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/60.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/60/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/61.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/61/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/62.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/62/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/63.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/63/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/64.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/64/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/65.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/65/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/66.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/66/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/67.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/67/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/68.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/68/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/69.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/69/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/6A.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/6A/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/6B.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/6B/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/6C.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/6C/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/6D.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/6D/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/6E.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/6E/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/6F.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/6F/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/70.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/70/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/71.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/71/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/72.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/72/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/73.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/73/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/74.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/74/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/75.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/75/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/76.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/76/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/77.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/77/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/78.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/78/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/79.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/79/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/7A.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/7A/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/7B.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/7B/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/7C.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/7C/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/7D.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/7D/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/7E.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/7E/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/7F.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/7F/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/80.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/80/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/81.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/81/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/82.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/82/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/83.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/83/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/84.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/84/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/85.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/85/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/86.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/86/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/87.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/87/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/88.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/88/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/89.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/89/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/8A.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/8A/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/8B.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/8B/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/8C.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/8C/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/8D.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/8D/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/8E.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/8E/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/8F.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/8F/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/90.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/90/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/91.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/91/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/92.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/92/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/93.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/93/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/94.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/94/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/95.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/95/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/96.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/96/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/97.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/97/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/98.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/98/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/99.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/99/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/9A.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/9A/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/9B.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/9B/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/9C.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/9C/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/9D.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/9D/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/9E.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/9E/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/9F.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/9F/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/A0/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A1.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/A1/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A2.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/A2/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A3.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/A3/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A4.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/A4/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A5.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/A5/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A6.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/A6/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A7.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/A7/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A8.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/A8/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A9.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/A9/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/AA.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/AA/00, size=144.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/AB.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/AB/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/AC.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/AC/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/AD.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/AD/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/AE.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/AE/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/AF.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/AF/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/B0/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B1.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/B1/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B2.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/B2/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B3.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/B3/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B4.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/B4/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B5.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/B5/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B6.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/B6/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B7.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/B7/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B8.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/B8/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B9.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/B9/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/BA.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/BA/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/BB.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/BB/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/BC.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/BC/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/BD.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/BD/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/BE.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/BE/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/BF.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/BF/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/C0/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C1.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/C1/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C2.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/C2/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C3.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/C3/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C4.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/C4/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C5.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/C5/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C6.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/C6/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C7.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/C7/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C8.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/C8/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C9.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/C9/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/CA.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/CA/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/CB.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/CB/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/CC.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/CC/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/CD.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/CD/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/CE.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/CE/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/CF.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/CF/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/D0/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D1.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/D1/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D2.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/D2/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D3.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/D3/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D4.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/D4/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D5.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/D5/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D6.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/D6/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D7.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/D7/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D8.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/D8/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D9.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/D9/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/DA.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/DA/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/DB.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/DB/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/DC.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/DC/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/DD.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/DD/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/DE.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/DE/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/DF.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/DF/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/E0/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E1.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/E1/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E2.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/E2/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E3.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/E3/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E4.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/E4/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E5.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/E5/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E6.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/E6/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E7.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/E7/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E8.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/E8/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E9.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/E9/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/EA.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/EA/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/EB.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/EB/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/EC.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/EC/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/ED.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/ED/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/EE.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/EE/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/EF.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/EF/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/F0/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F1.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/F1/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F2.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/F2/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F3.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/F3/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F4.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/F4/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F5.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/F5/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F6.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/F6/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F7.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/F7/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F8.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/F8/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F9.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/F9/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/FA.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/FA/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/FB.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/FB/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/FC.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/FC/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/FD.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/FD/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/FE.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/FE/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/FF.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... load file succ. name=/tmp/sfs_chunk/FF/00, size=0.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG] ... start update disk manager.
-2013-01-03 11:41:01 [b77aa8e0, DEBUG][SocketManager.cpp:new_trans_socket(35)] ... create TransSocket[8222cf4] from trans_socket_memcache
-2013-01-03 11:41:01 [b6eb5b70, INFO][ConnectThread.cpp:run_thread(14)] ... ConnectThread[ID=0] is running...
-2013-01-03 11:41:01 [b66b4b70, INFO][ConnectThread.cpp:run_thread(14)] ... ConnectThread[ID=1] is running...
-2013-01-03 11:41:01 [b5eb3b70, INFO][ConnectThread.cpp:run_thread(14)] ... ConnectThread[ID=2] is running...
-2013-01-03 11:41:04 [b77aa8e0, DEBUG] ... start update disk manager.
-2013-01-03 11:41:04 [b77aa8e0, DEBUG] ... send chunk_ping to master succ. chunk_id=chunk0, chunk_ip=127.0.0.1, chunk_port=3013, disk_space=29979608, disk_used=3853504.
-2013-01-03 11:41:04 [b77aa8e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=269
-2013-01-03 11:41:04 [b77aa8e0, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:6, body_length:43
-2013-01-03 11:41:04 [b77aa8e0, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 59 bytes data waiting to send on socket fd=269
-2013-01-03 11:41:04 [b77aa8e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 59 bytes data of socket fd=269
-2013-01-03 11:41:04 [b77aa8e0, INFO] ... Send protocol[details=ChunkPing Protocol] succ. fd=269, protocol=82a36b0
-2013-01-03 11:41:04 [b77aa8e0, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:7, body_length:8
-2013-01-03 11:41:04 [b77aa8e0, INFO] ... receive chunk_ping_resp protocol from master. fd=269, result=1.
-2013-01-03 11:41:06 [b77aa8e0, DEBUG][ListenHandler.cpp:on_readable(20)] ... on readable
-2013-01-03 11:41:06 [b77aa8e0, DEBUG] ... connect thread pool accept fd=273
-2013-01-03 11:41:06 [b77aa8e0, DEBUG] ... ThreadPool dispatch new task to Thread[ID=0,Addr=8222910]
-2013-01-03 11:41:06 [b77aa8e0, DEBUG] ... Thread[ID=0, Addr=8222910] add task
-2013-01-03 11:41:06 [b6eb5b70, DEBUG] ... Thread[ID=0, Addr=8222910] pipe fd=263 readable
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][ConnectThread.cpp:on_notify_add_task(24)] ... Thread[ID=0,Addr=82228e0] do task
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][ConnectThread.cpp:on_notify_add_task(28)] ... thread accept trans fd=273
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][NetInterface.cpp:accept(96)] ... accept trans fd=273
-2013-01-03 11:41:06 [b6eb5b70, INFO][SocketManager.cpp:add_passive_trans_socket(91)] ... receive net connect from ip:127.0.0.1, fd=273
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][SocketManager.cpp:new_trans_socket(35)] ... create TransSocket[82a3f9c] from trans_socket_memcache
-2013-01-03 11:41:06 [b6eb5b70, DEBUG] ... Thread[ID=0] handle new socket. fd=273
-2013-01-03 11:41:06 [b6eb5b70, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:4, body_length:37
-2013-01-03 11:41:06 [b6eb5b70, INFO] ... receive File Protocol[file: flag=0, fid=AAACCCDDD, name=, filesize=48] [seg info: offset=1104, index=48, size=0].
-2013-01-03 11:41:06 [b6eb5b70, DEBUG] ... create file task succ.fid=AAACCCDDD, file_name=, file_size=48, seg_size=0.
-2013-01-03 11:41:06 [b6eb5b70, INFO] ... create file task succ. fid=AAACCCDDD, name=, size=48.
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=273
-2013-01-03 11:41:06 [b6eb5b70, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:5, body_length:21
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 37 bytes data waiting to send on socket fd=273
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 37 bytes data of socket fd=273
-2013-01-03 11:41:06 [b6eb5b70, INFO] ... Thread[ID=0] send protocol[details=SaveStatus Protocol] succ. fd=273, protocol=82a4b90
-2013-01-03 11:41:06 [b6eb5b70, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:4, body_length:85
-2013-01-03 11:41:06 [b6eb5b70, INFO] ... receive File Protocol[file: flag=1, fid=AAACCCDDD, name=, filesize=48] [seg info: offset=0, index=48, size=48].
-2013-01-03 11:41:06 [b6eb5b70, DEBUG] ... file_task:fid=AAACCCDDD, size=48. file_seg:total_size=48, offset=0, size=48.
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=273
-2013-01-03 11:41:06 [b6eb5b70, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:5, body_length:21
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 37 bytes data waiting to send on socket fd=273
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 37 bytes data of socket fd=273
-2013-01-03 11:41:06 [b6eb5b70, INFO] ... Thread[ID=0] send protocol[details=SaveStatus Protocol] succ. fd=273, protocol=82a4e70
-2013-01-03 11:41:06 [b6eb5b70, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:4, body_length:37
-2013-01-03 11:41:06 [b6eb5b70, INFO] ... receive File Protocol[file: flag=2, fid=AAACCCDDD, name=, filesize=48] [seg info: offset=-1077197584, index=0, size=0].
-2013-01-03 11:41:06 [b6eb5b70, INFO] ... client send file finished. fid=AAACCCDDD.
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][SocketManager.cpp:new_trans_socket(35)] ... create TransSocket[82a4894] from trans_socket_memcache
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=274
-2013-01-03 11:41:06 [b6eb5b70, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:1, body_length:67
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 83 bytes data waiting to send on socket fd=274
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 83 bytes data of socket fd=274
-2013-01-03 11:41:06 [b6eb5b70, INFO] ... Thread[ID=0] send protocol[details=FileInfo Protocol] succ. fd=274, protocol=82a5180
-2013-01-03 11:41:06 [b6eb5b70, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:2, body_length:17
-2013-01-03 11:41:06 [b6eb5b70, INFO] ... fid=AAACCCDDD, save_result=1.
-2013-01-03 11:41:06 [b6eb5b70, DEBUG] ... chunk[0]:id=00000, ip=127.0.0.1, port=3013, index=0, offset=144.
-2013-01-03 11:41:06 [b6eb5b70, DEBUG] ... delete file task succ:fid=AAACCCDDD, name=, size=48
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=273
-2013-01-03 11:41:06 [b6eb5b70, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:1, body_length:67
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 83 bytes data waiting to send on socket fd=273
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 83 bytes data of socket fd=273
-2013-01-03 11:41:06 [b6eb5b70, INFO] ... Thread[ID=0] send protocol[details=FileInfo Protocol] succ. fd=273, protocol=82a5180
-2013-01-03 11:41:06 [b6eb5b70, ERROR][Socket.cpp:recv_data(260)] ... peer close socket gracefully. fd=273
-2013-01-03 11:41:06 [b6eb5b70, ERROR][NetInterface.cpp:on_readable(148)] ... receive protocol header error. fd=273
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][SocketManager.cpp:remove_trans_socket(141)] ... remove trans socket from socket manager. close fd=273
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][Socket.cpp:~TransSocket(137)] ... ~TransSocket().remain 0 bytes data unsend
-2013-01-03 11:41:06 [b6eb5b70, DEBUG][Socket.cpp:~TransSocket(145)] ... ~TransSocket().remain 0 bytes data unrecv
-2013-01-03 11:41:06 [b6eb5b70, INFO] ... Thread[ID=0] handle socket error. fd=273
+2013-01-03 12:51:18 [SLOG INIT]current config of SLOG:log_level=1,log_file=./log/server.log,max_log_size=20(M),max_log_count=30,flush_size=1048576,flush_interval=2,config_update_interval=30.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/00.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/01.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/02.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/03.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/04.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/05.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/06.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/07.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/08.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/09.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/0A.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/0B.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/0C.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/0D.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/0E.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/0F.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/10.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/11.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/12.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/13.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/14.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/15.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/16.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/17.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/18.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/19.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/1A.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/1B.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/1C.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/1D.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/1E.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/1F.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/20.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/21.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/22.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/23.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/24.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/25.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/26.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/27.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/28.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/29.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/2A.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/2B.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/2C.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/2D.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/2E.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/2F.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/30.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/31.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/32.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/33.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/34.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/35.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/36.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/37.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/38.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/39.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/3A.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/3B.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/3C.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/3D.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/3E.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/3F.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/40.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/41.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/42.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/43.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/44.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/45.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/46.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/47.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/48.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/49.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/4A.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/4B.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/4C.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/4D.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/4E.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/4F.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/50.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/51.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/52.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/53.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/54.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/55.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/56.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/57.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/58.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/59.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/5A.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/5B.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/5C.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/5D.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/5E.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/5F.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/60.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/61.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/62.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/63.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/64.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/65.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/66.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/67.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/68.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/69.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/6A.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/6B.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/6C.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/6D.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/6E.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/6F.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/70.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/71.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/72.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/73.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/74.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/75.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/76.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/77.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/78.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/79.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/7A.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/7B.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/7C.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/7D.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/7E.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/7F.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/80.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/81.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/82.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/83.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/84.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/85.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/86.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/87.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/88.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/89.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/8A.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/8B.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/8C.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/8D.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/8E.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/8F.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/90.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/91.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/92.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/93.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/94.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/95.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/96.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/97.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/98.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/99.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/9A.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/9B.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/9C.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/9D.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/9E.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/9F.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A0.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A1.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A2.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A3.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A4.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A5.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A6.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A7.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A8.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/A9.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/AA.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/AB.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/AC.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/AD.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/AE.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/AF.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B0.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B1.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B2.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B3.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B4.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B5.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B6.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B7.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B8.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/B9.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/BA.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/BB.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/BC.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/BD.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/BE.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/BF.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C0.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C1.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C2.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C3.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C4.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C5.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C6.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C7.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C8.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/C9.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/CA.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/CB.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/CC.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/CD.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/CE.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/CF.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D0.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D1.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D2.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D3.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D4.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D5.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D6.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D7.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D8.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/D9.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/DA.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/DB.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/DC.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/DD.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/DE.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/DF.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E0.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E1.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E2.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E3.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E4.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E5.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E6.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E7.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E8.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/E9.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/EA.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/EB.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/EC.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/ED.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/EE.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/EF.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F0.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F1.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F2.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F3.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F4.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F5.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F6.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F7.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F8.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/F9.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/FA.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/FB.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/FC.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/FD.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/FE.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... checking chunk_dir:/tmp/sfs_chunk/FF.
+2013-01-03 12:51:18 [b78568e0, DEBUG] ... start update disk manager.
+2013-01-03 12:51:18 [b78568e0, DEBUG][SocketManager.cpp:new_trans_socket(35)] ... create TransSocket[8739cf4] from trans_socket_memcache
+2013-01-03 12:51:18 [b6f61b70, INFO][ConnectThread.cpp:run_thread(14)] ... ConnectThread[ID=0] is running...
+2013-01-03 12:51:18 [b6760b70, INFO][ConnectThread.cpp:run_thread(14)] ... ConnectThread[ID=1] is running...
+2013-01-03 12:51:18 [b5f5fb70, INFO][ConnectThread.cpp:run_thread(14)] ... ConnectThread[ID=2] is running...
+2013-01-03 12:51:21 [b78568e0, DEBUG] ... start update disk manager.
+2013-01-03 12:51:21 [b78568e0, DEBUG] ... send chunk_ping to master succ. chunk_id=chunk_00000, chunk_ip=127.0.0.1, chunk_port=3013, disk_space=29979608, disk_used=3859500.
+2013-01-03 12:51:21 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=269
+2013-01-03 12:51:21 [b78568e0, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:6, body_length:48
+2013-01-03 12:51:21 [b78568e0, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 64 bytes data waiting to send on socket fd=269
+2013-01-03 12:51:21 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 64 bytes data of socket fd=269
+2013-01-03 12:51:21 [b78568e0, INFO] ... Send protocol[details=ChunkPing Protocol] succ. fd=269, protocol=87ba6a0
+2013-01-03 12:51:21 [b78568e0, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:7, body_length:8
+2013-01-03 12:51:21 [b78568e0, INFO] ... receive chunk_ping_resp protocol from master. fd=269, result=1.
+2013-01-03 12:51:25 [b78568e0, DEBUG] ... start update disk manager.
+2013-01-03 12:51:25 [b78568e0, DEBUG] ... send chunk_ping to master succ. chunk_id=chunk_00000, chunk_ip=127.0.0.1, chunk_port=3013, disk_space=29979608, disk_used=3859500.
+2013-01-03 12:51:25 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=269
+2013-01-03 12:51:25 [b78568e0, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:6, body_length:48
+2013-01-03 12:51:25 [b78568e0, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 64 bytes data waiting to send on socket fd=269
+2013-01-03 12:51:25 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 64 bytes data of socket fd=269
+2013-01-03 12:51:25 [b78568e0, INFO] ... Send protocol[details=ChunkPing Protocol] succ. fd=269, protocol=87ba6f8
+2013-01-03 12:51:25 [b78568e0, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:7, body_length:8
+2013-01-03 12:51:25 [b78568e0, INFO] ... receive chunk_ping_resp protocol from master. fd=269, result=1.
+2013-01-03 12:51:28 [b78568e0, DEBUG] ... start update disk manager.
+2013-01-03 12:51:28 [b78568e0, DEBUG] ... send chunk_ping to master succ. chunk_id=chunk_00000, chunk_ip=127.0.0.1, chunk_port=3013, disk_space=29979608, disk_used=3859500.
+2013-01-03 12:51:28 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=269
+2013-01-03 12:51:28 [b78568e0, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:6, body_length:48
+2013-01-03 12:51:28 [b78568e0, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 64 bytes data waiting to send on socket fd=269
+2013-01-03 12:51:28 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 64 bytes data of socket fd=269
+2013-01-03 12:51:28 [b78568e0, INFO] ... Send protocol[details=ChunkPing Protocol] succ. fd=269, protocol=87ba6f8
+2013-01-03 12:51:28 [b78568e0, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:7, body_length:8
+2013-01-03 12:51:28 [b78568e0, INFO] ... receive chunk_ping_resp protocol from master. fd=269, result=1.
+2013-01-03 12:51:31 [b78568e0, DEBUG] ... start update disk manager.
+2013-01-03 12:51:31 [b78568e0, DEBUG] ... send chunk_ping to master succ. chunk_id=chunk_00000, chunk_ip=127.0.0.1, chunk_port=3013, disk_space=29979608, disk_used=3859504.
+2013-01-03 12:51:31 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=269
+2013-01-03 12:51:31 [b78568e0, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:6, body_length:48
+2013-01-03 12:51:31 [b78568e0, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 64 bytes data waiting to send on socket fd=269
+2013-01-03 12:51:31 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 64 bytes data of socket fd=269
+2013-01-03 12:51:31 [b78568e0, INFO] ... Send protocol[details=ChunkPing Protocol] succ. fd=269, protocol=87ba6f8
+2013-01-03 12:51:31 [b78568e0, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:7, body_length:8
+2013-01-03 12:51:31 [b78568e0, INFO] ... receive chunk_ping_resp protocol from master. fd=269, result=1.
+2013-01-03 12:51:31 [b78568e0, DEBUG][ListenHandler.cpp:on_readable(20)] ... on readable
+2013-01-03 12:51:31 [b78568e0, DEBUG] ... connect thread pool accept fd=273
+2013-01-03 12:51:31 [b78568e0, DEBUG] ... ThreadPool dispatch new task to Thread[ID=0,Addr=8739910]
+2013-01-03 12:51:31 [b78568e0, DEBUG] ... Thread[ID=0, Addr=8739910] add task
+2013-01-03 12:51:31 [b6f61b70, DEBUG] ... Thread[ID=0, Addr=8739910] pipe fd=263 readable
+2013-01-03 12:51:31 [b6f61b70, DEBUG][ConnectThread.cpp:on_notify_add_task(24)] ... Thread[ID=0,Addr=87398e0] do task
+2013-01-03 12:51:31 [b6f61b70, DEBUG][ConnectThread.cpp:on_notify_add_task(28)] ... thread accept trans fd=273
+2013-01-03 12:51:31 [b6f61b70, DEBUG][NetInterface.cpp:accept(96)] ... accept trans fd=273
+2013-01-03 12:51:31 [b6f61b70, INFO][SocketManager.cpp:add_passive_trans_socket(91)] ... receive net connect from ip:127.0.0.1, fd=273
+2013-01-03 12:51:31 [b6f61b70, DEBUG][SocketManager.cpp:new_trans_socket(35)] ... create TransSocket[87bbe34] from trans_socket_memcache
+2013-01-03 12:51:31 [b6f61b70, DEBUG] ... Thread[ID=0] handle new socket. fd=273
+2013-01-03 12:51:31 [b6f61b70, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:4, body_length:68
+2013-01-03 12:51:31 [b6f61b70, INFO] ... receive File Protocol[file: flag=0, fid=7BFD9283A6EDFE28CB9CB95780E4E730294DEA4E, name=, filesize=48] [seg info: offset=1080, index=48, size=0].
+2013-01-03 12:51:31 [b6f61b70, DEBUG] ... create file task succ.fid=7BFD9283A6EDFE28CB9CB95780E4E730294DEA4E, file_name=, file_size=48, seg_size=0.
+2013-01-03 12:51:31 [b6f61b70, INFO] ... create file task succ. fid=7BFD9283A6EDFE28CB9CB95780E4E730294DEA4E, name=, size=48.
+2013-01-03 12:51:31 [b6f61b70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=273
+2013-01-03 12:51:31 [b6f61b70, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:5, body_length:52
+2013-01-03 12:51:31 [b6f61b70, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 68 bytes data waiting to send on socket fd=273
+2013-01-03 12:51:31 [b6f61b70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 68 bytes data of socket fd=273
+2013-01-03 12:51:31 [b6f61b70, INFO] ... Thread[ID=0] send protocol[details=SaveStatus Protocol] succ. fd=273, protocol=87bcab0
+2013-01-03 12:51:31 [b6f61b70, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:4, body_length:116
+2013-01-03 12:51:31 [b6f61b70, INFO] ... receive File Protocol[file: flag=1, fid=7BFD9283A6EDFE28CB9CB95780E4E730294DEA4E, name=, filesize=48] [seg info: offset=0, index=48, size=48].
+2013-01-03 12:51:31 [b6f61b70, DEBUG] ... file_task:fid=7BFD9283A6EDFE28CB9CB95780E4E730294DEA4E, size=48. file_seg:total_size=48, offset=0, size=48.
+2013-01-03 12:51:31 [b6f61b70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=273
+2013-01-03 12:51:31 [b6f61b70, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:5, body_length:52
+2013-01-03 12:51:31 [b6f61b70, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 68 bytes data waiting to send on socket fd=273
+2013-01-03 12:51:31 [b6f61b70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 68 bytes data of socket fd=273
+2013-01-03 12:51:31 [b6f61b70, INFO] ... Thread[ID=0] send protocol[details=SaveStatus Protocol] succ. fd=273, protocol=87bcab0
+2013-01-03 12:51:31 [b6f61b70, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:4, body_length:68
+2013-01-03 12:51:31 [b6f61b70, INFO] ... receive File Protocol[file: flag=2, fid=7BFD9283A6EDFE28CB9CB95780E4E730294DEA4E, name=, filesize=48] [seg info: offset=0, index=48, size=0].
+2013-01-03 12:51:31 [b6f61b70, INFO] ... client send file finished. fid=7BFD9283A6EDFE28CB9CB95780E4E730294DEA4E.
+2013-01-03 12:51:31 [b6f61b70, DEBUG][SocketManager.cpp:new_trans_socket(35)] ... create TransSocket[87bd7bc] from trans_socket_memcache
+2013-01-03 12:51:31 [b6f61b70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=274
+2013-01-03 12:51:31 [b6f61b70, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:1, body_length:104
+2013-01-03 12:51:31 [b6f61b70, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 120 bytes data waiting to send on socket fd=274
+2013-01-03 12:51:31 [b6f61b70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 120 bytes data of socket fd=274
+2013-01-03 12:51:31 [b6f61b70, INFO] ... Thread[ID=0] send protocol[details=FileInfo Protocol] succ. fd=274, protocol=87bd750
+2013-01-03 12:51:31 [b6f61b70, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:2, body_length:48
+2013-01-03 12:51:31 [b6f61b70, INFO] ... fid=7BFD9283A6EDFE28CB9CB95780E4E730294DEA4E, save_result=1.
+2013-01-03 12:51:31 [b6f61b70, DEBUG] ... chunk[0]:id=chunk_00000, ip=127.0.0.1, port=3013, index=0, offset=48.
+2013-01-03 12:51:31 [b6f61b70, DEBUG] ... delete file task succ:fid=7BFD9283A6EDFE28CB9CB95780E4E730294DEA4E, name=, size=48
+2013-01-03 12:51:31 [b6f61b70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=273
+2013-01-03 12:51:31 [b6f61b70, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:1, body_length:104
+2013-01-03 12:51:31 [b6f61b70, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 120 bytes data waiting to send on socket fd=273
+2013-01-03 12:51:31 [b6f61b70, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 120 bytes data of socket fd=273
+2013-01-03 12:51:31 [b6f61b70, INFO] ... Thread[ID=0] send protocol[details=FileInfo Protocol] succ. fd=273, protocol=87bd608
+2013-01-03 12:51:31 [b6f61b70, ERROR][Socket.cpp:recv_data(260)] ... peer close socket gracefully. fd=273
+2013-01-03 12:51:31 [b6f61b70, ERROR][NetInterface.cpp:on_readable(148)] ... receive protocol header error. fd=273
+2013-01-03 12:51:31 [b6f61b70, DEBUG][SocketManager.cpp:remove_trans_socket(141)] ... remove trans socket from socket manager. close fd=273
+2013-01-03 12:51:31 [b6f61b70, DEBUG][Socket.cpp:~TransSocket(137)] ... ~TransSocket().remain 0 bytes data unsend
+2013-01-03 12:51:31 [b6f61b70, DEBUG][Socket.cpp:~TransSocket(145)] ... ~TransSocket().remain 0 bytes data unrecv
+2013-01-03 12:51:31 [b6f61b70, INFO] ... Thread[ID=0] handle socket error. fd=273
+2013-01-03 12:51:34 [b78568e0, DEBUG] ... start update disk manager.
+2013-01-03 12:51:34 [b78568e0, DEBUG] ... send chunk_ping to master succ. chunk_id=chunk_00000, chunk_ip=127.0.0.1, chunk_port=3013, disk_space=29979608, disk_used=3859524.
+2013-01-03 12:51:34 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=269
+2013-01-03 12:51:34 [b78568e0, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:6, body_length:48
+2013-01-03 12:51:34 [b78568e0, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 64 bytes data waiting to send on socket fd=269
+2013-01-03 12:51:34 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 64 bytes data of socket fd=269
+2013-01-03 12:51:34 [b78568e0, INFO] ... Send protocol[details=ChunkPing Protocol] succ. fd=269, protocol=87bd608
+2013-01-03 12:51:34 [b78568e0, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:7, body_length:8
+2013-01-03 12:51:34 [b78568e0, INFO] ... receive chunk_ping_resp protocol from master. fd=269, result=1.
+2013-01-03 12:51:37 [b78568e0, DEBUG] ... start update disk manager.
+2013-01-03 12:51:37 [b78568e0, DEBUG] ... send chunk_ping to master succ. chunk_id=chunk_00000, chunk_ip=127.0.0.1, chunk_port=3013, disk_space=29979608, disk_used=3859540.
+2013-01-03 12:51:37 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=269
+2013-01-03 12:51:37 [b78568e0, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:6, body_length:48
+2013-01-03 12:51:37 [b78568e0, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 64 bytes data waiting to send on socket fd=269
+2013-01-03 12:51:37 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 64 bytes data of socket fd=269
+2013-01-03 12:51:37 [b78568e0, INFO] ... Send protocol[details=ChunkPing Protocol] succ. fd=269, protocol=87bd608
+2013-01-03 12:51:37 [b78568e0, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:7, body_length:8
+2013-01-03 12:51:37 [b78568e0, INFO] ... receive chunk_ping_resp protocol from master. fd=269, result=1.
+2013-01-03 12:51:41 [b78568e0, DEBUG] ... start update disk manager.
+2013-01-03 12:51:41 [b78568e0, DEBUG] ... send chunk_ping to master succ. chunk_id=chunk_00000, chunk_ip=127.0.0.1, chunk_port=3013, disk_space=29979608, disk_used=3859544.
+2013-01-03 12:51:41 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=269
+2013-01-03 12:51:41 [b78568e0, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:6, body_length:48
+2013-01-03 12:51:41 [b78568e0, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 64 bytes data waiting to send on socket fd=269
+2013-01-03 12:51:41 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 64 bytes data of socket fd=269
+2013-01-03 12:51:41 [b78568e0, INFO] ... Send protocol[details=ChunkPing Protocol] succ. fd=269, protocol=87c2888
+2013-01-03 12:51:41 [b78568e0, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:7, body_length:8
+2013-01-03 12:51:41 [b78568e0, INFO] ... receive chunk_ping_resp protocol from master. fd=269, result=1.
+2013-01-03 12:51:43 [b6f61b70, DEBUG][SocketManager.cpp:remove_trans_socket(141)] ... remove trans socket from socket manager. close fd=274
+2013-01-03 12:51:43 [b6f61b70, DEBUG][Socket.cpp:~TransSocket(137)] ... ~TransSocket().remain 0 bytes data unsend
+2013-01-03 12:51:43 [b6f61b70, DEBUG][Socket.cpp:~TransSocket(145)] ... ~TransSocket().remain 0 bytes data unrecv
+2013-01-03 12:51:43 [b6f61b70, INFO] ... Thread[ID=0] handle socket timeout. fd=274
+2013-01-03 12:51:44 [b78568e0, DEBUG] ... start update disk manager.
+2013-01-03 12:51:44 [b78568e0, DEBUG] ... send chunk_ping to master succ. chunk_id=chunk_00000, chunk_ip=127.0.0.1, chunk_port=3013, disk_space=29979608, disk_used=3859544.
+2013-01-03 12:51:44 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=269
+2013-01-03 12:51:44 [b78568e0, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:6, body_length:48
+2013-01-03 12:51:44 [b78568e0, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 64 bytes data waiting to send on socket fd=269
+2013-01-03 12:51:44 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 64 bytes data of socket fd=269
+2013-01-03 12:51:44 [b78568e0, INFO] ... Send protocol[details=ChunkPing Protocol] succ. fd=269, protocol=87c2888
+2013-01-03 12:51:44 [b78568e0, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:7, body_length:8
+2013-01-03 12:51:44 [b78568e0, INFO] ... receive chunk_ping_resp protocol from master. fd=269, result=1.
+2013-01-03 12:51:47 [b78568e0, DEBUG] ... start update disk manager.
+2013-01-03 12:51:47 [b78568e0, DEBUG] ... send chunk_ping to master succ. chunk_id=chunk_00000, chunk_ip=127.0.0.1, chunk_port=3013, disk_space=29979608, disk_used=3859544.
+2013-01-03 12:51:47 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=269
+2013-01-03 12:51:47 [b78568e0, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:6, body_length:48
+2013-01-03 12:51:47 [b78568e0, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 64 bytes data waiting to send on socket fd=269
+2013-01-03 12:51:47 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 64 bytes data of socket fd=269
+2013-01-03 12:51:47 [b78568e0, INFO] ... Send protocol[details=ChunkPing Protocol] succ. fd=269, protocol=87c2888
+2013-01-03 12:51:47 [b78568e0, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:7, body_length:8
+2013-01-03 12:51:47 [b78568e0, INFO] ... receive chunk_ping_resp protocol from master. fd=269, result=1.
+2013-01-03 12:51:50 [SLOG INIT]current config of SLOG:log_level=1,log_file=./log/server.log,max_log_size=20(M),max_log_count=30,flush_size=1048576,flush_interval=2,config_update_interval=30.
+2013-01-03 12:51:50 [b78568e0, DEBUG] ... start update disk manager.
+2013-01-03 12:51:50 [b78568e0, DEBUG] ... send chunk_ping to master succ. chunk_id=chunk_00000, chunk_ip=127.0.0.1, chunk_port=3013, disk_space=29979608, disk_used=3859552.
+2013-01-03 12:51:50 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=269
+2013-01-03 12:51:50 [b78568e0, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:6, body_length:48
+2013-01-03 12:51:50 [b78568e0, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 64 bytes data waiting to send on socket fd=269
+2013-01-03 12:51:50 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 64 bytes data of socket fd=269
+2013-01-03 12:51:50 [b78568e0, INFO] ... Send protocol[details=ChunkPing Protocol] succ. fd=269, protocol=87c2888
+2013-01-03 12:51:50 [b78568e0, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:7, body_length:8
+2013-01-03 12:51:50 [b78568e0, INFO] ... receive chunk_ping_resp protocol from master. fd=269, result=1.
+2013-01-03 12:51:53 [b78568e0, DEBUG] ... start update disk manager.
+2013-01-03 12:51:53 [b78568e0, DEBUG] ... send chunk_ping to master succ. chunk_id=chunk_00000, chunk_ip=127.0.0.1, chunk_port=3013, disk_space=29979608, disk_used=3859552.
+2013-01-03 12:51:53 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=269
+2013-01-03 12:51:53 [b78568e0, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:6, body_length:48
+2013-01-03 12:51:53 [b78568e0, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 64 bytes data waiting to send on socket fd=269
+2013-01-03 12:51:53 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 64 bytes data of socket fd=269
+2013-01-03 12:51:53 [b78568e0, INFO] ... Send protocol[details=ChunkPing Protocol] succ. fd=269, protocol=87c36b8
+2013-01-03 12:51:53 [b78568e0, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:7, body_length:8
+2013-01-03 12:51:53 [b78568e0, INFO] ... receive chunk_ping_resp protocol from master. fd=269, result=1.
+2013-01-03 12:51:57 [b78568e0, DEBUG] ... start update disk manager.
+2013-01-03 12:51:57 [b78568e0, DEBUG] ... send chunk_ping to master succ. chunk_id=chunk_00000, chunk_ip=127.0.0.1, chunk_port=3013, disk_space=29979608, disk_used=3859552.
+2013-01-03 12:51:57 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=269
+2013-01-03 12:51:57 [b78568e0, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:6, body_length:48
+2013-01-03 12:51:57 [b78568e0, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 64 bytes data waiting to send on socket fd=269
+2013-01-03 12:51:57 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 64 bytes data of socket fd=269
+2013-01-03 12:51:57 [b78568e0, INFO] ... Send protocol[details=ChunkPing Protocol] succ. fd=269, protocol=87c2888
+2013-01-03 12:51:57 [b78568e0, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:7, body_length:8
+2013-01-03 12:51:57 [b78568e0, INFO] ... receive chunk_ping_resp protocol from master. fd=269, result=1.
+2013-01-03 12:52:00 [b78568e0, DEBUG] ... start update disk manager.
+2013-01-03 12:52:00 [b78568e0, DEBUG] ... send chunk_ping to master succ. chunk_id=chunk_00000, chunk_ip=127.0.0.1, chunk_port=3013, disk_space=29979608, disk_used=3859552.
+2013-01-03 12:52:00 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=269
+2013-01-03 12:52:00 [b78568e0, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:6, body_length:48
+2013-01-03 12:52:00 [b78568e0, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 64 bytes data waiting to send on socket fd=269
+2013-01-03 12:52:00 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 64 bytes data of socket fd=269
+2013-01-03 12:52:00 [b78568e0, INFO] ... Send protocol[details=ChunkPing Protocol] succ. fd=269, protocol=87c36b8
+2013-01-03 12:52:00 [b78568e0, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:7, body_length:8
+2013-01-03 12:52:00 [b78568e0, INFO] ... receive chunk_ping_resp protocol from master. fd=269, result=1.
+2013-01-03 12:52:03 [b78568e0, DEBUG] ... start update disk manager.
+2013-01-03 12:52:03 [b78568e0, DEBUG] ... send chunk_ping to master succ. chunk_id=chunk_00000, chunk_ip=127.0.0.1, chunk_port=3013, disk_space=29979608, disk_used=3859556.
+2013-01-03 12:52:03 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 0 bytes data of socket fd=269
+2013-01-03 12:52:03 [b78568e0, DEBUG] ... header encode succ: magic_num:520525529, sequence=-1, protocol_type:6, body_length:48
+2013-01-03 12:52:03 [b78568e0, DEBUG][Socket.cpp:push_send_buffer(339)] ... total 64 bytes data waiting to send on socket fd=269
+2013-01-03 12:52:03 [b78568e0, DEBUG][Socket.cpp:send_buffer(349)] ... try to send 64 bytes data of socket fd=269
+2013-01-03 12:52:03 [b78568e0, INFO] ... Send protocol[details=ChunkPing Protocol] succ. fd=269, protocol=87c2888
+2013-01-03 12:52:03 [b78568e0, DEBUG] ... header decode succ. magic_num:520525529, sequence=-1, protocol_type:7, body_length:8
+2013-01-03 12:52:03 [b78568e0, INFO] ... receive chunk_ping_resp protocol from master. fd=269, result=1.
