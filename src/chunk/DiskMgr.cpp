@@ -113,10 +113,10 @@ void DiskMgr::load_disk()
 
 		char name[256];
 		sprintf(name, "%s/%02X", sub_dir.c_str(), index);
-		m_disk_files[i].fp= fopen(name, "w");
+		m_disk_files[i].fp= fopen(name, "a");
 		assert(m_disk_files[i].fp != NULL);
-		fseek(m_disk_files[i].fp, 0L, SEEK_END);
-		m_disk_files[i].cur_pos = ftell(m_disk_files[i].fp);
+		//fseek(m_disk_files[i].fp, 0L, SEEK_END);
+		m_disk_files[i].cur_pos = (uint32_t)ftell(m_disk_files[i].fp);
 		m_disk_files[i].index = index;
 
 		SLOG_DEBUG("load file succ. name=%s, size=%d.", name, m_disk_files[i].cur_pos);
