@@ -1,5 +1,5 @@
 INCS=-I/usr/local/include/libnetframework -I../
-LIBS=-lslog -lnetframework -lpthread -lssl
+LIBS=-lslog -lnetframework -lpthread -lcrypto #-lssl
 FLAGS=-g
 
 all:lib sfs
