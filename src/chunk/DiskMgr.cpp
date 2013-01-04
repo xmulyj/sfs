@@ -37,6 +37,8 @@ void DiskMgr::make_path(string &path, string &fid, int index)
 DiskMgr::DiskMgr()
 {
 	m_disk_path = g_config_reader->GetValueString("DiskDir", "/tmp/sfs_chunk");  //数据存放路径
+	m_disk_space = 0L;
+	m_disk_used  = 0L;
 }
 
 void DiskMgr::init()
