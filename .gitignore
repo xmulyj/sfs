@@ -1,0 +1,8 @@
+*.gch
+*.o
+*.a
+*.so
+sfs
+sfs_master
+sfs_chunk
+
