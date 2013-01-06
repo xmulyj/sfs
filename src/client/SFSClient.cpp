@@ -11,7 +11,7 @@ using std::string;
 
 int main(int agrc, char* argv[])
 {
-	SLOG_INIT(NULL);
+	SLOG_INIT("./config/slog.config");
 	//get gapth
 	string master_addr="127.0.0.1";
 	int master_port = 3012;
