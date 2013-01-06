@@ -6,7 +6,7 @@ echo "create test dir:${TEST_DIR}..."
 if [ ! -d ${TEST_DIR} ];then
 	sudo mkdir -p ${TEST_DIR}
 fi
-#sudo chmod ugo+w ${TEST_DIR}
+sudo chmod ugo+w ${TEST_DIR}
 
 ### crete test.txt ###
 echo "create ${TEST_DIR}/test.txt"
