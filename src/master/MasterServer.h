@@ -30,6 +30,8 @@ public:
 
 class MasterServer:public ConnectThread
 {
+protected:  //重写EventHander的超时方法
+	HANDLE_RESULT on_timeout(int fd); //定时时钟
 protected:
 	////由应用层实现 -- 创建具体的协议族
 	virtual ProtocolFamily* create_protocol_family();

@@ -24,8 +24,26 @@ bool MasterServer::start_server()
 	////Add your codes here
 	///////////////////////
 	m_saving_task_timeout_sec = g_config_reader->GetValueInt("SavingTaskTimeout", 120);
-	get_io_demuxer()->run_loop();
+
+	//注册定时器
+	IODemuxer *io_demuxer = get_io_demuxer();
+	assert(io_demuxer != NULL);
+	if(io_demuxer->register_event(-1, EVENT_PERSIST, 3000, this) == -1)
+	{
+		SLOG_ERROR("register timer handler failed.");
+		return false;
+	}
+	io_demuxer->run_loop();
 	return true;
+}
+
+HANDLE_RESULT MasterServer::on_timeout(int fd)
+{
+	//检查超时的任务
+	SLOG_DEBUG("master on_timeout,check all task...");
+	remove_saving_task_timeout();
+
+	return HANDLE_OK;
 }
 
 ProtocolFamily* MasterServer::create_protocol_family()
@@ -206,6 +224,8 @@ bool MasterServer::remove_saving_task_timeout()
 		--it;
 		if(now-it->insert_time < m_saving_task_timeout_sec)
 			break;
+		SLOG_DEBUG("saving task timeout and delete:fid=%s, instert_time=%d, now=%d.", it->fid.c_str(), it->insert_time, now);
+		m_saving_task_map.erase(it->fid);
 		m_time_fid_list.erase(it);
 	}
 
