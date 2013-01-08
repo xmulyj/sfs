@@ -86,7 +86,7 @@ bool ProtocolFileInfo::encode_body(ByteBuffer *byte_buffer)
 		//index
 		ENCODE_INT(chunkpath.index);
 		//chunk offset
-		ENCODE_INT64(chunkpath.offset);
+		ENCODE_INT(chunkpath.offset);
 	}
 
 	return true;
@@ -118,7 +118,7 @@ bool ProtocolFileInfo::decode_body(const char *buf, int size)
 		//index
 		DECODE_INT(chunkpath.index);
 		//chunk offset
-		DECODE_INT64(chunkpath.offset);
+		DECODE_INT(chunkpath.offset);
 		m_fileinfo.add_chunkpath(chunkpath);
 	}
 
@@ -153,18 +153,28 @@ bool ProtocolFileInfoSaveResult::decode_body(const char *buf, int size)
 //////////////////////////////  3. FileReq Protocol  //////////////////////////
 bool ProtocolFileReq::encode_body(ByteBuffer *byte_buffer)
 {
-	int len =0;
-	////chunk path
-	ENCODE_STRING(m_chunk_path);
+	////fid
+	ENCODE_STRING(m_file_req.fid);
+	////index
+	ENCODE_INT(m_file_req.index);
+	////offset
+	ENCODE_INT(m_file_req.offset);
+	////size
+	ENCODE_INT(m_file_req.size);
 
 	return true;
 }
 
 bool ProtocolFileReq::decode_body(const char *buf, int size)
 {
-	int len = 0;
-	//fid
-	DECODE_STRING(m_chunk_path);
+	////fid
+	DECODE_STRING(m_file_req.fid);
+	////index
+	DECODE_INT(m_file_req.index);
+	////offset
+	DECODE_INT(m_file_req.offset);
+	////size
+	DECODE_INT(m_file_req.size);
 
 	return true;
 }

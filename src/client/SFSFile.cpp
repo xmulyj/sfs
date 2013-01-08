@@ -104,6 +104,47 @@ bool File::save_file(FileInfo &file_info, string &local_file)
 
 bool File::get_file(string &fid, string &local_file)
 {
+	FileInfo file_info;
+	file_info.result = FileInfo::RESULT_INVALID;
+	if(!_get_file_info(fid, false, file_info) || file_info.result!=FileInfo::RESULT_SUCC)
+	{
+		SLOG_DEBUG("get file info failed. fid=%s, result=%d.", fid.c_str(), file_info.result);
+		return false;
+	}
+
+	int chunk_count = file_info.get_chunkpath_count();
+	assert(chunk_count > 0);
+	int i;
+	for(i=0; i<chunk_count; ++i)
+	{
+		ChunkPath &chunk_path = file_info.get_chunkpath(i);
+		TransSocket trans_socket(m_master_addr.c_str(), m_master_port);
+		if(!trans_socket.open(1000))
+		{
+			SLOG_ERROR("can't connect chunk:ip=%s, port=%d.", chunk_path.ip.c_str(), chunk_path.port);
+			continue;
+		}
+		ProtocolFileReq *protocol_filereq = (ProtocolFileReq*)m_protocol_family.create_protocol(PROTOCOL_FILE_REQ);
+		assert(protocol_filereq != NULL);
+		FileReq &file_req = protocol_filereq->get_file_req();
+		file_req.fid = file_info.fid;
+		file_req.size = file_info.size;
+		file_req.index = chunk_path.index;
+		file_req.offset = chunk_path.offset;
+		if(!TransProtocol::send_protocol(&trans_socket, protocol_filereq))
+		{
+			SLOG_ERROR("sent filereq protocol failed.");
+			m_protocol_family.destroy_protocol(protocol_filereq);
+			continue;
+		}
+		m_protocol_family.destroy_protocol(protocol_filereq);
+		//接收ProtocolFile
+		while(1)
+		{
+			//TODO
+		}
+	}
+
 	return true;
 }
 

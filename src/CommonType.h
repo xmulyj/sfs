@@ -22,7 +22,7 @@ public:
 	string ip;               //chunk的ip
 	uint32_t port;           //chunk的端口
 	uint32_t index;          //文件在chunk上的index号
-	uint64_t offset;         //文件在chunk上的偏移
+	uint32_t offset;         //文件在chunk上的偏移
 };
 
 //文件信息
@@ -74,6 +74,14 @@ public:
 	string fid;
 };
 
+//请求chunk获取数据
+class FileReq
+{
+	string fid;      //文件fid
+	uint32_t index;  //文件index
+	uint32_t offset; //文件所在的偏移
+	uint32_t size;   //文件大小
+};
 
 //文件分片
 class FileSeg

@@ -100,9 +100,9 @@ public://实现protocol的接口
 	bool decode_body(const char *buf, int size);
 public:
 	//chunk path
-	string& get_chunk_path(){return m_chunk_path;}
+	FileReq& get_file_req(){return m_file_req;}
 private:
-	string m_chunk_path;
+	FileReq m_file_req;
 };
 
 //////////////////////////////  4. ProtocolFile Protocol  //////////////////////////////

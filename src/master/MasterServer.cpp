@@ -288,7 +288,7 @@ void MasterServer::on_file_info_req(SocketHandle socket_handle, Protocol *protoc
 		for(i=0; i<file_info.get_chunkpath_count(); ++i)
 		{
 			ChunkPath &chunk_path = file_info.get_chunkpath(i);
-			SLOG_DEBUG("chunk[%d]:id=%s, ip=%s, port=%d, index=%d, offset=%lld."
+			SLOG_DEBUG("chunk[%d]:id=%s, ip=%s, port=%d, index=%d, offset=%d."
 					,i, chunk_path.id.c_str(), chunk_path.ip.c_str(), chunk_path.port, chunk_path.index, chunk_path.offset);
 		}
 		file_info.result = FileInfo::RESULT_SUCC;
@@ -361,7 +361,7 @@ void MasterServer::on_file_info(SocketHandle socket_handle, Protocol *protocol)
 	if(find_saving_task(fileinfo.fid)) //找到正在保存任务
 	{
 		ChunkPath &chunk_path = fileinfo.get_chunkpath(0);
-		SLOG_INFO("save file info succ: fid=%s, name=%s, size=%d, chunkid=%s, addr=%s, port=%d, index=%d, offset=%lld."
+		SLOG_INFO("save file info succ: fid=%s, name=%s, size=%d, chunkid=%s, addr=%s, port=%d, index=%d, offset=%d."
 					,fileinfo.fid.c_str()
 					,fileinfo.name.c_str()
 					,fileinfo.size
