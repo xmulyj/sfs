@@ -44,13 +44,14 @@ public:
 
 	//更新磁盘信息
 	void update();
+	//生成文件路径
+	void make_path(string &path, string &fid, int index);
 	//获取磁盘空间
 	void get_disk_space(uint64_t &total, uint64_t &used);
 	//将fid的size字节的数据buf保存到磁盘,返回chunk_path;成功返回true,失败返回false
 	bool save_file_to_disk(string &fid, char *buf, uint32_t size, ChunkPath &chunkpath);
 private:
 	DiskMgr();
-	void make_path(string &path, string &fid, int index);
 	void load_disk();
 	void unload_disk();
 private:

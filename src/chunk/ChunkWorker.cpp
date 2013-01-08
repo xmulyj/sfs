@@ -60,6 +60,11 @@ bool ChunkWorker::on_recv_protocol(SocketHandle socket_handle, Protocol *protoco
 		on_file_info_save_result(socket_handle, protocol);
 		break;
 	}
+	case PROTOCOL_FILE_REQ:
+	{
+		on_file_req(socket_handle, protocol);
+		break;
+	}
 	default:
 		SLOG_WARN("receive undefine protocol. ignore it.");
 		return false;
@@ -142,6 +147,11 @@ void ChunkWorker::send_fail_fileinfo_to_master(string &fid)
 		protocol_family->destroy_protocol(protocol_file_info);
 		SLOG_ERROR("send faile_file_info to master failed. fid=%s.", fid.c_str());
 	}
+}
+
+bool ChunkWorker::send_file_protocol_to_client(SocketHandle socket_handle, ProtocolFile *protocol_file, ByteBuffer *byte_buffer, int fd)
+{
+	return true;
 }
 
 bool ChunkWorker::file_task_find(string &fid)
@@ -414,6 +424,90 @@ void ChunkWorker::on_file_info_save_result(SocketHandle socket_handle, Protocol 
 	file_task_delete(save_result.fid);
 }
 
+void ChunkWorker::on_file_req(SocketHandle socket_handle, Protocol *protocol)
+{
+	SFSProtocolFamily* protocol_family = (SFSProtocolFamily*)get_protocol_family();
+
+	ProtocolFileReq *protocol_file_req = (ProtocolFileReq*)protocol;
+	FileReq &file_req = protocol_file_req->get_file_req();
+
+	//1. 打开文件
+	string local_file;
+	DiskMgr::get_instance()->make_path(local_file, file_req.fid, file_req.index);
+	int fd = open(local_file.c_str(), O_RDONLY);
+	if(fd == -1)
+	{
+		SLOG_ERROR("open file error.file=%s.", local_file.c_str());
+		return ;
+	}
+	struct stat file_stat;
+	if(fstat(fd, &file_stat) == -1)
+	{
+		SLOG_ERROR("stat file error. errno=%d(%s)", errno, strerror(errno));
+		close(fd);
+		return ;
+	}
+	if(file_req.offset+file_req.size > file_stat.st_size)
+	{
+		SLOG_ERROR("file data error:offset=%d,size=%d,filesize=%d.",file_req.offset, file_req.size, file_stat.st_size);
+		close(fd);
+		return ;
+	}
+	lseek(fd, file_req.offset, SEEK_SET);
+
+	//2 发送文件
+	uint32_t READ_SIZE = 4096;
+	uint32_t seg_offset = 0;
+	uint32_t seg_size = 0;
+	bool result = true;
+	ByteBuffer byte_buffer(2048);
+	ProtocolFile *protocol_file = NULL;
+	while(seg_offset < file_req.size)
+	{
+		byte_buffer.clear();
+		seg_size = file_req.size-seg_offset;
+		if(seg_size > READ_SIZE)
+			seg_size = READ_SIZE;
+
+		//设置协议字段
+		protocol_file = (ProtocolFile *)protocol_family->create_protocol(PROTOCOL_FILE);
+		assert(protocol_file != NULL);
+		FileSeg &file_seg = protocol_file->get_file_seg();
+		file_seg.flag = FileSeg::FLAG_SEG;
+		file_seg.fid = file_req.fid;
+		file_seg.filesize = file_req.size;
+		file_seg.size = seg_size;
+		file_seg.offset = seg_offset;
+
+		seg_offset += seg_size;
+
+		if(!send_file_protocol_to_client(socket_handle, protocol_file, &byte_buffer, fd))
+		{
+			result = false;
+			protocol_family->destroy_protocol(protocol_file);
+			SLOG_ERROR("send file_seg failed.fid=%s.", file_req.fid.c_str());
+			break;
+		}
+		protocol_family->destroy_protocol(protocol_file);
+	}
+	close(fd);
+
+	if(result == false)
+		return;
+
+	//3 发送结束协议(该协议没有回复)
+	protocol_file = (ProtocolFile *)protocol_family->create_protocol(PROTOCOL_FILE);
+	assert(protocol_file != NULL);
+	FileSeg &end_file_seg = protocol_file->get_file_seg();
+	end_file_seg.flag = FileSeg::FLAG_END;
+	end_file_seg.fid = file_req.fid;
+	end_file_seg.filesize = file_req.size;
+	end_file_seg.size = 0;
+	if(!send_file_protocol_to_client(socket_handle, protocol_file, &byte_buffer, -1))
+		SLOG_ERROR("send end_file_seg failed. fid=%s.", file_req.fid.c_str());
+	protocol_family->destroy_protocol(protocol_file);
+	return ;
+}
 
 ///////////////////////////////  ChunkWorkerPool  //////////////////////////////////
 Thread<SocketHandle>* ChunkWorkerPool::create_thread()

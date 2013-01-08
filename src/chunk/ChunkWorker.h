@@ -79,12 +79,15 @@ private:
 
 private:
 	void send_fail_fileinfo_to_master(string &fid);
+	bool send_file_protocol_to_client(SocketHandle socket_handle, ProtocolFile *protocol_file, ByteBuffer *byte_buffer, int fd);
 //////////////////// 响应函数 /////////////////////
 private:
 	//响应客户端发送文件数据包
 	void on_file(SocketHandle socket_handle, Protocol *protocol);
 	//响应master回复file_info保存结果
 	void on_file_info_save_result(SocketHandle socket_handle, Protocol *protocol);
+	//响应客户端请求文件数据
+	void on_file_req(SocketHandle socket_handle, Protocol *protocol);
 };
 
 class ChunkWorkerPool:public ConnectThreadPool
