@@ -99,7 +99,6 @@ public://实现protocol的接口
 	//解码大小为size的协议体数据buf.成功返回true,失败返回false.
 	bool decode_body(const char *buf, int size);
 public:
-	//chunk path
 	FileReq& get_file_req(){return m_file_req;}
 private:
 	FileReq m_file_req;

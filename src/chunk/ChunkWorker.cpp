@@ -10,6 +10,7 @@
 #include "SFSProtocolFamily.h"
 #include "slog.h"
 #include "DiskMgr.h"
+#include <sys/stat.h>
 
 #include "ConfigReader.h"
 extern ConfigReader* g_config_reader;
@@ -149,8 +150,53 @@ void ChunkWorker::send_fail_fileinfo_to_master(string &fid)
 	}
 }
 
-bool ChunkWorker::send_file_protocol_to_client(SocketHandle socket_handle, ProtocolFile *protocol_file, ByteBuffer *byte_buffer, int fd)
+bool ChunkWorker::send_file_protocol_to_client(SocketHandle socket_handle, Protocol *protocol, int fd)
 {
+	ProtocolFile *protocol_file = (ProtocolFile*)protocol;
+	ByteBuffer *byte_buffer = new ByteBuffer(2048);
+
+	//1 预留头部空间
+	int header_length;
+	ProtocolHeader *header = protocol_file->get_protocol_header();
+	header_length = header->get_header_length();
+	byte_buffer->reserve(header_length);
+	//2 编码协议体
+	if(!protocol_file->encode_body(byte_buffer))
+	{
+		SLOG_ERROR("encode body error");
+		delete byte_buffer;
+		return false;
+	}
+	//3 添加数据
+	if(fd > 0)
+	{
+		FileSeg& file_seg = protocol_file->get_file_seg();
+		char *data_buffer = byte_buffer->get_append_buffer(file_seg.size);
+		if(read(fd, data_buffer, file_seg.size) != file_seg.size)
+		{
+			SLOG_ERROR("read file error. errno=%d(%s).", errno, strerror(errno));
+			delete byte_buffer;
+			return false;
+		}
+		byte_buffer->set_append_size(file_seg.size);
+	}
+	//4. 编码协议头
+	int body_length = byte_buffer->size()-header_length;
+	char *header_buffer = byte_buffer->get_data(0, header_length);
+	if(!header->encode(header_buffer, body_length))
+	{
+		SLOG_ERROR("encode header error");
+		delete byte_buffer;
+		return false;
+	}
+	protocol->attach_raw_data(byte_buffer);
+	//5. 发送数据
+	if(!send_protocol(socket_handle, protocol))
+	{
+		SLOG_ERROR("send data error");
+		return false;
+	}
+
 	return true;
 }
 
@@ -431,40 +477,55 @@ void ChunkWorker::on_file_req(SocketHandle socket_handle, Protocol *protocol)
 	ProtocolFileReq *protocol_file_req = (ProtocolFileReq*)protocol;
 	FileReq &file_req = protocol_file_req->get_file_req();
 
+	ProtocolFile *protocol_file = NULL;
+
 	//1. 打开文件
 	string local_file;
+	struct stat file_stat;
 	DiskMgr::get_instance()->make_path(local_file, file_req.fid, file_req.index);
 	int fd = open(local_file.c_str(), O_RDONLY);
-	if(fd == -1)
+	bool fd_error = (fd==-1);
+	bool fstat_error = (fstat(fd, &file_stat)==-1);
+	bool data_error = (file_req.offset+file_req.size>file_stat.st_size);
+	if(fd_error || fstat_error || data_error)
 	{
-		SLOG_ERROR("open file error.file=%s.", local_file.c_str());
-		return ;
-	}
-	struct stat file_stat;
-	if(fstat(fd, &file_stat) == -1)
-	{
-		SLOG_ERROR("stat file error. errno=%d(%s)", errno, strerror(errno));
-		close(fd);
-		return ;
-	}
-	if(file_req.offset+file_req.size > file_stat.st_size)
-	{
-		SLOG_ERROR("file data error:offset=%d,size=%d,filesize=%d.",file_req.offset, file_req.size, file_stat.st_size);
-		close(fd);
+		if(fd_error)
+		{
+			SLOG_ERROR("open file error.file=%s, errno=%d(%s).", local_file.c_str(), errno, strerror(errno));
+		}
+		else if(fstat_error)
+		{
+			SLOG_ERROR("fstat error.file=%s, errno=%d(%s).", local_file.c_str(), errno, strerror(errno));
+			close(fd);
+		}
+		else if(data_error)
+		{
+			SLOG_ERROR("file data error:offset=%d,size=%d,file_size=%d.",file_req.offset, file_req.size, file_stat.st_size);
+			close(fd);
+		}
+
+		protocol_file = (ProtocolFile*)protocol_family->create_protocol(PROTOCOL_FILE);
+		assert(protocol_file != NULL);
+		FileSeg &file_seg = protocol_file->get_file_seg();
+		string dum_name = "";
+		file_seg.set(FileSeg::FLAG_INVALID, file_req.fid, dum_name);
+		if(!send_file_protocol_to_client(socket_handle, protocol_file, -1))
+		{
+			SLOG_ERROR("send end_file_seg failed. fid=%s.", file_req.fid.c_str());
+			protocol_family->destroy_protocol(protocol_file);
+		}
 		return ;
 	}
 	lseek(fd, file_req.offset, SEEK_SET);
 
 	//2 发送文件
+	uint32_t index = 0;
 	uint32_t READ_SIZE = 4096;
 	uint32_t seg_offset = 0;
 	uint32_t seg_size = 0;
 	bool result = true;
-	ByteBuffer byte_buffer(2048);
-	ProtocolFile *protocol_file = NULL;
 	while(seg_offset < file_req.size)
 	{
-		byte_buffer.clear();
 		seg_size = file_req.size-seg_offset;
 		if(seg_size > READ_SIZE)
 			seg_size = READ_SIZE;
@@ -473,22 +534,17 @@ void ChunkWorker::on_file_req(SocketHandle socket_handle, Protocol *protocol)
 		protocol_file = (ProtocolFile *)protocol_family->create_protocol(PROTOCOL_FILE);
 		assert(protocol_file != NULL);
 		FileSeg &file_seg = protocol_file->get_file_seg();
-		file_seg.flag = FileSeg::FLAG_SEG;
-		file_seg.fid = file_req.fid;
-		file_seg.filesize = file_req.size;
-		file_seg.size = seg_size;
-		file_seg.offset = seg_offset;
-
+		string dum_name = "";
+		file_seg.set(FileSeg::FLAG_SEG, file_req.fid, dum_name, file_req.size, seg_offset, 0, seg_size);
 		seg_offset += seg_size;
 
-		if(!send_file_protocol_to_client(socket_handle, protocol_file, &byte_buffer, fd))
+		if(!send_file_protocol_to_client(socket_handle, protocol_file, fd))
 		{
 			result = false;
 			protocol_family->destroy_protocol(protocol_file);
 			SLOG_ERROR("send file_seg failed.fid=%s.", file_req.fid.c_str());
 			break;
 		}
-		protocol_family->destroy_protocol(protocol_file);
 	}
 	close(fd);
 
@@ -499,13 +555,15 @@ void ChunkWorker::on_file_req(SocketHandle socket_handle, Protocol *protocol)
 	protocol_file = (ProtocolFile *)protocol_family->create_protocol(PROTOCOL_FILE);
 	assert(protocol_file != NULL);
 	FileSeg &end_file_seg = protocol_file->get_file_seg();
-	end_file_seg.flag = FileSeg::FLAG_END;
-	end_file_seg.fid = file_req.fid;
-	end_file_seg.filesize = file_req.size;
-	end_file_seg.size = 0;
-	if(!send_file_protocol_to_client(socket_handle, protocol_file, &byte_buffer, -1))
+	string dum_name = "";
+	end_file_seg.set(FileSeg::FLAG_END, file_req.fid, dum_name);
+
+	if(!send_file_protocol_to_client(socket_handle, protocol_file, -1))
+	{
 		SLOG_ERROR("send end_file_seg failed. fid=%s.", file_req.fid.c_str());
-	protocol_family->destroy_protocol(protocol_file);
+		protocol_family->destroy_protocol(protocol_file);
+	}
+
 	return ;
 }
 

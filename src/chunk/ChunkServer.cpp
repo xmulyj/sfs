@@ -47,8 +47,8 @@ bool ChunkServer::start_server()
 	io_demuxer->register_event(linsten_socket.get_handle(), EVENT_READ|EVENT_PERSIST, -1, &listen_handler);
 
 	//注册定时器
-	if(io_demuxer->register_event(-1, EVENT_PERSIST, 3000, this) == -1)
-	//if(io_demuxer->register_event(-1, EVENT_INVALID, 3000, this) == -1)
+	//if(io_demuxer->register_event(-1, EVENT_PERSIST, 3000, this) == -1)
+	if(io_demuxer->register_event(-1, EVENT_INVALID, 3000, this) == -1)
 	{
 		SLOG_ERROR("register timer handler failed.");
 		return false;

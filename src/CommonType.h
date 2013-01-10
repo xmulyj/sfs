@@ -77,6 +77,7 @@ public:
 //请求chunk获取数据
 class FileReq
 {
+public:
 	string fid;      //文件fid
 	uint32_t index;  //文件index
 	uint32_t offset; //文件所在的偏移
@@ -89,10 +90,22 @@ class FileSeg
 public:
 	typedef enum
 	{
+		FLAG_INVALID,        //无效标记
 		FLAG_START,          //任务开始
 		FLAG_SEG,            //文件分片
 		FLAG_END             //任务结束
 	}FileFlag;
+	void set(FileFlag flag, string &fid, string &name, uint32_t filesize=0, uint32_t offset=0, uint32_t index=0, uint32_t seg_size=0)
+	{
+		this->flag     = flag;
+		this->fid      = fid;
+		this->name     = name;
+		this->filesize = filesize;
+		this->offset   = offset;
+		this->index    = index;
+		this->size     = seg_size;
+		this->data     = NULL;
+	}
 
 	FileFlag flag;           //文件任务标记
 	string fid;              //文件的fid

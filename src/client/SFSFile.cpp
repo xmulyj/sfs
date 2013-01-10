@@ -115,10 +115,11 @@ bool File::get_file(string &fid, string &local_file)
 	int chunk_count = file_info.get_chunkpath_count();
 	assert(chunk_count > 0);
 	int i;
-	for(i=0; i<chunk_count; ++i)
+	bool finish = false;
+	for(i=0; i<chunk_count&&!finish; ++i)
 	{
 		ChunkPath &chunk_path = file_info.get_chunkpath(i);
-		TransSocket trans_socket(m_master_addr.c_str(), m_master_port);
+		TransSocket trans_socket(chunk_path.ip.c_str(), chunk_path.port);
 		if(!trans_socket.open(1000))
 		{
 			SLOG_ERROR("can't connect chunk:ip=%s, port=%d.", chunk_path.ip.c_str(), chunk_path.port);
@@ -131,18 +132,55 @@ bool File::get_file(string &fid, string &local_file)
 		file_req.size = file_info.size;
 		file_req.index = chunk_path.index;
 		file_req.offset = chunk_path.offset;
-		if(!TransProtocol::send_protocol(&trans_socket, protocol_filereq))
+		bool send_ok = TransProtocol::send_protocol(&trans_socket, protocol_filereq);
+		m_protocol_family.destroy_protocol(protocol_filereq);
+		if(!send_ok)
 		{
-			SLOG_ERROR("sent filereq protocol failed.");
-			m_protocol_family.destroy_protocol(protocol_filereq);
+			SLOG_ERROR("sent file_req protocol failed.");
 			continue;
 		}
-		m_protocol_family.destroy_protocol(protocol_filereq);
+
+		int fd = open(local_file.c_str(), O_WRONLY|O_CREAT);
+		if(fd == -1)
+		{
+			SLOG_ERROR("open file failed. file=%s. errno=%d(%s). ", local_file.c_str(), errno, strerror(errno));
+			continue;
+		}
 		//接收ProtocolFile
 		while(1)
 		{
 			//TODO
+			ProtocolFile *protocol_file = (ProtocolFile*)m_protocol_family.create_protocol(PROTOCOL_FILE);
+			assert(protocol_file != NULL);
+			if(!TransProtocol::recv_protocol(&trans_socket, protocol_file))
+			{
+				m_protocol_family.destroy_protocol(protocol_file);
+				SLOG_ERROR("receive file_seg failed. fid=%s.", file_info.fid.c_str());
+				break;
+			}
+			FileSeg &file_seg = protocol_file->get_file_seg();
+			if(file_seg.flag == FileSeg::FLAG_END)  //完成
+			{
+				SLOG_INFO("get data finished. fid=%s.", file_info.fid.c_str());
+				finish = true;
+				break;
+			}
+			else if(file_seg.flag != FileSeg::FLAG_SEG)
+			{
+				SLOG_ERROR("get data from chunk error. fid=%s.", file_info.fid.c_str());
+				m_protocol_family.destroy_protocol(protocol_file);
+				break;
+			}
+
+			if(!_save_fileseg_to_file(fd, file_seg))
+			{
+				SLOG_ERROR("save data to file error.");
+				m_protocol_family.destroy_protocol(protocol_file);
+				break;
+			}
+			m_protocol_family.destroy_protocol(protocol_file);
 		}
+		close(fd);
 	}
 
 	return true;
@@ -272,6 +310,7 @@ bool File::_send_file_to_chunk(string &local_file, string &fid, string &chunk_ad
 	FileSeg &start_file_seg = protocol_file->get_file_seg();
 	start_file_seg.flag = FileSeg::FLAG_START;
 	start_file_seg.fid = fid;
+	start_file_seg.name = filename;
 	start_file_seg.filesize = filesize;
 	start_file_seg.size = 0;
 	if(!_send_file_protocol_to_chunk(&trans_socket, protocol_file, &byte_buffer, -1))
@@ -310,12 +349,7 @@ bool File::_send_file_to_chunk(string &local_file, string &fid, string &chunk_ad
 		protocol_file = (ProtocolFile *)m_protocol_family.create_protocol(PROTOCOL_FILE);
 		assert(protocol_file != NULL);
 		FileSeg &file_seg = protocol_file->get_file_seg();
-		file_seg.flag = FileSeg::FLAG_SEG;
-		file_seg.fid = fid;
-		file_seg.filesize = filesize;
-		file_seg.size = seg_size;
-		file_seg.offset = seg_offset;
-
+		file_seg.set(FileSeg::FLAG_SEG, fid, filename, filesize, seg_offset, 0, seg_size);
 		seg_offset += seg_size;
 
 		if(!_send_file_protocol_to_chunk(&trans_socket, protocol_file, &byte_buffer, fd))
@@ -387,4 +421,11 @@ bool File::_send_file_to_chunk(string &local_file, string &fid, string &chunk_ad
 	m_protocol_family.destroy_protocol(protocol_file_info);
 
 	return true;
+}
+
+bool File::_save_fileseg_to_file(int fd, FileSeg &file_seg)
+{
+	lseek(fd, file_seg.offset, SEEK_SET);
+	ssize_t size = write(fd, file_seg.data, file_seg.size);
+	return size == file_seg.size;
 }

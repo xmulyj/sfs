@@ -52,6 +52,8 @@ private:
 
 	bool _send_file_to_chunk(string &local_file, string &fid, string &chunk_addr, int chunk_port, FileInfo &file_info);
 	bool _send_file_protocol_to_chunk(TransSocket* trans_socket, ProtocolFile *protocol_store, ByteBuffer *byte_buffer, int fd);
+	//保存数据到文件
+	bool _save_fileseg_to_file(int fd, FileSeg &file_seg);
 };
 
 }

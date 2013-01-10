@@ -79,7 +79,7 @@ private:
 
 private:
 	void send_fail_fileinfo_to_master(string &fid);
-	bool send_file_protocol_to_client(SocketHandle socket_handle, ProtocolFile *protocol_file, ByteBuffer *byte_buffer, int fd);
+	bool send_file_protocol_to_client(SocketHandle socket_handle, Protocol *protocol, int fd);
 //////////////////// 响应函数 /////////////////////
 private:
 	//响应客户端发送文件数据包

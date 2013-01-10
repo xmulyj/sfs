@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 		file_info.result = FileInfo::RESULT_INVALID;
 		if(sfs_file.get_file_info(fid, file_info))
 		{
-			SLOG_INFO("save file succ. filename=%s. fid=%s, size=%d.", file_info.name.c_str(), file_info.fid.c_str(), file_info.size);
+			SLOG_INFO("get file info succ. filename=%s. fid=%s, size=%d.", file_info.name.c_str(), file_info.fid.c_str(), file_info.size);
 			int i;
 			for(i=0; i<file_info.get_chunkpath_count(); ++i)
 			{
