@@ -14,11 +14,13 @@
 #include "SFSProtocolFamily.h"
 #include "CommonType.h"
 
+#include <mysql++.h>
 #include <stdint.h>
 #include <string>
 #include <map>
 #include <list>
 using namespace std;
+using namespace mysqlpp;
 
 class TimeFid
 {
@@ -72,6 +74,15 @@ private:
 	bool add_saving_task(const string &fid);
 	bool remove_saving_task(string &fid);
 	bool remove_saving_task_timeout();
+
+	//数据库
+	string m_db_ip;
+	int m_db_port;
+	string m_db_user;
+	string m_db_passwd;
+	string m_db_name;
+	Connection *m_db_connection;
+	bool save_fileinfo_to_db(FileInfo &fileinfo);
 private:
 	//响应chunk的ping包
 	void on_chunk_ping(SocketHandle socket_handle, Protocol *protocol);

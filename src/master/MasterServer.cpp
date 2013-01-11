@@ -25,6 +25,32 @@ bool MasterServer::start_server()
 	///////////////////////
 	m_saving_task_timeout_sec = g_config_reader->GetValueInt("SavingTaskTimeout", 120);
 
+	//数据库
+	m_db_connection = NULL;
+	m_db_ip     = g_config_reader->GetValueString("DBIP");
+	m_db_port   = g_config_reader->GetValueInt("DBPort", 0);
+	m_db_user   = g_config_reader->GetValueString("DBUser");
+	m_db_passwd = g_config_reader->GetValueString("DBPassword");
+	m_db_name   = g_config_reader->GetValueString("DBName");
+	if(m_db_ip!="" && m_db_user!="" && m_db_passwd!="" && m_db_name!="")
+	{
+		m_db_connection = new Connection(m_db_name.c_str(), m_db_ip.c_str(), m_db_user.c_str(), m_db_passwd.c_str(), m_db_port);
+		if(!m_db_connection->connected())
+		{
+			SLOG_ERROR("connect DB error.db=%s, ip=%s, port=%d, user=%s, pwd=%s."
+						,m_db_name.c_str()
+						,m_db_ip.c_str()
+						,m_db_port
+						,m_db_user.c_str()
+						,m_db_passwd.c_str());
+			delete m_db_connection;
+		}
+	}
+	else
+	{
+		SLOG_WARN("DB parameters is invalid. no using DB!!!");
+	}
+
 	//注册定时器
 	IODemuxer *io_demuxer = get_io_demuxer();
 	assert(io_demuxer != NULL);
@@ -174,10 +200,43 @@ bool MasterServer::get_chunk(ChunkInfo &chunk_info)
 
 bool MasterServer::get_fileinfo(const string &fid, FileInfo &fileinfo)
 {
+	//查找cache
 	map<string, FileInfo>::iterator it = m_fileinfo_cache.find(fid);
-	if(it == m_fileinfo_cache.end())
+	if(it != m_fileinfo_cache.end())
+	{
+		fileinfo = it->second;
+		return true;
+	}
+	//查找数据库
+	if(m_db_connection == NULL)
 		return false;
-	fileinfo = it->second;
+
+	char sql_str[1024];
+	snprintf(sql_str, 1024, "select fid,name,size,chunkid,chunkip,chunkport,findex,foffset from SFS.fileinfo_%s where fid='%s'"
+							,fid.substr(0,2).c_str(), fid.c_str());
+	Query query = m_db_connection->query(sql_str);
+	StoreQueryResult res = query.store();
+	if (!res || res.empty())
+		return false;
+
+	size_t i;
+	for(i=0; i<res.num_rows(); ++i)
+	{
+		ChunkPath chunk_path;
+		fileinfo.fid      = res[i]["fid"].c_str();
+		fileinfo.name     = res[i]["name"].c_str();
+		fileinfo.size     = atoi(res[i]["size"].c_str());
+		chunk_path.id     = res[i]["chunkid"].c_str();
+		chunk_path.ip     = res[i]["chunkip"].c_str();
+		chunk_path.port   = atoi(res[i]["chunkport"].c_str());
+		chunk_path.index  = atoi(res[i]["findex"].c_str());
+		chunk_path.offset = atoi(res[i]["foffset"].c_str());
+
+		fileinfo.add_chunkpath(chunk_path);
+	}
+	//添加到cache
+	m_fileinfo_cache.insert(std::make_pair(fileinfo.fid, fileinfo));
+
 	return true;
 }
 
@@ -230,6 +289,22 @@ bool MasterServer::remove_saving_task_timeout()
 	}
 
 	return true;
+}
+
+//保存到数据库
+bool MasterServer::save_fileinfo_to_db(FileInfo &fileinfo)
+{
+	if(m_db_connection == NULL)
+		return false;
+	char sql_str[1024];
+	ChunkPath &chunk_path = fileinfo.get_chunkpath(0);
+	snprintf(sql_str, 1024, "insert into SFS.fileinfo_%s (fid, name, size, chunkid, chunkip, chunkport, findex, foffset) "
+			"values('%s', '%s', %d, '%s', '%s', %d, %d, %d);"
+			,fileinfo.fid.substr(0,2).c_str(), fileinfo.fid.c_str(), fileinfo.name.c_str(), fileinfo.size
+			,chunk_path.id.c_str() ,chunk_path.ip.c_str(), chunk_path.port
+			,chunk_path.index, chunk_path.offset);
+	Query query = m_db_connection->query(sql_str);
+	return query.exec();
 }
 
 //////////////////////////////////////////////////////////////
@@ -372,6 +447,7 @@ void MasterServer::on_file_info(SocketHandle socket_handle, Protocol *protocol)
 					,chunk_path.offset);
 
 		m_fileinfo_cache.insert(std::make_pair(fileinfo.fid, fileinfo));
+		save_fileinfo_to_db(fileinfo);
 		remove_saving_task(fileinfo.fid);
 
 		save_result.result = FileInfoSaveResult::RESULT_SUCC;

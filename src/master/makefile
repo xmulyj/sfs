@@ -1,5 +1,5 @@
-INCS=-I/usr/local/include/libnetframework -I../ 
-LIBS=-lslog -lnetframework -lpthread
+INCS=-I/usr/local/include/libnetframework -I/usr/include/mysql -I/usr/include/mysql++ -I../ 
+LIBS=-lslog -lnetframework -lpthread -L/usr/lib/mysql/ -lmysqlclient -lmysqlpp
 FLAGS=-g
 DEPS=../CommonType.h ../SFSProtocolFamily.h ../SFSProtocolFamily.cpp
 
