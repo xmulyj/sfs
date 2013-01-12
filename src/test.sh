@@ -32,7 +32,7 @@ echo -e "...............[ \033[32mOK\033[0m ]"
 ### start client sfs ###
 echo -e "[3] try to save file:${TEST_DIR}/test.txt.....[ \033[32mOK\033[0m ]\n\n"
 cd client
-./sfs
+./sfs -s ${TEST_DIR}/test.txt
 cd ..
 echo -e "\n\n[4] save file status....................[ \033[32mOK\033[0m ]"
 
