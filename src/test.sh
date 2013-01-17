@@ -41,5 +41,5 @@ echo -e "[5] kill server.........................[ \033[32mOK\033[0m ]"
 killall sfs_master  >/dev/null 1>&1 2>&1
 killall sfs_chunk   >/dev/null 1>&1 2>&1
 
-echo -e "[6] all tasks finished..................[ \033[32mDO\033[0m ]"
+echo -e "[6] all tasks finished..................[ \033[32mDONE\033[0m ]"
 
